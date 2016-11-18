@@ -129,7 +129,7 @@
 
         # 推送
         git push -u origin master               // 将本地仓库的master分支推送到远程库
-            -- 如果远程库中已有内容就会报错,可以 git push -f origin master
+            '如果远程库中已有内容就会报错,可以 git push -f origin master[用本地覆盖远程],或者git pull --rebase origin master[远程覆盖本地]'
             -- 下一次推送
             git push origin master
 
