@@ -1,0 +1,74 @@
+第十六章 css盒模型
+
+	设置元素尺寸	div{width:100px/auto;}
+	元素内边距		div{padding-top/bottom/left/right:10px;}
+	元素外边距		div{margin-top...:10px;}
+	处理溢出		div{overflow:auto}			[若溢出则显示滚动条]
+	元素可见性		div{visibility:hidden;}		[元素不可见，但占据空间]
+	元素盒类型		块级元素[div,p]/行内元素[span,b]/行内-块级元素[img]/隐藏元素
+		块级元素[可以设置尺寸,隔离其他元素]
+		行内元素[不能设置尺寸,无法隔离其他元素]
+		行内-块级元素[可以设置尺寸,无法隔离其他元素]
+		display:block[块元素]/inline[行元素]/inline-block[行内-块元素]/none[不可见]
+	元素浮动		float:left/right/none;		clear:both;[清除浮动]
+
+第十七章 css边框与背景
+
+	声明边框		div{border:1px solid red;}线条宽度,线条类型,线条颜色...[支持border-top...]
+	圆角边框		div{border-radius:10px;[可四条边分别设置]}
+	背景			background-color/background-image/background-repeat/background-position/background-size/background-attachment
+						background-repeat:repeat-x[水平平铺]/repeat-y[垂直平铺]/repeat[默认]/no-repeat[不平铺]
+						background-position:left/.../100px 20px[定位];
+						background-size:cover[等比缩放图片,至少覆盖容器];
+						background-attachment:fixed;[背景不随内容滚动]
+
+第十八章 css表格与列表
+
+	表格样式		border-collapse:collapse;单元格相邻的表框被合并
+					border-spacing:5px;单元格间距
+					table-layout:fixed;内容过长时不会改变单元格宽度[表格宽度固定时]
+					vertical-align:middle;表格元素垂直对齐
+	列表样式		list-style-type:none/decimal;[列表的标记类型/没有标记/阿拉伯数字]
+					list-style-image:[使用图片作为前缀的标记]
+
+第十九章 css其他样式
+
+	opacity:0.6;	设置元素透明度
+	box-shadow: 3px 4px 5px[模糊度] 6px[半径] blue inset[设置为内部阴影];
+	outline: 10px double red;	轮廓[外边框]样式
+	cursor:move/help/...;	光标样式
+
+第二十章 css3前缀和rem
+
+	试验阶段旧浏览器私有的属性要加前缀[Chrome -webkit Opera -o-/-webkit IE -ms- Firefox -moz]
+	网页默认的字体大小是16px
+	rem属性 是根据根元素[html]的大小进行设置的	//IE 678不支持rem
+
+第二十一章 css3文本效果
+第二十二章 css3渐变效果
+
+	线性渐变	background-image: linear-gradient(to bottom[可选/位置],green,yellow);	//IE10-不支持
+
+第二十四章 css3 变形效果
+
+	元素变形
+	transform: translate(30px,30px);[水平垂直方向平移元素]
+	transform: scale(30px,30px);	[水平垂直方向缩放元素]
+	transform: rotate(-45deg);		[水平垂直方向旋转元素]
+	transform: skew(-45deg);		[水平垂直方向倾斜元素]
+	transform-origin：left top;		[设置变换的起点]
+	
+第二十六章 css3动画效果
+
+	animation-name: xxx;[指定一个关键帧动画(对应一个@keyframes规则)的名字]
+	animation-duration: 2s;[设置动画播放时间]
+	关键帧属性声明		@keyframes name{...}	
+
+第二十七章 css传统布局
+
+	body{margin:0;}[整个页面无边距] / table{margin: 0 auto;}[上下边距0,左右自动]
+	定位布局	position:absolute[绝对定位/脱离文档流]/relative[相对定位]/fixed[以窗口参考定位/脱离文档流/滚动页面时相对位置不变]
+	脱离文档流	z-index:100;[设置层次关系]
+	box-sizing:border-box;[border和padding设置后不用于元素总长度]		//IE8之前不支持
+	resize:none[不允许改变元素大小]/both[允许...];		textarea默认both / 其他元素需要配合overflow:auto;使用
+	

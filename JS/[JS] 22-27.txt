@@ -1,0 +1,523 @@
+第二十二章 DOM元素尺寸和位置
+
+    rule.style.backgroundColor            //从rule中获取样式信息
+    通过element.style.xxx / rule 获取到的样式只是代码中的值,不能获取实际值
+    如果没有设置元素尺寸,计算后的样式会自动生成, IE8- 会返回auto
+
+    [获取元素实际大小]
+        1.clientWidth和 clientHeight             //获取元素可视区大小
+            box.clientWidth / box.clientHeight
+            /*
+             *      返回值是 number
+             *      增加边框和外边距     ---    无变化
+             *      增加内边距和滚动条   ---    内边距增加边距大小 / 减小16px
+             *      如果css没有设置宽高  ---    IE7- 会返回0
+             */
+        2.scrollWidth和 scrollHeight             //获取滚动内容的元素大小
+            /*
+             *      IE只返回原本内容的大小 
+             *      各浏览器兼容效果很差
+             */
+        3.offsetWidth和 offsetHeight             //返回元素实际大小,包括边框/内边距/滚动条
+    [获取元素边框大小]
+        1.clientLeft / clientTop              //获取元素左/上边框大小
+        2.offsetLeft / offsetTop              //获取相对于父元素的位置
+
+第二十三章 动态加载脚本和样式
+    
+    box.getBoundingClientRect()             //返回矩形对象
+
+        /*
+         *  document.documentElement   代表html标签
+         *  IE7 中会有偏差,页面坐上端从2,2开始
+         */
+    
+        box.getBoundingClientRect().left        矩形左边距页面左端距离
+        box.getBoundingClientRect().right       矩形右边距页面左端距离
+        box.getBoundingClientRect().top         矩形左边距页面顶端距离
+        box.getBoundingClientRect().bottom      矩形左边距页面顶端距离
+
+    [动态脚本] 
+        /*
+         * 适时加载脚本文件
+         * 非IE需要先加载完才能调用
+         */     
+        
+        var flag = true;
+        if (flag) {
+            loadScript('browserdetect.js');
+        }
+        function loadScript(url){                                   //创建script标签
+            var script = document.createElement('script');
+            script.src=url;
+            script.type='text/javascript';
+            var head = document.getElementsByTagName('head')[0];
+            head.appendChild(script);
+        }
+        window.onload=function(){                                   //加载完才能调用
+            alert(typeof BrowserDetect);
+        }
+
+
+
+        /*
+         * 适时加载脚本代码和css文件
+         * IE9- 把script标签理解为特殊标签,不能访问子节点
+         * 可以使用script.text添加代码
+         */ 
+        
+        var flag = true;
+        if (flag) {
+            var script = document.createElement('script');
+            var link = document.createElement('link');
+            script.type='text/javascript';
+            script.text='alert(\'sc\');';
+            link.rel="stylesheet";
+            link.href="Basic.css";
+            var head = document.getElementsByTagName('head')[0];
+            head.appendChild(link);
+            head.appendChild(script);
+        }
+
+
+        /*
+         * 动态加载 rule
+         * 因IE8- 认为style为特殊标签,所以只能通过insertRule() / addRule()添加
+         * 
+         */
+
+        var flag=true;
+        if (flag) {
+            var style=document.createElement('style');
+            document.getElementsByTagName('head')[0].appendChild(style);
+            insertRules(document.styleSheets[2],'#box','background:red;',0);        
+        }
+        function insertRules(sheet,selectorText,cssText,position){                  //添加rule的兼容方法
+            if (sheet.insertRule) {
+                sheet.insertRule(selectorText+'{'+cssText+'}',position);
+            }else if(sheet.addRule){
+                sheet.addRule(selectorText,cssText,position);
+            }
+        }
+
+第二十四章 事件入门
+
+    js的三种事件模型           内联模型 / 脚本模型 / DOM2级模型[第26章]
+
+    [内联模型]
+        <button onclick="alert('hello');">test</button>
+        <button onclick="sayHello();">test</button>
+    [脚本模型]
+        实现了JS与HTML代码分离
+        button.onclick=function(){ ... }
+
+    事件处理类型              鼠标事件 / 键盘事件 / HTML事件
+    [鼠标事件]
+        onclieck                单击
+        ondblclieck             双击
+        onmousedown             按下鼠标未弹起
+        onmouseup               释放鼠标
+        onmouseover             移到元素上方
+        onmouseout              移出元素上方
+        onmousemove             在元素上方移动
+    [键盘事件]
+        onkeydown               按下任意键/按住不放会重复触发
+        onkeypress              按下字符键/按住不放会重复触发
+        onkeyup                 释放按键
+    [HTML事件]
+        onload                  页面完全加载
+        onunload                页面完全卸载                          //非IE 支持度低
+        onselect                在文本框/文本区内选择文本
+        onchange                在文本框/文本区内内容改变且失去焦点
+        onfocus                 页面或元素获得焦点
+        onblur                  页面或元素失去焦点
+        onsubmit                form中点击提交[form元素触发]
+        onreset                 form中点击重置[form元素触发]
+        onresize                窗口或框架大小变化时
+        onscroll                拖动滚动条
+
+第二十五章 事件对象
+
+    window.onclick=box;         //box被window.onclick绑定了,这里的this就是window对象
+    function box(){             //IE8- 只能用document.onclick
+        alert(this);            
+    }
+
+    [event对象]
+        当触发事件之后,会产生一个事件对象,这个对象是浏览器通过事件函数传递进来的
+
+        window.ondblclick=function(){               //按照W3C标准可以直接通过event访问,IE不支持
+            var e=event || window.event;            //兼容W3C 和 IE
+            alert(e);
+        }
+
+    [鼠标事件]          event.button
+        event.button            //W3C标准         0左键1中键2右键
+        event.button            //IE 中           1左键4中键2右键
+
+        event.clientX / event.clientY             可视区坐标
+        event.screenX / event.screenY             屏幕坐标
+
+    [修改键]
+        键配合鼠标操作,触发一些特殊的事件
+        shift / alt / ctrl / meat
+        shiftKey / altKey / ctrlKey / meatKey       //对应的event属性[boolean]
+
+    [键盘事件]
+        [键码]
+            当触发onkeydown / onkeyup 时,event.keyCode中会生成键码
+            字母(大写)和数字的键码为ASCII码值
+            FF 中参数要写进()里
+            FF和Opera中 ; 返回ASCII码值,IE/Safari/Chrome返回186(键码)
+        [字符编码]
+            当触发onkeypress 时,event.charCode会生成ASCII码值            //IE 不支持
+            当触发onkeypress 时,FF 的keyCode为0
+            IE / Opera可用keyCode取代
+            [兼容方法]
+                window.onload=function(){
+                    document.onkeypress=function(event){
+                        var e=event || window.event;
+                        var key=typeof e.charCode == 'number'?e.charCode:e.keyCode;
+                        alert(key);
+                    }
+                }
+        //用 String.fromCharCode()将 ASCII编码转换成实际的字符。
+
+    [得到事件目标的DOM对象]
+            document.onclick=function(event){
+                var e=event || window.event;
+                alert(e.target);                    //IE不支持
+                alert(e.srcElement);                //FF不支持
+                alert(e.target || e.srcElement);    //兼容方法
+                alert(e.type);                      //获取事件类型
+            }
+
+    [事件流]
+        冒泡
+        Document input ---> Document div ---> Document body ---> Document html ---> Document
+        捕获
+        Document input <--- Document div <--- Document body <--- Document html <--- Document
+
+        冒泡会触发所有事件流中的事件
+        禁止冒泡 : event.stopPropagation()[W3C标准]  /  event.cancelBubble=true[IE标准]
+    
+第二十六章 事件绑定及深入
+
+    传统事件绑定的问题
+        [事件处理函数被覆盖]
+        window.onload=function(){alert(1);}
+        if(typeof window.onload == 'function'){             //创建一个保存器
+            var saved = null;
+            saved = window.onload;
+        }
+        window.onload=function(){if(typeof saved == 'function'){saved();}alert(2);}
+        [事件切换器]
+        box.onclick = toBlue;                               //box.onclick扩展时会出现问题
+        function toRed() {                                  //覆盖问题/可读性问题/this传值问题/相同函数屏蔽
+            this.className = 'red';
+            this.onclick = toBlue;
+        }
+        function toBlue() {
+            this.className = 'blue';
+            this.onclick = toRed;
+        }
+
+    W3C事件处理函数   [DOM二级事件模型]    //现代事件绑定机制
+
+        [添加/删除事件处理程序]                       参数  [时间名/函数/true为捕获false为冒泡]
+
+        [添加]
+        addEventListener('load',temp,true);                //解决了覆盖问题/可读性问题/this传值问题/相同函数屏蔽
+        function temp(){
+            alert('test');
+        }
+        [删除]
+        removeEventListener('load',temp,true);             //true为捕获,false为冒泡
+
+    IE8-事件处理函数   [仅IE支持]
+
+        [添加]
+        attachEvent('onload',temp);                //IE 不支持捕获[无解],无法屏蔽相同函数[进行扩展],无法传递this[扩展]
+        function temp(){
+            alert('test');
+        }
+        [删除]
+        detachEvent('onload',temp); 
+
+    兼容IE8- / W3C事件处理函数
+
+        [添加]
+        function addEvent(obj,type,fn){
+            if (obj.addEventListener) {
+                obj.addEventListener(type,fn,false);
+            }else if (obj.attachEvent) {
+                obj.attachEvent('on'+type,fn);
+            }    
+        }
+        [删除]
+        function removeEvent(obj,type,fn){
+            if (obj.removeEventListener) {
+                obj.removeEventListener(type,fn,false);
+            }else if (obj.detachEvent) {
+                obj.detachEvent('on'+type,fn);
+            }    
+        }
+        [获取事件对象]
+        function getTarget(eve){
+            if (eve.target) {
+                return eve.target;
+            }else if (window.event.srcElement) {
+                return window.event.srcElement;
+            }
+        }
+
+    鼠标移入和移出事件[onmouseover / onmouseout]
+    W3C标准:
+        event.relatedTarget         //获取移入或移出的DOM对象
+    IE8-:
+        window.event.fromElement    //对应onmouseover
+        window.event.toElement      //对应onmouseout
+    兼容:
+        function getTarget(evt){                    //Chrome新版也支持了IE的 window.event,所以会有'IE'
+            var e=evt || window.event;
+            if (e.srcElement) {
+                if (e.type == 'mouseover') {
+                    return e.fromElement+'IE';
+                }
+                if (e.type == 'mouseout') {
+                    return e.toElement+'IE';
+                }
+            }else if (e.relatedTarget) {
+                return e.relatedTarget;
+            }
+        }
+
+    阻止事件的默认行为              [阻止<a>标签跳转]
+        传统事件绑定的缺陷:
+            var a=document.getElementById('link');
+            a.onclick=function(){                   //传统事件绑定
+                alert('test');
+                return false;                       //如果放在最前,则后面的代码快无法执行;放在最后可能执行不到;
+            }
+        W3C / IE兼容方法无效
+            var a=document.getElementById('link');
+            addEvent(a,'click',function(){
+                return false;                       //无效
+            });
+        W3C提供的方法:       event.preventDefault();
+        IE提供的方法:        window.event.returnValue=false;
+        兼容:
+            function preDef(evt) {
+                var e = evt || window.event;
+                if (e.preventDefault) {
+                    e.preventDefault();
+                } else {
+                    e.returnValue= false;
+                }
+            }
+    /*
+     * display:none和visibility:hidden都能把网页上某个元素隐藏起来，但两者有区别:
+     * display:none ---不为被隐藏的对象保留其物理空间，即该对象在页面上彻底消失
+     * visibility:hidden--- 使对象在网页上不可见，但该对象在网页上所占的空间没有改变
+     *
+     */
+
+    自定义右键菜单
+        var t=document.getElementById('textarea');
+        var ul=document.getElementById('ul');
+        addEvent(t,'contextmenu',temp);
+        function temp(evt){
+            // alert(123);
+            stopDefault(evt);
+            ul.style.left=(evt?evt.clientX:window.event.clientX)+'px';
+            ul.style.top=(evt?evt.clientY:window.event.clientY)+'px';
+            ul.style.display='block';                                   //设置可见
+        }
+
+        addEvent(document,'click',function(){
+            ul.style.display='none';
+        });
+
+    页面卸载前事件
+        addEvent(window,'beforeunload',temp1);
+        function temp1(evt){
+            stopDefault(evt);
+        }
+
+    鼠标滚轮事件
+        //获取滚轮滚动的距离
+        e.wheelDelta            非火狐             DOMMouseScroll事件
+        e.detail                火狐               onmousewheel事件
+        [兼容方法]
+            addEvent(document,'mousewheel',temp3);
+            addEvent(document,'DOMMouseScroll',temp4);
+            function temp3(evt){
+                alert(WD(evt));
+            }
+            function temp4(evt){
+                alert(WD(evt));
+            }
+            function WD(evt){
+                var e=evt || window.event;
+                if (e.wheelDelta) {
+                    return e.wheelDelta;
+                }else if (e.detail) {
+                    return -e.detail*40;
+                }
+            }
+
+第二十七章 表单处理
+
+    获取form元素的方法:
+        document.getElementById('myForm');              //使用 ID获取<form>元素
+        document.getElementsByTagName('form')[0];       //使用获取第一个元素方式获取
+        document.forms[0];                              //使用 forms的数字下标获取元素 [HTML DOM方法]
+        document.forms['yourForm'];                     //使用 forms的name下标获取元素 [HTML DOM方法]
+        document.yourForm;                              //使用 name名称直接获取元素    [早期方法 不推荐使用]
+
+    阻止按钮的提交事件
+        addEvent(fm,'submit',function(event){           //onsubmit只能绑定在from元素上,按钮元素没有这个属性
+            stopDefault(event);
+        });
+
+    HTML DOM    [HTMLFormElement属性和方法]
+        action          接受请求的URL
+        name            表单名
+        reset()         重置
+        submit()        提交
+    //在表单中尽量避免使用name="submit"或id="submit"等命名，这会和submit()方法发生冲突导致无法提交
+
+    <button type="reset"></button>  重置为默认内容
+    fm['text'].innerHTML='this is default text';    //设置textarea默认值
+
+    解决重复提交表单
+        addEvent(fm,'submit',temp2);
+        function temp2(event){
+            var e=event ||window.event;
+            stopDefault(e);                     //先禁止提交
+            b1.disabled=true;                   //禁用提交按钮
+            if (flag == true) return;           //再次提交时不执行提交
+            flag = true;                        //代表已经提交
+            alert('正在提交...');
+            setTimeout(function(){
+                fm.submit();
+            },4000);
+        }
+        
+    通过HTML DOM获取表单元素
+        fm.elements             //获取所有表单控件
+        fm.elements['name']     //按照name值获取表单控件
+        fm.elements.length      //获取表单控件的数量
+        //获取单选框元素对象时得到的是元素列表            fm.elements.sex[1]
+        [元素属性]
+            disabled            //是否禁用
+            name                //name值
+            from                //得到控件所属的from对象
+            readOnly            //是否只读
+            type                //得到控件type值
+        [元素方法]
+            focus()             //获得焦点
+            blur()              //移出焦点
+        [事件]
+            focus               //获得焦点时
+            blur                //失去焦点时
+            change              //内容更改时
+
+    文本框元素操作
+        [HTML DOM方式获取文本]
+            /*
+             *  <input>有value属性,<textarea>没有
+             *  通过标准的DOM只能获取到<input>中的值,不能获取<textarea>中的值
+             *  标准DOM获取不到修改后的值
+             *  推荐使用HTML DOM方式获取
+             */
+            fm.elements['username'].value               //获取文本框[input / textarea]中的值
+        [选择文本]
+            fm.elements['username'].select();           //选择文本
+        [选择部分文本]
+        [取得选择的文本]
+            addEvent(fm.elements['username'],'select',temp);
+            function temp(){
+                alert(this.value.substring(this.selectionStart,this.selectionEnd));         //非IE获取选择的文本
+            }
+            /*
+             *  IE8- 中select事件选定字符时只要选定一个就触发
+             *  非IE 鼠标松开才执行事件函数
+             *  解决方法是不用alert()
+             */
+            function getSelectText(text){
+                if(typeof text.selectionStart=='number'){                                    //非IE
+                    return text.value.substring(text.selectionStart,text.selectionEnd);
+                }else if(document.selection){ //IE
+                    return document.selection.createRange().text;                            //获取IE选择的文本
+                }
+            }
+
+        [屏蔽非数字键的输入]
+            //这种屏蔽方式不能屏蔽中文输入法,FF中不能ctrl+c / ctrl+v / ctrl+x
+            addEvent(fm.elements['text'], 'keypress', temp4);
+            function temp4(event){
+                var charCode=getCharCode(event);
+                // alert(charCode);                         //数字键48-57
+                if ((charCode<48 || charCode>57) && charCode>8) {              //兼容FF和Safari3 ,FF中移动光标和退格键键码是0,Safari3为8
+                    stopDefault(event);
+                }
+            }
+
+        [屏蔽复制 / 剪切 / 粘贴操作]
+            addEvent(fm.elements['text'], 'cut', temp5);
+            addEvent(fm.elements['text'], 'copy', temp5);
+            addEvent(fm.elements['text'], 'paste', temp5);
+            function temp5(event){
+                stopDefault(event);
+            }
+
+        [屏蔽中文输入法/屏蔽非数字字符最终版]
+            /*
+             *  在Chrome中不能用css禁止中文输入法
+             *  屏蔽非数字字符可以输入后验证,然后替换为空
+             */
+            addEvent(fm.elements['text'],'keyup', temp6);
+            function temp6(){
+                this.value=this.value.replace(/[^\d]+/,'');             //输入后马上验证,然后替换
+            }
+
+        [选择框脚本]
+            fm.elements['city'].options[0].value                第一个option的value值
+            fm.elements['city'].options[0].text                 第一个option的text值 = innerHTML
+            fm.elements['city'].selectedIndex                   选择框的当前项
+            city.selectedIndex=2                                定位option
+            city.options[2].selected=true                       定位option
+
+        [兼容IE添加option]
+            var option = new Option('潍坊'[text],3[value]);
+            city.add(option,undefined);
+
+        [删除option]
+            city.remove(0[index]);                  //HTML DOM移除
+            city.options[0]=null;                   //移除
+
+        [移动选项]
+            addEvent(selectCity, 'click', temp8);
+            function temp8(){
+                city.appendChild(this.options[this.selectedIndex]);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+第三十一章 PC端固定布局
+
+	PC端固定布局最小宽度	1264 (1280-16)
+
+	为了让搜索引擎更好的抓取关键字,LOGO用h1标签。建议一个网页只有一个h1标签
+
+	使列表的前缀为空				list-style-type:none;
+
+	text-indent:-9999px;[设置文本首行缩进]
+
+	[HTML5大纲算法]
+		HTML5大纲测试工具:https://gsnedders.html5.org/outliner/
+		body,section,nav需要h1到h6 设置标题 / div,header不需要
+
+	[<section>和<div>]
+		<div>：
+			用于页面布局,除了<header> / <footer>等专用标签,其他都应该用<div>
+			单纯对一段内容进行css操作
+			对一段内容进行js控制
+
+		<section>:
+			<section> 需要h1~h6 来设置表题
+
+	使用绝对行为默认参照body,为父元素增加相对定位后参照父元素
+
+	去除Chrome 的input 外边框:	outline:none;
+
+	为header 添加阴影使层次更高,添加相对定位点,增加层次z-index
+
+	img{vertical-align:middle;}		设置图片垂直居中
+
+    background: url('images/headline.jpg') no-repeat center;
+
+    <figure> 是 inline 元素
+
+    <figcaption> 应该包含除<img> 之外所有的内容
+
+第三十二章 项目实战-移动端流体布局
+
+	[屏幕宽度及缩放]
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+
+		name="viewport"					窗口设定
+		content="width=device-width"	页面大小与屏幕等宽
+		content="initial-scale=1.0"		页面初始缩放比例
+		content="minmum-scale=1.0"		页面最小缩放比例
+		content="maxmum-scale=1.0"		页面最大缩放比例
+		content="user-scalable=no"		设置用户是否可以缩放
+		
+	[图片宽度自适应]
+		img{
+			max-width:100%;
+		}
+
+
+
+
+
+
+

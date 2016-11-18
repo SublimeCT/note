@@ -1,0 +1,243 @@
+第十六章 匿名函数和闭包
+	1.直接打印函数名不加括号将输出代码部分
+	2.[匿名函数自我执行]	格式:(匿名函数)();	  (function(){alert('sc');})();			//sc
+								[传参]	  		  (function(age){alert(age);})(20);		//20
+	3.函数里放一个匿名函数,产生闭包
+			function box(){return function(){return'sc';}}  alert(box()());				//闭包
+			function box(){var age=20;return function(){return age;}} alert(box()());	//匿名函数实现调用局部变量
+			function box(){var age=20;return function(){return age++;}} 
+				var a=box();  alert(a());  alert(a());  a=null[解除引用,等待回收];		//实现局部变量常驻内存,实现累加
+
+	4.循环里的匿名函数取得的任何变量都是最后一个值 ...
+	4.闭包的作用域是window 对象
+	5.闭包在IE中会导致内存泄漏问题(无法销毁驻留在内存中的元素) / 需手动解除引用[xxx=null;]
+	6.javascript没有块级作用域
+		if / for 中的变量离开代码快后不会失效
+		利用匿名函数自我执行实现块级作用域：	(function(){var age=20;})();			//匿名函数执行完毕立即销毁
+	7.私有/公有属性和方法
+
+		function box(){
+			var a=0[私有属性];
+			this.b=1[公共];
+			function run(){}[私有方法];
+			this.run=function(){}[公共];
+		}
+
+第十七章 BOM
+	0.BOM也叫浏览器对象模型，它提供了很多对象，用于访问浏览器的功能
+	0.window.close();		关闭窗口
+	0.window.find();		弹出查找对话框
+	1.confirm()			确定弹窗
+	2.prompt()			输入提示框
+	3.window.open()		新建窗口			3个参数：[URL] / [命名窗口/窗口目标] / [新窗口详细设置的参数]
+		open('http://www.baidu.com','_blank','width=600,height=400,top=100,left=400')		//IE不支持第三个参数
+		open()返回window对象
+	4.screenLeft  窗口[距左]位置  /  screenTop	窗口[距上]位置			//FF不支持
+	  screenX					  /  screenY							//IE不支持
+	  兼容方法：		
+	  		var leftX=typeof screenX == 'number'?screenX:screenLeft;
+	5.innerWidth/innerHeight[页面宽度/高度]		/	  outerWidth/outerHeight[加边框的页面宽高]		//Chrome中inner...=outer...
+	  兼容方法：		
+	  		var width=window.innerwidth; 
+	  		if(width == undefined){
+	  			if(window.compatMode==undefined)							//兼容IE6的非标准模式
+	  				width = document.documentElement.clientWidth;
+	  			width = document.body.clientWidth;					
+	  		}
+	6.setTimeout()		超时调用
+			setTimeout(function(){alert('sc');}[第一个参数是(String)函数],2000[时间]);
+			setTimeout() 返回ID值    var box=setTimeout("alert('sc');",2000);	clearTimeout(box);	//这样就取消了超时调用
+	7.setInterval()		间歇调用
+			clearInterval()  清除间歇调用
+	8.间歇调用一般用超时调用结合递归来控制和实现
+	9.location对象		可以通过window.location / (window.)document.location调用		//IE6 中的<button>要添加type="submit"
+						location.search		可以得到URL中?后面的string
+						location.href		当前url,赋值可以实现跳转
+	10.history
+	   					history.back()		后退
+	   					history.forward()	前进
+	   					history.go()		传number参数,实现前进后退			// 1 [前进1页]   -1 [后退一页]
+
+第十八章 浏览器检测
+	1.navigator				用于识别不同浏览器的对象
+	2.BrowserDetect.js		浏览器嗅探器.js 							//BrowserDetect.browser[浏览器名称]
+	3.navigator.plugins		存储浏览器插件信息的数组					//navigator.plugins[0].name [插件名]
+	4.ActiveX				实现IE浏览器在Web页面中嵌入对象或组件		
+
+第十九章 DOB基础
+	1.节点
+		1) 元素节点				标签[<div>]
+		2) 文本节点				纯文本[xxxxxxx]
+		3) 属性节点				标签的属性[<div id="">]
+	2.查找元素
+		getElementById();		按照id值获取元素节点			//DOB操作必须等到HTML文档加载完毕才能获取
+			解决方法：把script标签放到最后 / 在js代码中改为 window.onload=function(){ ... };
+	3.IE浏览器使用COM来实现DOB
+	4.元素节点属性
+		document.getElementById('box').tagName					//获取元素节点的标签名
+		document.getElementById('box').innerHTML				//获取元素节点的内容
+		document.getElementById('box').id 						//获取元素节点的id属性的值			//注意不是获取元素节点
+		document.getElementById('box').title 					//获取元素节点的title属性的值
+		document.getElementById('box').style 					//获取元素节点的style属性的值
+		document.getElementById('box').style.color 				//获取元素节点的sytle属性的color属性值
+		document.getElementById('box').className				//获取元素节点的class属性的值
+		//自定义属性只用在IE中才可以获取到
+		//以上调用的属性也可以赋值
+	5.getElementsByTagName()				按照标签名获取元素节点,返回的是数组
+		var body=document.getElementsByTagName("body")[0];		//获取body元素节点对象
+		document.getElementsByTagName('*');						//获取所有的元素节点对象
+		document.getElementsByTagName('*')[0].innerHTML;		//非IE打印HTML源码
+	6.getElementsByName()					按照name值获取元素节点,返回的是数组
+		IE认为name属性不应该出现在div中,所以按照name获取div节点时IE会忽略
+	7.getAttribute()						获取元素中某个属性的值							//IE会出现兼容性问题,应尽量避免使用
+	8.setAttribute()						设置元素中某个属性的值							//IE中sytle和onclick无效,应避免使用
+    0.  /*
+         *  getAttribute() 的兼容性问题:
+         *      仅IE可以获取自定义属性值
+         *      IE7- style返回对象
+         *      IE7- onclick不兼容
+         *  setAttribute() 的兼容性问题
+         *      IE7- 设置style属性无效
+         */
+	9.3种节点的 nodeXxx 属性
+		document.getElementById('box').nodeName[元素名称/属性名称/#text] / nodeType[1/2/3] / nodeValue[null/属性值/文本内容]
+		[节点的层次结构]
+			childNodes						获取当前节点的所有子节点						//获取子节点时,只有IE忽略空白字符节点
+			firstChild						首个子节点
+			lastChild						最后一个子节点
+			parentNode						获取当前节点的父节点
+			attributes 						获取当前节点的所有属性节点						//返回数组,是从后往前遍历的
+			nextSibling						获取当前元素的下一个兄弟节点
+			previousSibling					获取当前元素的上一个兄弟节点
+	10.document.write()						会覆盖掉原有代码,一般用于测试
+	11.createElement('p')					创建一个元素节点
+	12.createTextNode('xxx')				创建文本节点
+	13.appendChild(x)						在该节点内部追加x节点
+	14.insertBefore(a,b)					把b插入到a之前
+	15.replaceChild(a,b)					用a替换掉b
+
+		// IE6、7 在createElement()时,无法创建 iframe/input type= radio/checkbox/button ... 
+		/*
+			兼容:
+					createElement('<input type=\'redio\' name=\'username\'>');
+		*/
+
+	16.cloneNode(true/false)				克隆一个节点,true是完全克隆,false是只克隆标签
+	17.removeChild()						删除指定节点
+	18.document.all							获取所有元素的引用 [可用于判断IE]
+	19.document.body						获取body元素的引用
+	20.document.URL/title/lastModified		获取URL/title/最后修改时间
+第二十章 DOM进阶
+	1.DOM类型
+		DOM节点有12种节点类型
+	2.Node类型				
+		定义了12个数值常量[ELEMENT_NODE 元素 1/ATTRIBUTE_NODE 属性 2/TEXT_NODE 文本 3/...],IE不支持
+	2.Document类型
+		表示根节点,这个节点是隐藏的,没有具体标签
+		document.title			网页的标题
+		document.URL 			URL
+	3.Text类型
+		normalize()								合并子节点中的所有文本节点
+		box.firstChild.splitText(3)				前3个字节分离出来成为一个文本节点							
+		box.firstChild.deleteData(0,2); 		删除从 0位置的 2个字符
+		box.firstChild.insertData(0,'Hello.') 	从 0位置添加指定字符
+		box.firstChild.replaceData(0,2,'Miss')  从 0位置替换掉 2个指定字符
+		box.firstChild.substringData(0,2); 		从 0位置获取 2个字符，直接输出
+	4.Comment类型
+		document.getElementById('!')			只有IE支持获取注释节点
+	5.scrollIntoView()
+		设置节点可见,可用于滚动页面
+	6.children属性
+		获取子节点,忽略空白文本节点[返回值Array]
+	7.document.getElementById('box').scrollIntoView();
+		设置指定节点可见
+第二十一章 DOM操作表格及样式
+	1.thead/tfoot/caption在一个表格里只能由一个,tbody能有多个           //所以tBodies获取的是元素集合
+	2.HTML DOM提供了更加方便快捷的方式来操作html
+		var table=document.getElementsByTagName('table')[0];
+		alert(table.tHead);								//获取thead
+		alert(table.tBodies);							//获取tbody
+		alert(table.rows.length);						//获取行数
+		alert(table.tHead.rows[0].length);				//获取head中第一行的单元格个数
+		deleteThead()/deleteTFoot()/deleteCaption()/deleteRow(0)/deleteCell(1)			//删除thead,tfoot,caption,行,格
+		createThead()/createTFoot()/createCaption()/insertRow(0)/insertCell(1)			//创建thead,tfoot,caption,插入行,格
+
+		//在用HTLM DOB创建表格的时候,不能使用方法创建<table><tbody><th>,需要使用document来创建
+
+	3.DOM控制CSS信息
+		box.style.fontSize[style属性]					//当sytle属性中有-连接符时,用驼峰式命名法
+		box.style.float[仅Chorme] / box.style.cssFloat[非IE] / box.style.styleFloat[仅IE]			//JavaScripe中float是关键字
+			兼容：
+				  alert(table.style.cssFloat || table.style.styleFloat);
+				  typeof box.style.cssFloat=='undefined' ? box.style.styleFloat='right' : box.style.cssFloat='right';
+		box.style属性只能操作行内样式,无法操作内联和链接
+	4.获取计算后的style
+		window.getComputedStyle(box[节点],null[伪类/null]);				//非IE支持
+		box.currentStyle();												//仅IE支持
+			兼容：
+				  var box=document.getElementById('box');
+				  var style=box.currentStyle || window.getComputedStyle(box,null);
+
+		计算后的样式可以获取默认样式/行内/内联/链接样式,但无法赋值
+		box.style.xxx只能获取行内样式,可以赋值
+		复合属性[background/border]在计算之后就不存在了,所以计算后style无法获取
+	5.操作样式表一般是通过修改class
+	6.访问<link>和<style>中的css代码
+		//通过element.style只能设置行内样式,getComputedStyle()/element.current只能获取样式无法改变
+		//对于内联和外部css可以通过document.styleSheets属性获取
+
+		//	link  --- HTMLLinkElement		link.sheet  --- CSSLineSheet
+		//	style --- HTMLStyleElement		style.sheet --- CSSStyleSheet
+
+			var sheet=document.styleSheets[0];				
+				/*
+					通过styleSheets属性获取网页中CSSStyleSheetList
+					document.styleSheets[0] 表示第一个sheet
+					styleSheets可以获取<link>和<style>
+				*/
+			sheet.disabled								//设置样式是否被禁用
+			sheet.href									//css文件的路径
+			sheet.cssRules[0]							//得到css第一个规则			chrome返回null,需要放在服务器端
+			sheet.cssRules[0].cssText					//得到css规则的文本信息
+			sheet.cssRules[0].selectorText				//得到css规则的选择符[#box]
+			sheet.deleteRule(0)							//删除第一条规则
+			sheet.insertRule('body{margin:0;}',0)		//在第一个位置插入一条规则
+		IE兼容：
+			sheet.rules 								//得到css规则
+			sheet.removeRule(0)							//删除第一条规则
+			sheet.addRule('body','margin:0;',0)			//添加一条规则
+
+
+		/*
+		 *	sheet.cssRules/sheet.rules 兼容方法
+		 */
+		
+		为了添加CSS规则，并且兼容所有浏览器，我们必须写一个函数：
+		var sheet=document.styleSheets[0];
+		insertRule(sheet,"body","background-color:red;", 0);
+		function insertRule(sheet,selectorText, cssText,position){
+			//如果是非IE
+			if(sheet.insertRule){
+				sheet.insertRule(selectorText+"{"+cssText+"}",position);
+			//如果是IE
+			}else if(sheet.addRule){
+				sheet.addRule(selectorText,cssText,position);
+			}
+		}
+
+		为了删除CSS规则，并且兼容所有浏览器，我们必须写一个函数：
+		varsheet=document.styleSheets[0];
+		deleteRule(sheet,0);
+		function deleteRule(sheet,index){
+			//如果是非IE
+			if(sheet.deleteRule){
+				sheet.deleteRule(index);
+			//如果是IE
+			}elseif(sheet.removeRule){
+				sheet.removeRule(index);
+			}
+		}
+
+
+	7.Chrome中rules会变成null,只能在服务器端才有效
+	8.总结3种操作css的方法：	.style行内 / window.getComputedStyle()或.currentStyle / .cssRules[0]或者.rules 

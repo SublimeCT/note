@@ -1,0 +1,361 @@
+第十四章 工具函数
+
+    /**
+     *  工具函数直接依附于jQuery 对象
+     *  
+     *  
+     */
+    
+    [字符串操作]
+
+        $.trim();                                           // 去除字符串两端空格
+
+    [数组和对象操作]
+
+        $.each([1,23,4,12,3,1,2],function(index,value){     // 遍历数组
+            console.log(index+':'+value);
+        });
+
+        $.each($.ajax,function(name,fn){                    // 遍历对象
+            console.log(name+':'+fn);
+        });
+
+        $.grep([2,3,1,3,21,3],function(element,index){      // 筛选数据[数组]
+            return element<10 && index<4;
+        });
+
+        $.map([2,3,1,3,21,3],function(element,index){       // 数据修改
+            if (element<10 && index<4) {
+                return element-1;                           // 将符合条件的数据进行修改
+            }
+        });
+
+        console.log($.inArray(3,[2,3,1,3,21,3]));           // 按值查找元素,并返回索引值[只查找第一个参数]
+
+        var arr = [2,3,4,3,2];
+        var newArr = [3,4,5,10];
+        console.log($.merge(newArr, arr));                  // 合并数组,将第二个数组追加到第一个数组中[只改变第一个数组的值]
+
+        var divs = $('div').get();                          // 去除重复的DOM元素
+        divs = divs.concat($('.box').get());
+        console.log(divs.length);
+        console.log($.unique(divs).length);
+
+        console.log($('div').toArray());                    // 将jQuery集合中的所有DOM元素组合成数组
+
+    [判断数据类型]
+
+        $.isEmptyObject();                              // 判断对象是否为空
+        $.isPlainObject();                              // 判断是否为纯粹对象
+        $.contains($('body')[0],$('.box')[0]);          // 判断DOM节点是否包含另一个DOM节点
+        $.type();                                       // 判断数据类型
+        $.isNumeric();                                  // 判断是否是数值
+        $.isWindow();                                   // 判断是否是window对象
+
+    [URL操作]
+
+        $.param({1:1});                                 // 将对象形式的键值对转换成字符串
+
+    [调整this指向]
+
+        var obj = {
+            name:'sc',
+            test:function(){
+                console.log(this.name);
+            }
+        }
+
+        $('#box').click(obj.test);                      // 这时this已经改变
+
+        $('#box').click($.proxy(obj,'test'));           // 调整this指向
+
+第十五章 插件
+    
+    /**
+     *  引入插件:
+     *      现引入jquery.js
+     *      引入jquery.xxx.js 文件
+     *      可引入插件中文包或css样式文件
+     *  
+     *  
+     *  
+     */
+
+    [jquery.validate.js]
+
+        /**
+         *  首先调用<form>的jQUery对象的validate() 方法
+         *  $('#fm').validate();
+         * 
+         *  在<form>中添加class="required"          必须填写
+         *                      "email"             邮件格式检测
+         *                      "URL"               URL格式检测
+         *                minlength="2"             不得小于两位
+         *  
+         */
+
+    [自定义插件]
+
+        /**
+         *  jQuery 插件形式: 
+         *      基于DOM元素的jQuery对象
+         *      全局性封装
+         *      选择器插件[$.find()]
+         *  
+         *  插件名使用jquery.xxx.js,并且不能与jQuery属性冲突
+         *  局部对象附加在$.fn对象上,全局对象附加在jQuery上
+         *  
+         *  使用$.extend() 设置全局插件,$.fn.extend() 设置基于DOM元素的jQuery对象的插件
+         *  
+         *  在plugin中 return this; 以实现连缀
+         *  
+         */
+
+        // 自定义下拉菜单插件 nav
+
+            // index.html
+                <ul class="nav">                                                // 1.定义class="nav",完成下拉菜单的css部分
+                    <li>items 1</li>
+                    <li>items 2</li>
+                    <li>items 3</li>
+                </ul>
+
+            // demo.js
+                $('.nav').parent().hover(function(){
+                    $(this).find('.nav').stop().slideDown();                    // 2.完成事件处理函数
+                },function(){
+                    $(this).find('.nav').stop().slideUp();
+                });
+
+            // jquery.nav.js
+                ;(function($){
+                    $.fn.extend({                                               // 基于DOM元素jQuery 对象的插件
+                        nav:function(){
+                            this.find('.nav').parent().hover(function(){        // 这里的this是jQuery 对象,因为在插件中进行了封装处理
+                                $(this).find('.nav').stop().slideDown();        // 3.把函数封装到nav 中
+                            },function(){
+                                $(this).find('.nav').stop().slideUp();
+                            });
+                            return this;                                        // 返回该jquery 对象,以实现连缀
+                        }
+                    });
+                })(jQuery);
+
+            // demo.js
+                $('ul:frist').nav();                                            // 4.调用nav
+
+第十六章 知问前端
+
+    /**
+     *  jQuery UI 是以 jQuery 为基础的开源 JavaScript 网页用户界面代码库
+     *  
+     */
+
+    [创建headerr 区]
+        $('#register').click(function(){                        // 弹出对话框
+            $('#reg').dialog('hi');
+        });
+
+    [对话框UI]
+        /**
+         *    修改dialog的样式
+         *       找到对应的元素
+         *       在css文件中改写该css规则
+         *    
+         *    dialog 方法和属性:
+         *        外观:title / buttons
+         *        位置:position
+         *        尺寸:width / minwidth / maxwidth / ...
+         *        特效:show / hide
+         *            默认值:true
+         *            特效值:puff / ...
+         *        行为:autoOpen / modal     
+         *        事件:focus / create / open / close / beforeClose
+         *
+         *    dialog('open');                     打开对话框
+         *    dialog('close');                    关闭对话框
+         *    dialog('destory');                  关闭对话框
+         *    dialog('isOpen');                   是否打开了对话框
+         *    dialog('option','title');           获取title属性值
+         *    dialog('option','title','xxx');     设置title属性值
+         *        
+         *    dialog 对应事件
+         *        dialogfocus / dialogopen / ...
+         *      
+         */
+
+        $('#reg').click(function(){
+            $('#register').dialog({
+                title:'对话框标题',                          // 对话框标题
+                buttons:{                                    // 对话框按钮
+                    'ok':function(){},
+                    'cancel':function(){
+                        $(this).dialog('close');             // 关闭对话框
+                    }
+                },
+                position:'center',                           // 对话框位置,默认center[left / left top /...]
+                width:300,                                   // 宽高,宽默认300,高auto,最小宽高150px;
+                show:true,
+                hide:'puff',                                 // 打开和关闭时特效,true为默认[淡入淡出],puff为缩放效果
+                autoOpen:false,                              // 用于初始化时,当创建时隐藏,显示时$(this).dialog('open')
+                modal:true                                   // 背景遮罩
+                focus:function(evt,ui){
+                    console.log('当获得焦点时触发');         // 获得焦点,当有多个对话框时本对话框获得焦点时会触发
+                },
+                create:function(evt,ui){
+                    // 对话框创建时
+                },
+                open:function(evt,ui){
+                    // 对话框显示时
+                },
+                beforeClose:function(evt,ui){
+                    console.log('关闭对话框之前');
+                    // 如果 return false; 那么将不会关闭
+                },
+                close:function(evt,ui){
+                    console.log('关闭对话框');
+                },
+
+            });
+
+        });
+
+    [按钮UI]
+
+        /**
+         *  button() 方法
+         *      
+         *  
+         *  
+         *  
+         *  
+         *  
+         */
+
+
+
+
+
+    /*****************************************************************************************************************************************
+
+      -    - - - ----   - 结束线-    - - - ----   - 结束线-    - - - ----   - 结束线-    - - - ----   - 结束线- --  - - -- --  -- - - -- - 
+
+    *****************************************************************************************************************************************/
+
+                                                              reutrn false;
+
+imooc慕课网项目
+
+    [瀑布流]
+        ajax部分,滚动条距离顶部的距离是$(window).scrollTop(),就是视口最上面距离文档最上面的距离,
+        如果加上$(window).height(),就是视口最下面距离文档最上面的距离,
+        $('#box').offset().top 是元素距离视口位置是固定值,默认状态下的距离值,不会随页面滚动而改变
+
+    [全屏切换]
+        background属性
+            background-size: cover;                 等比缩放图片
+            background-position: center;            图片水平和垂直居中
+
+            [more] 
+                [ background-attachment ]： 指定对象的背景图像是随对象内容滚动还是固定的。 
+                [ background-origin ]： 指定对象的背景图像显示的原点。 
+                [ background-clip ]： 指定对象的背景图像向外裁剪的区域。 
+
+        实现图片全屏:
+            将图片所有父元素设置height设置为100 %
+
+        实现横屏全屏:
+            设置图片左浮动,宽度25%,父元素宽度400%
+
+        隐藏滚动条:
+            body{ overflow:hidden; }
+
+        [插件开发]
+            /**
+             *  [合并用户参数]                $.extend() 嵌套多个对象到第一个对象中,true为递归深度嵌套
+             *  [实现连缀和单例]              return this.each(...);
+             *  
+             *  
+             *  
+             */
+            
+            $.extend(true,obj1,objn);               // 将用户自定义数据与插件内部默认数据合并                    
+
+            $.fn.myPlugin = function(options){      // 实现连缀和单例
+                // 为每个DOM集合中的元素实现单例,并配置用户参数
+                return this.each(function() {
+                    if (!$(this).data('myPlugin')) {
+                        $(this).data('myPlugin',new myPlugin($(this),options));
+                    }
+                });
+            }
+
+        .....
+
+    [滚动条]
+
+        
+        匿名函数自我执行的三种方式:
+            (function(){})();
+            (function(){}());
+            !function(){}();
+        
+        项目中自调用函数中的对象无法访问:
+            通过自调用函数内部添加...
+                // 外部
+                var obj = {};
+                // 内部
+               obj.myObj = myObj;
+               // 外部
+               new obj.myObj();
+            调用window对象添加...
+               // 内部
+               window.myObj = myObj;
+               // 外部
+               new myObj();
+         
+        元素中的内容位置属性
+            div.scrollTop / div.scrollLeft          元素中内容距离元素顶部和左侧的距离
+            div.scrollWidth / div.scrollHeight      元素中内容的总宽度和高度
+         
+        获取原生event对象
+            jQuery.event.originalEvent              指向原生event
+        
+
+        [鼠标滚轮事件详解]
+                                  事件名                       滚动步长 
+            Chrome              mousewheel          e.detail[0]  / e.wheelDelta[±120]
+
+            FireFox             DOMMouseScroll      e.detail[±2] / e.wheelDelta[undefined]
+
+
+            Chrome  使用e.wheelDelta      向上 +120
+            FireFox 使用e.detail          向上 -2
+
+            IE9-    e.detail == undefined, 其余同Chrome
+
+    [七夕言情动画]
+
+
+        全屏平滑滚动demo
+        
+            $('html,body').animate({  
+                scrollLeft: 1000  
+            }, 1500); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

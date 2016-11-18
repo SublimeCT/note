@@ -1,0 +1,353 @@
+第二十八章 错误处理与调试
+    [错误处理]
+        try{ ... }catch(e){ ... }
+        try{ ... }catch(e){ ... }[finally{}]            finally子句可选,不管是否异常都会执行
+            /*
+             *  finally的作用一般是为了防止出现异常后,无法往下再执行的备用
+             *  也就是说,如果有一些清理操作,那么出现异常后,就执行不到清理操作
+             *  那么可以把这些清理操作放到finally里即可
+             */
+        try{ ... }catch(e){
+            throw new Error('未知错误');            //抛出错误
+        }
+        if(typeof num !='number')throw new Error('数据类型错误');         //抛出错误
+
+    [异常对象]
+        alert(e.name);
+        alert(e.massage);
+
+    [错误类型]
+        1.Error                     所有错误的父类
+        2.EvalError                 eval()错误
+        3.RangeError                范围错误
+        4.ReferenceError            引用错误
+        5.SyntaxError               语法错误
+        6.TypeError                 类型错误
+        7.URIError                  编码 / 解码URI错误
+
+    [错误事件]
+        onerror
+        某个DOM对象发生错误时触发
+
+    常见错误的处理策略
+
+        [数据类型错误]
+            function sortArray(arr) {                            //类型错误
+                if (arr instanceof Array) {                      //使用 instanceof判断是 Array最为合适
+                    alert(arr.sort());
+                }
+            }
+
+        [通信错误]
+            var url='?username='+encodeURIComponent('李彦宏')+'&age=100';
+
+    [将消息记录到控制台]
+        console                 控制台对象
+        console.error           控制台提示红叉警告信息
+        console.log             日志信息
+
+    [断点调试]
+        设置断点 -> 单步调试 -> 监控
+
+第二十九章 Cookie与存储
+
+    Cookie
+        [cookie的完整形式]
+            name=value; [expires=date]; [path=path]; [domain=somewhere.com]; [secure]
+
+        [cookie写入与获取]
+            document.cookie='username='+encodeURIComponent('孙冲');       //编码写入
+            console.log(decodeURIComponent(document.cookie));             //编码读取
+
+        [设置cookie过期时间]
+            var date=new Date();
+            date.setDate(date.getDate()+7);                               //删除/设置过期cookie        date.setDate(date.getDate()-7);
+            console.log(date);
+            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date;
+
+        [设置允许访问的路径]
+            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date+';path='+'/E:/web/js/xxx';
+
+
+        [设置允许访问的域名]
+            //只能在当前域名服务器设置,一般用于设置二级域名时
+            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date+';domain='+'google.com';
+
+        [仅限加密连接]
+            document.cookie='username='+encodeURIComponent('孙冲')+';secure';             //https
+
+        //每个域名cookie最多20个[IE6]
+        //cookie最多4k
+
+第三十章 XML
+
+    IE[9-]中的XML
+        /*
+         *  IE通过ActiveX对象实现对XML的支持
+         *  MSXML2.DOMDocument.3.0    ->    兼容性最好
+         *  MSXML2.DOMDocument.6.0    ->    最可靠最新的版本
+         */
+        [创建XML DOM对象]
+            function createXMLDOM() {
+                var version = [
+                    'MSXML2.DOMDocument.6.0',
+                    'MSXML2.DOMDocument.3.0',
+                    'MSXML2.DOMDocument'
+                ];
+                for (var i = 0; i < version.length; i ++) {
+                    try {
+                        var xmlDom = new ActiveXObject(version[i]);
+                        return xmlDom;
+                    } catch(e) {
+                        //跳过
+                    }
+                }
+                throw new Error('您的系统或浏览器不支持 MSXML！ ');         //循环后抛出错误
+            }
+        [载入 XML]
+            //  XML DOM支持标准DOM的所有方法
+            xmlDom.loadXML('<root>\n<user>Lee</user>\n</root>');        //加载XML字符串
+            xmlDom.load('demo.xml');                                    //加载外部XML文件
+            alert(xmlDom.xml);                                          //序列化XML，打印字符串
+            xmlDom.getElementsByTagName('user');                        //获取XML节点
+            xmlDom.createElement('email');                              //创建XML节点
+    同步与异步
+        /*
+         *  同步：在XML文件加载完成之前,代码不会继续执行
+         *  异步：由浏览器后台执行加载操作,不会影响代码执行
+         */
+        [设置同步与异步加载]
+            xmlDom.scync = true;            //异步
+            xmlDom.scync = false;           //同步    可能导致浏览器假死
+        /*
+         *  解决同步无法访问未加载完毕的xml文件
+         *  onreadystatechange事件  ->  加载就绪事件
+         *  readyState  ->  就绪状态值
+         *  0-4 ->  正在加载/已经加载完/可以使用,但部分无法访问/完全加载
+         */
+        varxmlDom=createXMLDOM();
+        xmlDom.async=true;                      //异步,可以不写
+        xmlDom.onreadystatechange=function(){
+            if(xmlDom.readyState ==  4){        //完全加载了,再去获取XML
+            alert(xmlDom.xml);
+            }
+        }
+        xmlDom.load('test.xml');                //放在后面重点体现异步的作用
+
+    W3C[非IE9-]中的XML
+
+        document.implementation.createDocument('','root',null);         //参数[命名空间,根标签,文档声明]
+        consoleLog(xmlDom.documentElement.tagName);                     //获取xml 的根标签
+
+        //使用标准 DOM 创建元素
+        
+        var user = xmlDom.createElement('user');
+        var userText = xmlDom.createTextNode('sc');
+        user.appendChild(userText);
+        xmlDom.documentElement.appendChild(user);
+        consoleLog(xmlDom.getElementsByTagName('user'));
+
+        [载入XML]
+            // 同步加载
+            xmlDom.async = false;
+            xmlDom.load('1.xml');                           //load仅FF和新版Oprea支持
+            consoleLog(xmlDom.documentElement.tagName);
+
+            // 异步加载
+            xmlDom.async = true;
+            xmlDom.onload = function(){
+                consoleLog(xmlDom.documentElement.tagName);
+            }
+            xmlDom.load('1.xml');
+
+    DOM2级简易创建XML
+
+        [DOMParser]
+            //DOM2 提供了DOMParser类型来创建 XMLDOM对象
+
+            var xmlParser = new DOMParser();                //创建 DOMParser
+            var xmlStr = '<root><user>sc</user></root>';    //创建 XML字符串
+            var xmlDom = xmlParser.parseFromString(xmlStr,'text/xml');   //生成xmlDom
+            consoleLog(xmlDom);
+
+        [XMLSerializer]
+            //DOM2 提供了XMLSerializer类型来序列化 XMLDOM对象
+
+            var serializer = new XMLSerializer();              //创建XMLSerializer对象
+            var xml = serializer.serializeToString(xmlDom);    //序列化XML
+            consoleLog(xml);
+
+    兼容： ...
+
+第三十一章 XPath
+
+    IE9- 的XPath
+        XPath 采用内置基于ActiveX 的 XML DOM 实现的,提供了两个方法 selectSingleNode() / selectNodes()
+            if (/MSIE [678]\.0/.test(navigator.appVersion)) {
+                var node = xmlDom.selectSingleNode('root/user');        //通过XPath 获取单个节点
+                alert(node.xml);                                        //序列化
+                alert(node.tagName);                                    //获取标签名
+                alert(node.firstChild.nodeValue);                       //标准DOM 获取值
+            }
+        [XPath常用语法]
+
+            //IE 的XPath 是从0开始的,XPath默认从1开始
+            var node = xmlDom.selectSingleNode('root/user[1]');             //获取第二个user
+            var node = xmlDom.selectSingleNode('root/user[1]/text()');      //获取第二个user的值
+            var node = xmlDom.selectSingleNode('//user');                   //直接获取[第一个]user
+            var node = xmlDom.selectSingleNode('//user[id=1]');             //按照属性值获取user
+
+    W3C 中的XPath
+
+        ...
+
+第三十二章 JSON
+
+    JSON 的语法不支持 undefined
+
+    [常用的JSON格式]
+        //键和值[字符串]都应该使用双引号
+        [
+            {
+                "name":"sc",
+                "age":20
+            },
+            {
+                "name":"cc",
+                "age":22
+            },
+            {
+                "name":"ss",
+                "age":25
+            }
+        ]
+
+    [解析和序列化]
+        eval() 解析[早期方法,不安全]
+            alert(eval(jsonStr));
+
+        stringify() / parse() [ECMAScript5 规范,IE8+支持,可以使用json2.js实现该效果]
+            alert(JSON.parse(jsonStr)[2].age);      //将JSON字符串转换为JavaScript原生值
+            alert(JSON.stringify(json));            //将JavaScript原生值转换为JSON字符串
+            alert(JSON.stringify(json,['name']));   //第二个参数是数组,存放键名
+            alert(JSON.stringify(json,function(key,value){      //FF3.7- 的JSON.stringify()传function会出现BUG 
+                if (key == 'name') {
+                    return 'Mr.'+value;
+                }else if (key == 'age') {
+                    return ;
+                }else{
+                    return value;
+                }
+            }));
+            alert(JSON.stringify(json,['name','height'],4));    //第三个参数是缩进,数字表示缩进位数,可用字符串代替
+            // 在JavaScript原生值JSON 中写入toJSON方法可以实现过滤,并且该过滤的优先级高于第二个参数
+            toJSON:function(){
+                return this.name;
+            }
+
+            // JSON.parse() 也支持第二个参数[function] 进行过滤
+
+第三十三章 Ajax
+
+    Ajax 能够向服务器请求额外的数据而无须卸载页面(即刷新),会带来更好的用户体验
+
+    [XMLHttpRequest 对象]
+        /*
+         *  可以向服务器返送请求和解析服务器响应
+         *  IE6 不支持,只能通过ActiveX对象的MSXML库来实现[3种版本]
+         *  
+         *
+         */
+    同步：
+        [创建XMLHttpRequest 对象]
+            IE6+ : new XMLHttpRequest();
+            IE6  : new ActiveXObject(...);
+
+        [发送请求]
+            xhr.open('get','1.php?'+Math.random(),false);          //启动一个请求,IE默认使用缓存    参数[传输方式 / url / 是否异步]
+            xhr.send(null);                                        //发送请求   参数[向服务器端发送的数据]
+            if (xhr.status == 200) {
+                consoleLog(xhr.responseText);
+            }else{
+                throw new Error('请求失败,错误代码: '+xhr.status+' '+xhr.statusText);
+            }
+
+    异步：
+        /*
+         *  使用异步需要:
+         *  先触发readystatechange
+         *  再检测readyState 的值    4为完成响应
+         *  
+         *  
+         */
+
+        // 异步方式
+        document.onclick = function(){
+            var xhr = createXHR();
+
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        consoleLog(xhr.responseText);
+                    }else{
+                        throw new Error('请求失败,错误代码: '+xhr.status+' '+xhr.statusText);
+                    }
+                }
+            }
+
+            xhr.open('get','1.php?rand='+Math.random(),true);          //启动一个请求准备发送请求
+            xhr.send(null);                         //发送请求         //如果有请求数据就应该对请求的url进行编码,防止特殊字符引发错误
+            //xhr.abort();            //取消发送请求, 只能放在send之后,放在xhr.responseText之前会返回空值
+
+        }
+
+    [关于get和post传输方式]
+        GET：
+            http头信息：
+                响应头信息： 服务器返回的信息,客户端只能获取,不能设置
+                请求头信息： 客户端请求的信息,客户端只能设置,不能获取
+
+            获取响应头信息和请求头信息
+                alert(xhr.getAllResponseHeaders());                 //请求所有响应头信息
+                consoleLog(xhr.getResponseHeader('X-Powered-By'));  //请求指定响应头信息
+
+                xhr.setRequestHeader('My-Header','test');           //设置请求头信息,放在open和send之间
+
+                // 应该对请求的url进行编码,防止特殊字符引发错误
+        POST：
+            document.onclick = function(){
+                var xhr = createXHR();
+
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            consoleLog(xhr.responseText);
+                        }else{
+                            throw new Error('请求失败,错误代码: '+xhr.status+' '+xhr.statusText);
+                        }
+                    }
+                }
+
+                /*
+                 *  Ajax使用POST由于解析机制的原因需要进行特殊处理
+                 *  需要指定请求头的 Content-Type 为 application/x-www-form-urlencoded
+                 */
+
+                xhr.open('post','1.php?rand='+Math.random(),true);                          // 1.设置为post方式
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  // 3.模拟表单提交
+                xhr.send('name=Sc&age=20');                                                 // 2.将名值对放入send里
+
+            }
+
+        封装 ...
+
+
+
+
+
+
+
+
+
+
+

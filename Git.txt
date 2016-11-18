@@ -1,0 +1,239 @@
+# Git
+    Git 是目前最先进的分布式版本控制系统
+# 基本概念
+    版本库/仓库(repository)
+    收藏(star)
+    复制和克隆(fork)
+    发起请求(pull request)      请求更改原仓库中的代码
+    关注(watch)
+    事务卡片(lssue)             为项目提交建议或想法(bug)
+
+# 安装Git
+    选择组件
+        Git Bash Here       命令行
+        Git GUI Here        图形化界面
+    选择命令行形式
+
+# Git工作区域
+    暂存区
+        -- 缓存已经修改的文件最后统一提交到git仓库中
+    工作区(Working Directory)
+        -- 添加/修改/编辑文件等动作
+    版本库(Git Repository)
+        -- 最终提交到仓库
+    # 目录结构
+        在test目录(工作区)中有个隐藏目录.git(版本库),在.git中最重要的是被称为stage的暂存区,还有git自动创建的master分支和指向master分支的HEAD指针
+        test => a.js/.git
+        .git => stage/HEAD/master 
+
+# 基本流程
+    # 基本信息设置
+    在文件夹内 Git Bash Here
+    git config --global user.name 'SublimeCT'
+    git config --global user.name 'hellosc@qq.com'
+        -- git config --list    查看配置信息
+    # 创建仓库
+    mkdir test1
+    cd test1
+    git init
+    # 创建文件
+    touch a.php
+    vi a.php
+    # 将文件提交到暂存区
+    git add a.php
+    # 将文件从暂存区提交到仓库(并添加注释)
+    git commit -m 'add a.php'
+
+    -- 删除操作
+        rm -fr a.php
+        git rm a.php
+
+    -- 查看提交记录
+        git log
+        # code
+        PC@PC-PC MINGW64 ~/Desktop/git test/test1 (master)
+        $ git log
+        commit c4f95eec5a0ae020bcbf8d36b4901a21c7b3c560                 // file sha1 code
+        Author: SublimeCT <hellosc@qq.com>
+        Date:   Sat Nov 12 19:32:40 2016 +0800
+
+            删除a.php
+
+        commit 77068024d4a4ad689d11648e91b60ddd1c7ddf73
+        Author: SublimeCT <hellosc@qq.com>
+        Date:   Sat Nov 12 19:27:54 2016 +0800
+
+            修改a.php
+
+        commit 905c0873b78902b1068cff0e785227243f15526b
+        Author: SublimeCT <hellosc@qq.com>
+        Date:   Sat Nov 12 18:57:12 2016 +0800
+
+            add a.php
+
+    -- 所有撤销操作
+        # 版本回退
+            git reset --hard HEAD^^^                                            // 回退到上上上个版本
+            git reset --hard HEAD~3                                             // 同上
+            git reset --hard 77068024d4a4ad689d11648e91b60ddd1c7ddf73           // 会滚到指定版本
+            git reflog              // 查看所有版本
+
+        # 撤销修改
+            -- 当工作区文件修改之后还没有提交到暂存区,可以通过git checkout撤销(恢复到最近版本状态)
+            -- 当工作区文件修改之后提交到暂存区,然后又进行了修改,可以通过git checkout撤销(恢复到暂存区的状态)
+            git checkout -- a.js
+
+        # 撤销暂存区修改
+            -- 撤销暂存区的修改
+            git reset HEAD a.js
+
+    -- 查看状态
+        git status          // 查看工作区文件是否被修改
+
+# 远程仓库
+    本地的Git仓库和远程的GitHub仓库是通过SSH加密传输的,所以要先设置SSH Key
+
+    -- 创建SSH Key
+        ssh-keygen -t rsa
+        -- id_rsa/id_rsa.pub 是秘钥对,其中id_rsa 是私钥(不能泄露),id_rsa.pub 是公钥
+        -- (windows下)默认会将秘钥对存放到 C:\Users\PC\.ssh 中
+        # code
+        $ ssh-keygen -t rsa -C'hellosc@qq.com'
+        Generating public/private rsa key pair.
+        Enter file in which to save the key (/c/Users/PC/.ssh/id_rsa): /c/Users/PC/.ssh/id_rsa2
+        Enter passphrase (empty for no passphrase):
+        Enter same passphrase again:
+        Your identification has been saved in /c/Users/PC/.ssh/id_rsa2.
+        Your public key has been saved in /c/Users/PC/.ssh/id_rsa2.pub.
+        The key fingerprint is:
+        SHA256:z+/RkWu8p9fM2ZGLpZ2JNhKcmqK29nX4QUwPcWxloKg hellosc@qq.com
+        The key's randomart image is:
+        +---[RSA 2048]----+
+        |           ..ooo |
+        |          . +o.  |
+        |         . +.    |
+        |        . o o  . |
+        |       ES .o..o .|
+        |         oo+ o * |
+        |         o=oo @oO|
+        |     o ..ooo.O BB|
+        |    oo+..  o= ++ |
+        +----[SHA256]-----+
+
+    -- New SSH Key'
+        到GitHub 主页New SSH Key ,输入title/key(id_rsa.pub 中的内容)
+
+    -- 推送到远程仓库
+        # 关联
+        git remote add origin git@github.com:SublimeCT/test.git             // test是仓库名
+
+        # 推送
+        git push -u origin master               // 将本地仓库的master分支推送到远程库
+            -- 如果远程库中已有内容就会报错,可以 git push -f origin master
+            -- 下一次推送
+            git push origin master
+
+    -- 克隆
+        git clone git@github.com:SublimeCT/test.git             // 克隆一个test远程仓库
+
+# 分支管理
+    -- 分支操作
+        1. HEAD 指向master,master 指向当前分支
+        2. HEAD 始终指向当前分支 master/dev
+        3. 创建新dev 分支时,会生成dev 指针,指向当前分支,HEAD 指向dev ,master 依然指向主分支
+        4. 通常合并分支时,Git会用Fast forward 模式,但删除分支后,会丢失分支信息
+
+    -- 创建分支
+        git checkout -b dev                         // 创建新分支dev,-b 表示创建并切换,等同于git branch dev,git checkout dev
+
+    -- 查看当前分支
+        $ git branch
+        # code
+            $ git branch
+            * dev
+              master
+
+    -- 切换分支
+        git checkout master
+
+    -- 合并分支
+        git merge dev               // 将dev分支合并到当前分支
+
+    -- 删除分支
+        git branch -d dev           // 合并后就可以删除当前分支了
+    
+    -- 不使用Fast forword 模式
+        git merge --no-ff -m '不使用fast forword'
+
+    -- BUG 分支
+        # 当需要紧急修复一个bug,并且当前分支没有开发完成,不适合commit. 这时就需要git stash来存储当前状态,等建立新分支修复完成后切换到该状态
+        git stash                       // 备份当前工作区内容
+        git stash apply stash@{0}       // 恢复工作区内容[不会删除该stash,需要git stash drop]
+        git stash pop                   // 恢复工作区内容[恢复的同时把stash 也删掉]
+
+
+    -- feature 分支
+        # 当开发完成一个新功能,但不得不取消该功能,此时因为该分支没有合并,所以无法删除,此时就需要销毁该feature 分支
+        git branch -D a.js
+
+    -- 多人协作
+        # 推送与同步策略
+            1. master 是主分支,应时刻与远程同步
+            2. dev 是开发分支,团队所有成员都需要在上面开发,所以也需要同步
+            3. bug 分支在本地修复bug,没有必要推送
+            4. feature 分支是否推送取决于是否有人与你协作开发
+
+        # 推送指定分支
+            git push origin dev
+
+        # 创建本地dev 分支
+            git checkout dev origin/dev         // 在本地建立远程的dev 分支
+
+        # 多人协作开发模式
+            1. 首先,试图push dev,推送dev分支的修改
+            2. 如果推送失败, 则表示已经有了新的push, 需要使用pull 试图合并
+            3. 如果合并有冲突, 则解决冲突后再push 
+                -- pull 冲突可能是本地的dev 没有与远程dev分支建立连接
+                git branch --set-upstream dev origin/dev
+
+# 标签管理
+    -- 添加标签
+        git tag v1.0 93294923[commit id]
+        git tag -a v1.0 -m '这是1.0版本'
+        
+    -- 查看tag 
+        git tag
+        git show
+
+    -- 删除tag
+        git tag -d v1.0
+
+    -- 推送到远程仓库
+        git push origin v1.0
+
+    -- 删除远程tag
+        git push origin :refs/tags/v1.0
+
+# 忽略特殊文件
+    当推送修改时,可能有些文件(数据库配置文件,敏感信息...)不应该推送到远程,就需要忽略它们
+    把需要忽略的文件/目录写入.gitignore 中
+    touch .gitignore
+    vi .gitignore
+    # code
+        # test file
+        test.txt
+        # person file
+        Thumbs.db
+
+
+
+
+
+
+
+
+
+
+
+
+    

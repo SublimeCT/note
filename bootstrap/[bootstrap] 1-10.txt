@@ -1,0 +1,364 @@
+{
+    "sublime 快捷键":{
+        "ctrl+enter":"开辟新行",
+        "中键选择":"块选",
+        "中键选择+alt":"减选",
+        "ctrl+shift_k":"删除一行",
+    },
+    "emment语法":{
+        "p0-auto":"padding:0 auto;",
+        "bg":"background:",
+        "ul>li{items$}*3":"自增符号",
+        "button[type="button"]":"自定义属性",
+    }
+}
+
+
+第一章 bootstrap介绍
+
+    jQuery要在bootstrap.js前引入
+
+第二章 排版样式
+
+    [全局样式] 
+        font-size:      14px
+        line-height:    1.428[20px]
+        color:          #333
+
+    [复写的元素]
+        <h1><h6>        字体大小,外边距
+        <small>         颜色
+        <blockquote>    左侧有5px的边框
+        <dl><dt><dd>    dt加粗,dd取消缩进
+        <code>          ...
+        <pre>
+        <kbd>   
+
+    [提供的样式]
+        // 文本样式
+            [强调]
+                .h1 .h6             同<h1><h6>
+                .small              更小的
+                .lead               突出的
+                .mark               浅色背景/内边距
+            [颜色]
+                .text-muted         浅灰色
+                .text-info          浅蓝色
+                .text-danger        褐色
+            [对齐]
+                .text-left          左对齐
+                .text-justify       两端对齐
+            [效果]
+                .text-nowrap        不换行
+                .text-lowercase     小写
+                .text-uppercase     大写
+                .text-capitalize    首字母大写
+
+        // 引用内容
+            .blockquote-reverse     右对齐效果
+
+        // 列表排版
+            .list-unstyled      无列表样式
+            .list-inline        设为inline
+            .dl-horizontal      dl的水平效果[响应式]    // dt宽度160px,dd左边距
+
+第三章 表格和按钮
+
+    [表格]
+        // Bootstrap为表格提供了1种基础样式和4种附加样式以及1个支持响应式的表格
+            .table：             基础表格
+            .table-striped：     斑马线表格
+            .table-bordered：    带边框的表格
+            .table-hover：       鼠标悬停高亮的表格
+            .table-condensed：   紧凑型表格
+            .table-responsive：  响应式表格
+                /*
+                 *  .table-responsive添加到父元素
+                 *  添加后小于768px会出现边框
+                 */
+        // 表示<tr><td>的状态
+            .success
+            .info
+            .danger
+        // 隐藏某一行
+            .sr-only
+
+    [按钮]
+        /*
+         *  可以使用button样式组件的元素<a><input><button>
+         *  导航和导航条组件只支持<button>
+         *  如果<a>用于触发某些功能而不是跳转,应该设置role="button"
+         */
+
+        // button状态
+            .btn                基本样式
+            .btn-default        默认样式
+            .btn-success        成功
+            .btn-info           信息
+            .btn-warning        警告
+            .btn-danger         危险
+            .btn-link           链接
+            .active             激活
+            .disabled           禁用[样式]
+
+        // button尺寸
+            .btn-lg             较大
+            .btn-sm             较小
+            .btn-xs             最小
+            .btn-block          块级按钮
+
+第四章 表单和图片
+    
+    [表单]
+        .form-inline        inline表单
+        .form-horizontal    水平排列的表单
+
+    [表单元素]
+        /*
+         *  bootstrap 推荐使用 .form-group 对表单元素进行分组[换行/间距]
+         *  通过.form-group 对表单元素进行控制
+         */
+        
+        // 文本框
+            .form-control       文本框宽度100%
+            .form-group         表单元素分组[增加每组间距]
+            .input-group        表单元素合组[一行]
+            .input-lg           更大的表单
+            .input-sm           更小的表单
+
+        // 单选框复选框
+            /*
+             *  建议格式:
+             *      [.radio-inline]>label>input:radio
+             */
+            .radio-inline       居于一行[所有input:radio都设置]
+            .radio-disabled     禁止选择[需同时设置input:radio的disabled属性]
+
+        // 下拉列表
+            .form-control       宽度100%
+
+        // 显示文本框状态
+            // 设置状态
+                div.form-group添加has-error属性         // 设置为错误状态
+                div.form-group添加has-success属性       // 设置为成功状态
+                div.form-group添加has-warning属性       // 设置为警告状态
+            // label设置相应状态
+                label添加control-label属性
+
+        // 添加额外图标
+            // 首先设置状态
+                div.form-group添加has-success属性
+                div.form-group添加has-feedback属性
+            // 添加feedback icon
+                span.glyphicon
+            // 设置icon状态
+                添加.glyphicon-ok / .glyphicon-warning-sign / glyphicon-remove
+            // 添加到文本框中
+                添加.form-control-feedback
+            // 使label同步状态
+                label.control-label
+
+    [图片]
+        img-rounded         圆角
+        img-circle          圆
+        img-thumbnail       圆角边框
+
+第五章 栅格系统
+
+    [布局]
+        .container>.row>.col-md-1*12
+
+    /*
+     *  col使用padding产生间距,row通过margin负值抵消col的padding
+     *
+     *  4种宽度下的col类: 
+     *      col-xs-1        最小
+     *      col-sm-1        小
+     *      col-md-1        普通
+     *      col-lg-1        最大
+     *      
+     *  4种屏幕全激活
+     *      .row>(.col-xs-6.col-sm-6.col.col-md-4.col-lg-3)*12
+     *  
+     */
+
+    // 列偏移[向右]
+        .col-md-1.col-md-offset-1
+
+    // col嵌套
+        .col-md-x中可嵌套col-md-x[12个]
+
+    // col换位
+        .col-md-x.col-md-pull-x       向左移动
+        .col-md-x.col-md-push-x       向右移动
+
+    /*
+     *  栅格系统通过固定宽度等分12格,每格宽度百分比等分
+     *  每格设置为相对定位
+     *  每格左浮动
+     *  
+     *  列偏移会影响后面的col        margin-left:...;
+     *  col换位不影响后面的col       left/right:...;
+     */
+
+第六章 辅助类和响应式工具
+
+    [辅助类]
+        // 情景文本颜色
+            text-muted      柔和灰
+            text-primary    主要蓝
+            text-success    成功绿
+            text-info       信息蓝
+            text-warning    警告黄
+            text-danger     危险红
+
+        // 情景背景色
+            bg-primary      主要蓝
+            bg-success      成功绿
+            bg-info         信息蓝
+            bg-warning      警告黄
+            bg-danger       危险红
+
+        // 关闭按钮
+            button.close
+
+        // 三角符号
+            span.caret
+
+        // 浮动
+            .pull-left      // 使用!important 加强了浮动优先级
+
+        // 清理浮动
+            .clearfix       // clear:both;
+
+        // block的居中
+            .center-block   // 设置margin
+
+        // 显示和隐藏
+            .hidden         // 这里的hidden是设置了disabled:none,而不是visibility:hidden;
+            .show
+
+    [响应式工具]
+
+        // 在媒体查询时,根据不同屏幕大小显示和隐藏元素
+            .visible-xs-*       [phone]超小屏幕显示           // <768px               // * 为display值
+            .visible-sm-*       [pad]小屏幕显示               // >=768px
+            .visible-md-*       [PC]中等屏幕显示              // >=992px
+            .visible-lg-*       [PC]超大屏幕显示              // >=1200px
+
+            .hidden-xs          [phone]超小屏幕隐藏
+            .hidden-sm          [pad]小屏幕隐藏
+            .hidden-md          [PC]中等屏幕隐藏
+            .hidden-lg          [PC]超大屏幕隐藏
+
+第七章 图标按钮和菜单组件
+
+    [图标组件]
+        span.glyphicon.glyphicon-* / i.glyphicon.glyphicon-*
+
+    [下拉菜单组件]
+
+        .dropdown>(button[type="button" data-toggle="dropdown"].btn.btn-default>{下拉菜单}+span.caret)+(ul.dropdown-menu>(li>a{选项$})*7)
+
+        // 定义下拉菜单
+            .dropdown
+
+        // 定义菜单按钮
+            button[type="button" data-toggle="dropdown"].btn.btn-default>{下拉菜单}+span.caret      // 添加data-toggle="dropdown"和三角
+
+        // 定义菜单列表
+            ul.dropdown-menu>(li>a{选项$})*7              // 添加dropdown-menu
+
+        /*
+         *  button 中的 data-toggle="dropdown" 用于实现点击显示菜单的(js)效果
+         *
+         *  向上触发             .dropup
+         *  菜单项对齐           .dropdown-menu-right
+         *
+         *  菜单项标题           .dropdown-header
+         *  菜单项分割线         .divider
+         *  菜单项默认显示       .open
+         */
+
+    [按钮组组件]
+        // 将按钮组[.btn-group]用按钮工具条[.btn-toolbar]组合起来便于管理
+            .btn-toolbar>.btn-group>button.btn.btn-default*5
+
+            /*
+             *  下拉菜单也属于按钮组[.btn-group]
+             *  在按钮工具条中嵌套下拉菜单时可以去掉dropdown,并为button添加.dropdown-toggle
+             */
+
+        // 按钮组垂直排列
+            .btn-group-vertical
+
+        // 按钮组两端对齐
+            .btn-group-justified
+
+            /*
+             *  两端对齐时应该使用<a>代替<button>
+             */
+
+        // 按钮式下拉菜单
+            为.dropdown添加.btn-group
+
+        // 分裂式下拉菜单
+            将.dropdown改为.btn-group
+            在.dropdown中添加两个<button>,将文字和三角分开
+            下拉菜单button添加.dropdown-toggle
+
+        // 向上弹出式
+            .dropup
+
+第八章 输入框和导航组件
+
+    [输入框]
+        // 两侧添加文字
+            .input-group>input.form-control+span.input-group-addon
+        // 两侧添加按钮
+            .input-group>input.form-control+span.input-group.btn>button.btn.btn-default
+
+    [导航组件]
+        // 基本导航标签页
+            ul.nav.nav-tabs>(li>a{item $})*3
+        // 胶囊式导航
+            ul.nav.nav-pills>(li>a{item $})*3
+        // 两端对齐
+            ul.nav.nav-tabs.nav-justified>(li>a{item $})*3
+
+    [导航条组件]
+        // 基本样式
+            nav.navbar.navbar-default
+        // 基本导航条[包含标题和列表]
+            nav.navbar.navbar-defailt>(.container>.navbar-header>a.navbar-brand)+(ul.nav.navbar-nav>(li>a{item $})*3)
+        // 加入form
+            nav.navbar.navbar-default>form.navbar-form
+        // 加入button
+            nav.navbar.navbar-default>button.navbar-btn
+        // 加入一段文本
+            nav.navbar.navbar-default>p.navbar-text
+        // 加入link
+            nav.navbar.navbar-default>a.navbar-line
+
+        // 导航条固定
+            nav.navbar.nav-default.nav-fixedtop
+            nav.navbar.nav-default.nav-fixedbottom
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

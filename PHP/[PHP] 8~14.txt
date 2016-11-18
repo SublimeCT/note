@@ -1,0 +1,178 @@
+第八章 字符串处理
+<?php 
+	trim();				移除字符串两边多余空格
+	nl2br();			用<br/>代替字符串中的\n
+	htmlspecialchars()	将字符串中的特殊符号['<','>']转义
+	strip_tags()		去掉html标签
+	[从数据库中存取字符串]
+		存入：addslashes()		//将\ " ' NULL字符转义
+		取出：stripcslashes()	//将转义用的\去除
+	strtoupper()				将字符串转换为大写
+	strtolower()				小写
+	[操作字符串]
+		explode('@','sc@bug.hk')	分割字符串
+		strtok($str,'@.')			按照@/.分割字符串一次
+			[strtok分割]
+			    $str=strtok('sc@bug.hk', '@.');
+			    while ($str) {
+			    	echo $str.'<br>';
+			    	$str=strtok('@.');		//执行一次之后就不需要传$str了
+			    }
+		//有mt_前缀的为中文方法
+		implode('@',$array);			将一维数组连接成一个字符串
+		substr($str,1,4);				从第一个位置开始截取$str,长度为4
+		str_split($str);				按字节分割$str,返回数组
+		strrev($str);					按字节倒序返回
+		strlen($str);					返回字符串长度
+		substr_count('aaa','a');		返回a在aaa中出现的次数
+		strstr($str,'@')				查找@,并返回@之后的字符串(包括@)
+		strpos($str,'@')				查找@,返回出现位置[推荐代替strstr(),因为速度更快]
+		str_replace('@','#',$str)		返回$str中全部的@被#替换后的字符串
+		[处理中文字符串]*
+			mb_strlen()/mb_strstr()/mb_strpos()/mb_substr()/
+
+第九章 正则表达式
+	[prel风格]
+	preg_match('/php/','php');			执行正则表达式进行匹配
+		/php/表示模式规则,php表示字符串
+		在字符串中匹配模式规则
+	模式规则中的元素
+		[量词]
+			/ph+p/			前导字符串h可有>=1个
+			/ph*p/			前导字符串h可有>=0个
+			/ph?p/			前导字符串h可有0或1个
+			/ph{3}p/		前导字符串h可有3个
+			/ph{3,}p/		前导字符串h至少3个 
+			/ph{3,5}p/		前导字符串h可有3到5个
+			/p.p/			.表示一个任意字符串
+			/php$/			在字符串末尾匹配
+			/^php/			在字符串开头匹配
+			/php|jsp/		匹配php或者jsp[条件选择符]
+
+		[元字符]
+			/[a-z]/				匹配任意包含a-z的字符串				//[A-Z]同理
+			/[0-9]/				匹配包含0-9的字符串					//同\d,\D为非数字
+			/[ph]/				匹配包含p或h的字符串
+			/[^ph]/				匹配不包含p或h的字符串
+			/[a-zA-Z0-9_]/		匹配包含...的字符串					//同\w,\W为非字母数字下划线
+			/php\b/				php后已经到了单词的边界,空格也算	//\B表示没有到边界
+			/ph\+p/				匹配正则中的特殊字符
+			/php\s/				匹配任何空白字符[包括换行符]
+
+		[修饰符]
+			/php/i 				匹配不区分大小写			//修饰符放在/.../之后
+			/php$/m				行内结尾[开头]匹配 			//可匹配"This is php\n,hello",用双引号。
+			/ph p/x				忽略正则中的空白
+	Perl风格函数
+		preg_grep($mode,$array)				匹配数组元素,并返回匹配成功的元素组成的数组
+		preg_match_all($mode,$str,$a)		匹配全局,返回结果放到数组中$a[0][1]...
+		preg_replace($mode,$a,$str)			在$str中匹配,用$a替换匹配到的字符串
+		preg_split($mode,$str)				按照正则匹配的字符[不区分大小写]分割字符串,返回数组
+	[贪婪问题+()分组]
+		禁止贪婪：/php/U
+		preg_replace('/<b>(.*)</b>/U','<i>\1<i>','This is <b>PHP</b><b>7</b>');
+
+第十章 日期和时间
+	时间戳：从1970/1/1到现在的秒数
+	checkdate(3,31,2011)				验证时间
+	date('今天是Y-m-d H:i:s'[,63487])	格式化时间,可传时间戳
+	gettimeofday();						返回包含当前时间信息的数组
+	getdate([782636472])				返回包含当前时间信息的数组,可传时间戳
+	time()								获取当前时间戳
+	strtotime('2016-03-06 10:21:21')	将字符串转换成时间戳
+	[利用time调整时间]
+		echo date('今天是 Y年m月d日，H：i：s',time()+(60*60*8));
+	[获取文件最后修改时间]
+		echo date('Y-m-d H:i:s',getlastmod());
+	[服务器端修改时区]
+		php.ini -> date.timezone=Asia/Shanghai ->重启Apache服务器
+	[脚本中设置时区]
+		date_default_timezone_set('Asia/Shanghai')
+		date_default_timezone_get()
+
+第十一章 表单与验证
+	header('location:10.php');			重新指定URL					//header()之前不能有输出,否则要开启输出缓冲
+	header('charset=utf-8');			设置字符编码				//ob_start();
+	$_POST / $_GET
+
+第十二章 会话控制
+	[创建cookie]
+		setcookie('name','sc'[,time()+(30*24*60*60)]);
+			'name'/'value'/'[过期时间]',没有时间参数就在回话结束时[关闭浏览器时]清除cookie
+		setcookie('name','sc',null,null,null,null,true);
+			第7个参数是否只能通过http协议访问,禁止js访问
+	[读取cookie]
+		echo $_COOKIE['name'];
+	[删除cookie]
+		setcookie('name','',time()-1);		//设置过期时间
+	[开启会话]
+		session_start()
+		$_SESSION['name']='sc';				//创建session
+		unset($_SESSION['name']);			//销毁session
+		session_destory()					//销毁所有session
+
+第十三章 上传文件
+	[php.ini上传配置]
+		file_uploads=on|off					//服务器上的php脚本是否接受文件上传
+		upload_max_filesize=64M				//上传文件的最大值
+	[上传文件页面定义上传文件最大值]
+		<input type='hidden' name='MAX_FILE_SIZE' value='1000000'>				//给浏览器的建议值
+	[上传文件的input必选属性]
+		<input action="..." method="post" enctype="multipart/form-data">
+		此时form必须是post
+	$_FILES['userfile']['name']				文件名[userfile是表单中的name值]
+	$_FILES['userfile']['type']				文件类型
+	$_FILES['userfile']['size']				文件大小
+	$_FILES['userfile']['tmp_name']			文件在服务器上临时存储的位置
+	$_FILES['userfile']['error']			文件的错误代码
+		0~4		0.没有发生错误 1.上传的文件超出最大值 2.上传的文件超出了MAX_FILE_SIZE 3.文件只被部分上传 4.没有上传任何文件
+	[确定文件是否上传]
+		is_uploaded_file($_FILES['userfile']['tmp_name'])			//判断文件是否是通过 HTTP POST 上传的
+	[移动文件]
+		// 当路径中有中文时会报错
+		move_uploaded_file($_FILES['userfile']['tmp_name'],'x.xxx' / $_FILES['userfile']['name']);
+		第一个参数是临时文件的地址[D:\wamp\tmp\x.tmp],第二个参数是移动到的位置[userfiles/x.xxx]
+	
+第十四章 处理图像
+	[创建图像]
+		header('Content-Type:image/png');					[1]设置标头,设置MIME类型,可选格式png,jp(e)g,gif,(w)bmp
+		$image=imagecreatetruecolor(600,400);				[2]创建图像区域,创建宽高为600/400的黑色图像
+		$blue=imagecolorallocate($image,0,255,0);			[3]为图像区域绘制填充色
+		imagefill($image,0,0,$blue);						[4]将创建的背景色填充到图像区域
+			imageline($image,0,0,200,200,$blue)				//绘制线段
+			imagestring($image,5[1~5内置字体],0,0,$red)		//绘制字体
+		imagepng($image);									[5]输出
+		imagedestory($image);								[6]清除资源
+
+	dechex(mt_rand(0,15))				将十进制数字转换为十六进制
+	imagecreatefrompng('x.xxx');		载入已有图像
+
+	[使用系统字体]
+		imagettftext($img,16[字号],0[倾斜角度],100,100,$red,'x.ttf','赶集网 | www.ganji.com');
+	
+	[获取图像尺寸和类型]
+		getimagesize(filename);
+			返回值: 
+				Array
+				(
+				    [0] => 350
+				    [1] => 318
+				    [2] => 2
+				    [3] => width="350" height="318"
+				    [bits] => 8
+				    [channels] => 3
+				    [mime] => image/jpeg
+				)
+
+				1 = GIF，2 = JPG，3 = PNG，4 = SWF，5 = PSD，6 = BMP，7 = TIFF(intel byte order)，8 = TIFF(motorola byte order)，9 = JPC，10 = JP2，11 = JPX，12 = JB2，13 = SWC，14 = IFF，15 = WBMP，16 = XBM
+
+	[缩略图]
+	imagecopyresampled($img1,$img2,0,0,0,0,100,100,200,200);		
+		//把$img2拷贝到$img1上,将原大小200*200的图像调整到100*100
+
+
+
+
+
+
+

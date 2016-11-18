@@ -1,0 +1,187 @@
+第二章 使用JS
+	1.通过script标签的src属性引用外部js文件
+		<script type="text/javascript" src="1.js"></script>
+	2.引用外部js时<scrrpt>标签内的代码不执行
+		<script type="text/javascript" src="1.js">alert('这里不执行');</script>
+
+第三章 语法关键保留字和变量
+	1.区分大小写	 
+	2.标识符第个一字符必须是一个字母、下划线(_)或一个美元符号($)
+	3.ECMAScript的变量是松散类型的
+
+第四章 数据类型
+	1.6种数据类型：Undefined、Null、Boolean、Number、String、Object[object是复杂数据类型,其余5种是简单数据类型]
+	2.typeof操作符返回值：undefined boolean string number object(包括null,null被认为是空的object) function
+	3.undefined是派生自null
+	4.在PHP中，单引号和双引号表示的字符串解析方式不同，在JS中没有任何区别
+	5.调用.toString()方法把number转换成string / [String类型]parseInt() / parseFloat() / 
+
+第六章 流程控制语句
+	1.for...in  用来枚举对象的属性  for(var a in b){};[b为object类型]
+ 	
+第八章 对象和数组
+	1.对象的属性输出方式	alert(a.xxx);/alert(a['xxx']);
+	2.给对象创建方法	var a={run:function() {return '运行...';}}	//匿名函数
+	3.删除对象属性		delete a.xxx;
+	4.Array数组的大小可以调整	var a=[1,'2',3,...];
+	5.为数组增加一个新元素		a[a.length]='xxx';
+	6.alert(a);		//打印数组[隐式调用了toString()]
+	7.alert(a.join('|'));		//设置分隔符
+	8.Array中栈和队列的实现		push()&pop()/push()&shift()		//unshift()IE不支持
+	9.reverse()倒叙/sort()排序		sort()对数字进行排序时传一个函数*
+	10.concat()基于当前数组创建新数组/slice()基于当前数组获取指定区域元素/splice()截取后原数组的元素被删除
+	11.splice()实现插入和替换：		splice(x,0,"");[x是位置,0不截取/1实现替换,""是插入项]
+
+第九章 时间与日期
+	1.Date();	当前日期
+	2.指定日期	new Date(Date.UTC(x,x,x,x,x,x,x));		年/月/日/时/分/秒/毫秒[年月必选]
+	3.Date类中的方法   getFullYear()/getMonth()[从0开始]/getDate()[日]/getDay()[星期,0为周日]/getHours()/getMinutes()/getSeconds()
+
+第十章 正则表达式
+	1.var a=/xxx/xx;[xx是模式修饰符	  i忽略大小写/g全局匹配/m多行匹配]
+	2.[验证字符串]/php/i.test('PHP7');	/	[获取匹配字符串]str.match(/php\d/ig);	/	[替换]f.replace(/php(\d)/ig,'PHP$1');
+
+
+第十一章 Function类型
+	1.arguments.callee[指向arguments对象的函数]
+	2.this[指向所处作用域]
+	3.所有函数都包含length和prototype属性,prototype下有两个方法[apply()/call()]
+	4.每个函数都有apply()/call(),用于设置函数内this的值,扩展函数的作用域
+
+第十二章 变量、作用域及内存
+	1.所有函数的参数都是按值传递的
+	2.检测引用类型  instanceof		alert(obj instanceof Array/RegExp/Object/...);	//true/false
+	3.当使用 instanceof检测基本类型值的时候,返回false
+	4.执行环境		[全局执行环境] window对象
+
+第十三章 基本包装类型
+	1.3个特殊的引用类型Boolean/Number/String,当读取一个基本类型值的时候,就会创建一个基本包装类型对象
+	2.Strign对象属性	length/constructor[返回创建String对象的函数]/prototype
+			方法 		str.charAt(1)[获取指定索引位置字符] / slice(3,7)截取从第3个位置到第7个位置之前的字符串
+						indexOf(string,3)[从第3个位置开始搜索最先出现的string,返回索引或-1] / lastIndexOf()
+						toLowerCase()/toUpperCase() [全部转换为小写/大写]
+			静态方法	fromCharCode(string)[将ASCII码值转换为字符串]
+	3.Number对象属性	NaN
+			方法 		toString()/toFixed(4)[四舍五入保留位数]/
+
+
+第十四章 内置对象
+	1.ECMAScript的内置对象Global/Math	浏览器将Global对象作为window的一部分实现
+	2.Global内置方法/属性
+		URI编码[将URL通过utf-8进行编码]:	encodeURIComponent()编码/decodeURIComonent()解码
+		eval()字符串解析器
+	3.Math对象
+		max()/min()/round()[四舍五入]/random()[生成0~1随机数]/ceil()[向上舍入]/floor()[向上舍入]
+		其他方法：	Math.abs()[绝对值]/Math.PI/
+
+第十五章 面向对象与原型
+	0.工厂模式 
+		function createBox(name,age){
+			var obj=new Object(); 
+			obj.name=name;
+			obj.age=age;
+			return obj;
+		}
+		var box=createBox('sc',20);
+	1.构造函数		
+		function Box(name,age){
+			this.name=name;			//this是new Object()的作用域
+			this.age=age;
+		}
+		var box=new Box();			//后台执行了new Object();,
+		构造函数也是函数,首字母大写 / 构造函数后台调用 var xxx=new Object() / 将所有属性和方法赋给this
+	2.每个函数都有一个prototype(原型)属性[对象]
+		function Box(){};						//声明构造函数
+		//通过字面量方式创建原型
+		Box.prototype={							//相当于重写原型对象
+			name:'Sc',							//在原型里添加属性
+			run:function(){						//通过字面量创建时constructor属性指向Object
+				return this.name;
+			}
+			constructor:Box;					//可通过强制指向修改constructor
+		}
+		//通过直接添加的方式创建原型
+		Box.prototype.name='Sc';
+		Box.prototype.run=function(){			//通过添加方式创建时constructor属性指向Box[实例对象]
+			return this.name;
+		}
+
+		0)实例中包含对象的所有原型属性,但某个实例修改后其他实例的值不变
+	 	1)原型的所有属性/方法被所有实例共享
+	 	2)当使用原型声明属性/方法时,对象会生成__proto__属性,该属性指向原型的属性constructor
+
+	3.调用原型属性/方法时,先查找构造函数里的属性/方法,如果有就返回,没有再查找原型属性/方法
+		delete box1.xxx;			//删除实例属性
+
+	4.hasOwnProperty()	判断属性是否在实例中
+		alert('name' in box);		//in判断属性在对象中是否存在,无论原型还是实例
+		function isProperty(obj,hetname){										//判断属性是否在原型中
+			return (hetname in obj) && !box.hasOwnProperty(hetname);	
+		}
+
+	5.组合构造函数+原型模式
+		function Box(){
+			this.name='Sc';				//不需要共享的属性
+		}
+		Box.prototype={					//需要共享的属性
+			construct:Box,				//每次调用构造函数时都会初始化原型中的函数
+			run:function(){
+				return this.name;
+			}
+		}
+
+	7.动态原型模式				
+		function Box(){
+			this.name='Sc';
+			this.age=20;
+			if(typeof this.run!='function'){
+				this.run=function (){
+					return this.name+this.age+' is running...'
+				}
+			}
+		}
+		//使用动态原型模式后使用字面量重写prototype属性会切断构造方法中的原型
+
+	8.JS只有继承没有接口
+		/*
+		******** 原型链继承 *********
+		*/
+		function Box(){
+			this.name='sc';
+		}
+		function Desk(){
+			this.age=20;
+		}
+		Desk.prototype = new Box();		//通过原型链实现继承
+		var desk=new Desk();
+		alert(desk instanceof Box);		//true
+
+
+		/*
+		******** 对象冒充继承 *********
+		*/
+		function Box(name){
+			this.name:name;
+		}
+		function Desk(name){
+			Box.call(this,name);		//对象冒充可实现传参和解除共享属性,但无法访问父类原型
+		}
+
+		/*
+		******** 对象冒充+原型链继承(组合继承) *********
+		*/
+		function Box(){
+			this.name:'sc'
+		}
+		Box.prototype.run=function(){
+			return this.name+'...';
+		}
+		function Desk(){
+			Box.call(this,name);
+		}
+		Desk.prototype=new Box();		//实现继承实例和原型
+
+
+
+	9.调用原型的链 box1 -> Box -> __proto__ -> constructor:...
+

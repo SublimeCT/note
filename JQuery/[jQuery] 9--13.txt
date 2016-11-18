@@ -1,0 +1,547 @@
+第九章 事件对象
+    
+    [属性]
+        event.type                      // 事件类型
+        event.target                    // 触发事件的DOM元素
+        event.data                      // 事件调用时的额外数据
+        event.currentTarget             // 绑定事件的DOM元素
+        event.relatedTarget             // 移入和移出事件离开或进入的DOM元素
+
+        event.pageX / event.pageY       // 相对页面原点的坐标
+        event.screenX / event.screenY   // 相对屏幕的坐标[非jquery封装]
+        event.clientX / event.clientY   // 相对视口的坐标[非jquery封装]
+
+        event.result                    // 获取上一个相同事件的返回值
+        event.timeStamp                 // 获取事件触发的时间戳
+        event.which                     // 获取鼠标键或键盘键的值
+
+        event.altKey / event.shiftKey / event.ctrlKey / event.metaKey
+
+            // event.data
+                $('#fm').bind('click',{name:'sc',value:'null'},function(e){           // event.data获取绑定事件时传入的额外数据
+                    console.log(e.data.name);
+                });
+
+            // event.result
+                $('#fm').click(function(){
+                    return 10086;                               // 设置返回值
+                });
+                $('#fm').click(function(e){
+                    console.log(e.result);                      // 获取上一次事件的返回值
+                });
+
+
+            /*
+             *  event.data可获取number,string,array,object
+             *
+             *  当页面有滚动条时,pageX和clientX对应页面原点和可视区原点
+             *  
+             *  event.timeStamp Chrome测试需要放到服务器端
+             *  
+             *  event.metaKey是jQuery进行了封装,ctrl alt shift是原生的
+             *  
+             */
+
+    [冒泡]
+        // 冒泡: 子元素触发事件,同时触发了父元素的事件,先执行子元素事件函数
+        // 捕获: 子元素触发事件,同时触发了父元素的事件,先执行父元素事件函数
+
+    [默认行为]
+        event.stopPropagation()                 // 禁止冒泡行为
+        event.isPropagationStopped()            // 是否禁止冒泡行为
+
+        event.preventDefault()                  // 禁止默认行为
+        event.isDefaultPrevented()              // 是否禁止默认行为
+
+        event.stopImmediatePropagation()        // 禁止冒泡行为和后续事件处理函数
+        event.isPropagationImmediateStopped()   // 是否禁止冒泡行为和后续事件处理函数
+
+第十章 高级事件
+    
+    [模拟操作]
+        $('#box').trigger('click');             // 模拟用户的事件行为,执行事件函数
+
+            // 通过trigger() 传递额外数据
+                $('#box').click(function(e,data1,data2,data3){                // 获取数据
+                    console.log(data1+','+data2+data3.a);                     // 通过参数名获取值
+                }).trigger('click',[1,[2],{a:'hello'}]);                      // 传递数据
+
+                
+            // 模拟操作的简写形式
+                click / mouseenter / mouseleave / error / unload ...
+
+            /*
+             *  通过trigger() 传递的数据值是通过 参数名获取
+             *  通过bind()    传递的数据是通过 event.data获取的
+             *  
+             *  jQuery 为常用的事件都提供了trigger的简写形式
+             *  
+             */
+                
+
+    [自定义事件]
+        $('#fm').bind('myEvent',function(){             // 绑定自定义事件
+            console.log(1);
+        }).trigger('myEvent');                          // 执行自定义事件
+
+    [另一种模拟操作方法]
+        
+        /*
+         *  triggerHandler()和trigger()方法的区别:
+         *      triggerHandler() 不会触发事件的默认行为
+         *      triggerHandler() 只会操作第一个元素,trigger() 会操作所有匹配到的元素
+         *      triggerHandler() 会返回当前事件的返回值,trigger() 会返回JQuery对象,方便连缀
+         *      triggerHandler() 会禁止事件冒泡,trigger() 会冒泡
+         *  
+         */
+
+    [命名空间]
+
+        /*
+         *  在进行事件绑定的时候,如果绑定了匿名函数,移除的时候只能移除事件的所有函数
+         *  通过事件名.className[click.abc] 可以通过命名空间移除指定函数
+         *  命名空间与事件名区分
+         *      $('#box').bind('click.abc',function(){});
+         *      $('#box').bind('change.abc',function(){});
+         *      $('#box').unbind('.abc');
+         *      // 移除了所有的.abc
+         *  
+         */
+
+    [事件委托]
+        将事件绑定到父元素上,利用冒泡原理实现动态绑定事件
+        $('.box').live('click',fun);            // 废弃并移除
+        $('.box').delegate('click',fun);        // 被on() 整合
+
+        /**
+         *  bind()          无法动态绑定事件
+         *  live()          将事件函数绑定到document上,而且无法连缀
+         *  delegate()      将事件函数绑定指定元素上,支持连缀
+         *  
+         *  unbind()        移除事件
+         *  die()           同上
+         *  undelegate()    同上
+         *  
+         *  jQuery1.7 退出了 on() / off() / one() 完全替代了这三组方法 
+         * 
+         */
+
+    [新的事件绑定函数]
+        $('#box').on('click',false);            // 阻止默认行为和冒泡
+        $('#box').on('click',fun);              // 添加事件
+        $('#box').off('click',fun);             // 移除事件
+        $('#box').on('click','button',fun);     // 事件委托[点击<form>中的<button>时触发]
+
+        $('#box').one('click',fun);             // 只执行一次事件函数
+        $('#box').one('click','button',fun);    // 只执行一次事件函数,事件委托
+
+第十一章 动画效果
+    
+    [显示/隐藏]
+        show();                         // 显示元素
+        show(1000);                     // 控制动画速度[毫秒]
+        show(fast);                     // 控制动画速度[预设速度:fast/normal/slow,分别是200/400/600ms]
+        show(fast,function(){           // 动画执行完毕后执行回调函数
+            console.log(1);
+        });
+        show(fast,function temp(e){
+            $(this).next().show(fast,temp);     // 递归实现所有后面的兄弟节点显示[列队动画]
+        });
+
+        hide();                         // 隐藏元素
+        hide(1000);                     // 隐藏元素,同上
+        ...
+
+        toggle(fast);                   // 隐藏或显示
+
+        /**
+         *  show() 和 hide() 改变了大小和透明度,完全隐藏时display:none;,完全显示时display:元素原display值
+         *  
+         *  show() 中如果有参数,参数不符合要求时将使用默认值 normal 400ms
+         *  
+         */
+
+    [滑动/卷动]
+        slideDown();                    // 滑动[向下滑动出现]
+        slideUp();                      // 卷动[向上滑动隐藏]
+        slideToggle();                  // 切换
+
+        /**
+         *  slideTpggle()   改变了height/padding-up/padding-buttom
+         *  slideToogle()   和show()/hide()具有相同的参数
+         *  
+         */
+
+    [淡入/淡出]
+        fadeIn()                        // 淡入
+        fadeOut()                       // 淡出
+        fadeToggle()                    // 切换
+        fadeTo()                        // 设置透明度
+
+        /**
+         *  fadeIn() 和 fadeOut() 不能设置透明度
+         *  
+         *  当使用fadeTo() 调整透明度后,切换时淡入会保持设置的透明度
+         *  
+         */
+
+    [自定义动画]
+        animate(css[,slow,fun])         // 创建一帧自定义动画
+
+        // 实现元素的移动
+            $('#box').css('position','absolite');       // 为元素设置定位
+            $('#box').animate({                         // 通过控制left和top值实现元素移动
+                left:'+=200px',                         // 使用+=实现基于原本值改变偏移量
+                top:'50px',
+                opacity:'0.7'
+            },1000,fun);
+
+        // 实现队列动画[单元素]
+            $('#box').animate({left:'+=100px'})         // 连缀实现单元素队列动画
+                     .animate({top:'700px'})
+                     .animate({opacity:'0.3'})
+                     .animate({borderRadio:'50%'});
+
+        // 实现队列动画[多元素]
+            $('#box').animate({left:'+=100px'},function(){
+                $('#block').animate({top:'700px'},function(){
+                    $('#box').animate({opacity:'0.3'},function(){
+                        $('#block').animate({borderRadio:'50%'});       // 通过回调函数实现多元素队列动画
+                    });
+                });
+            });
+
+        // 使用queue() 实现队列动画[多元素]
+            $('#box').animate({left:'+=100px'})
+                     .queue(function(next){                             // 使用queue() 为'#box' 添加
+                        $('#block').animate({top:'700px'});
+                        next();                                         // 使用next() 执行后续方法
+                     })
+                     .queue(function(next){
+                        $('#box').animate({opacity:'0.3'});
+                        next(); 
+                     })
+                     .queue(function(){
+                        $('#block').animate({borderRadio:'50%'});
+                     });
+
+        /**
+         *  选择器中'div:first'  表示所有div中的第一个
+         *  选择器中'div :first' 表示所有div子元素中的第一个
+         *
+         *  jquery中的动画函数是名为'fx'队列函数,依次执行
+         *  
+         *  queue() 设置元素的队列函数
+         *      $('#box').queue('animate')     入列[按照名称获取队列函数数组,动画队列函数名称默认为 'fx']
+         *      $('#box').dequeue('animate')   出列[按照名称执行队列函数中的一个]
+         *  
+         *  clearQueue() 清除后面的队列函数
+         *  
+         *  由于queue() 的特性导致无法连缀
+         *      可以通过传参next,函数内部调用解决
+         *      可以通过函数内部调用 $(this).dequeue() 解决
+         *  
+         */
+
+        /**
+         *  在firebug中为字体添加css样式
+         *      console.log('this is %cred font','color:red');          // 输出红色字体
+         *      console.log('this is %%');                              // 输出'%'符号
+         *  
+         */
+
+    [停止动画]
+
+        stop();                 // 移除当前动画
+        stop(true);             // 移除所有动画
+        stop(true,true);        // 移除所有动画,立即完成当前动画
+
+    [延迟动画]
+
+        delay(2000);            // 延迟2秒执行
+
+    [动画对应的选择器]
+
+        $('#fm :animated').css('border','3px solid pink');          // 选择正在执行动画的元素
+
+    [动画全局属性]
+
+        $.fx.off = true;        // 移除所有动画
+
+    [运动方式]
+
+        $('#box').animate({left:'+=100px'},1234,'swing');           // 默认效果：缓动
+        $('#box').animate({left:'+=100px'},1234,'linear');          // 匀速
+
+        /**
+         *  animate() 的第三个参数是运动方式
+         *      swing   缓动[开头和结尾速度慢,中间速度快]
+         *      linear  匀速
+         *  
+         */
+
+第十二章 Ajax
+    
+    [load() 方法]
+        $('#box').load('x.php');                                    // 异步加载文档,#box中内容会被覆盖
+        $('#box').load('x.php .line1');                             // url 后加选择器能选择元素 
+        $('#box').load('x.php',{a:'xxx'});                          // 第二个参数传入对象使用POST方式请求 
+        $('#box').load('x.php',function(response,status,xhr){       // 第二个参数传入对象使用POST方式请求 
+            if (status == 'error') {
+                $(this).append('<p>请求失败</p>');
+            }
+        });
+
+        /**
+         *  load() 中第3个参数是回调函数,响应完成后执行,包含3个参数
+         *
+         *  load() 中第3个参数中的status是状态[success / error / ...]
+         *  
+         *  load() 中第3个参数中的第3个参数是XHR对象,其属性包含: 
+         *      responseText        返回的内容
+         *      responseXML         如果响应主体内容是xml文件,则返回xml文档
+         *      status              状态码
+         *      statusText          状态说明
+         *      
+         *  部分XHR.status的值: 
+         *      200                 服务器成功返回
+         *      400                 语法错误导致服务器不识别
+         *      401                 需要用户认证
+         *      404                 服务器没有找到指定URL
+         *      500                 服务器出错,无法完成请求
+         *      503                 服务器过载或维护
+         *  
+         */
+
+    [$.get() / $.post()]
+
+        /**
+         *  $.get() / $.post()更适合传递参数到服务器页面
+         *  $().load()适合静态文件的异步获取
+         *  
+         */
+         
+        $.get('1.php',{1:'2'},function(){...},'html');                 // get方式请求,第4个参数是响应主体的类型
+        $.post('1.php?3=4',{1:'2'},function(){...});                   // post方式请求,但也有get请求
+        $.post('1.php?3=4',{1:'2'},function(){                         // post方式请求,但也有get请求
+            if (status == 'success') {
+                $('#contents').html(response);
+            }
+        });
+        $.post('1.xml',function(response,status,xhr){                  // post方式异步加载xml,默认类型'xml'
+            if (status == 'success') {
+                $('#contents').html(response.find('root xxx'));
+            }
+        });
+        $.post('1.json',function(response,status,xhr){                 // post方式异步加载json
+            if (status == 'success') {
+                $('#contents').html(response[0]);
+            }
+        });
+
+    [$.getJSON() / $.getScript()]
+
+        /**
+         *  getJSON() / getScript() 没有第4个参数,且只能返回指定类型内容
+         */
+
+        $('#box').click(function(){                                     // 适时加载js文件
+            $.getScript('1.js');
+        });
+
+        $.getJSON('1.json',function(response,status,xhr){               // post方式异步加载json
+            if (status == 'success') {
+                $('#contents').html(response[0]);
+            }
+        });
+
+    [$.ajax()]
+
+        /*
+         *  $.ajax() 是所有ajax方法中最底层的方法
+         *  $.ajax() 只有一个对象参数,对象里有各个参数
+         *      type / url / data / success / error / datatype ...
+         *  
+         */
+
+        $.ajax({
+            type:'post',
+            url:'1.php',
+            data:{1:'2'},
+            success:function(response,status,xhr){                      // 使用$.ajax() 实现异步加载
+                $('#contents').html(response);
+            }
+        });
+
+    [表单序列化]
+
+        $.post('1.php',$('form:first').serialize(),function(response,status,xhr){
+            if (status == 'success') {
+                console.log($('form:first').serializeArray());
+                $('#contents').html(response);
+            }
+        });
+
+        // 初始化$.ajax() 的参数
+            
+            $.ajaxSetup({
+                url:'1.php',
+                type:'POST',
+                data:$.param({                              // 将对象形式的数据转换为字符串
+                    a:$('#input[name=a]').val();
+                    b:$('#input[name=b]').val();
+                });
+            });
+            $.ajax({
+                success:function(){
+                    // ...
+                }
+            });
+
+        /**
+         *  $('form:first').serialize() 可以获取所有要提交的键值对[string],并进行编码
+         *  
+         *  $.serializeArray() 返回JSON数据[对象数组],以键值对形式存储
+         *  
+         *  一个程序中可能要多次调用ajax() 方法,使用ajaxSetup() 可以初始化相应参数
+         *  
+         *  param() 将对象形式的键值对转换为字符串形式,并进行编码
+         *  
+         */
+
+第十三章 Ajax进阶
+    
+    [加载请求]
+
+        /**
+         *  当用户发送请求时,可能网速较慢,加载时间就会很长
+         *  当未加载完毕时,可以给用户一些提示: 正在努力加载...
+         *
+         *  jQuery 提供了两个全局事件 $.ajaxStart() / $.ajaxStop()
+         *  
+         *  新版本中ajaxStart() 必须绑定在document 上
+         *  
+         *  
+         */
+
+        $(document).ajaxStart(function(){                   // 加载信息的显示和隐藏
+            $('#loading').show();
+        }).ajaxStop(function(){
+            $('#loading').hide();
+        });
+
+        $.ajax({
+            timeout:5000,                                   // 设置超时时间
+            global:false                                    // 不触发全局ajax事件
+        });
+
+    [错误处理]
+
+        $.ajax({
+            // ...
+            error:function(xhr,errorText,errorStatus){      // $.ajax() 使用error属性处理错误
+                // ...
+            }
+        });
+
+        $.post('123.php').fail(function(xhr,status,info){   // $.post() 使用fail() / error() 处理错误,参数同上
+            console.log(xhr.status+':'+info);
+        });
+
+        $(document).ajaxError(function(evt,xhr,settings,infoError){
+            console.log();                                  // $(document).ajaxError() 全局事件提示错误
+        });
+
+    [请求全局事件]
+
+        // 全局事件
+            $(document).ajaxSend();                   // 请求发送前
+            $(document).ajaxComplete();               // 请求发送后
+            $(document).ajaxSuccess();                // 请求发送成功
+
+        // 对应局部方法
+            $.ajax({
+                success:function(response,status,xhr){},
+                complete:function(xhr,status){},
+                beforeSend:function(xhr,settings){}
+            });
+
+            $.post('1.php',{a:'b'},function(){}).success(function(){})           // send事件只在ajax() 里有属性值,没有局部事件
+                                                .complete(function(){});
+
+    [JSON / JSONP]
+
+        /**
+         *  跨域获取JSON文件
+         * 
+         */
+
+        // php文件
+            <?php
+                $arr = ['a'=>1,'b'=>2];
+                echo $_GET['callback'].json_encode($arr);
+            ?>
+
+            $.getJSON('http://www.li.cc?callback=?',function(response){             // callback=? jQuery会自动生成随机值
+                console.log(response);
+            })
+
+            $.ajax({                                                                // 可以通过jsonp 跨域访问json
+                url:'http://li.cc/test.php?callback=?',
+                dataType:'jsonp',
+                success:function(){
+                    // ...
+                }
+            });
+
+    [jqXHR 对象]
+
+        /**
+         *  jqXHR 对象是 $.ajax() 返回的对象
+         *  jqXHR === $.ajax()
+         *  
+         *  建议使用done() / always() / fail() 代替 success()/complete()/error() 
+         *
+         *  使用jqXHR 对象的好处:
+         *      可以连缀操作
+         *      可以为事件添加多个回调函数
+         *      可以为多个事件添加回调函数
+         *  
+         */
+
+        $.ajax({
+            url:'1.php',
+            type:'get',
+        }).done(function(response){
+            console.log(response+'1');                  // 这两条都会输出
+        }).done(function(response){
+            console.log(response+'2');
+        });
+
+        $.when(jqXHR1,jqXHR2).done(function(){          // 为2个jqXHR 对象都添加done
+            console.log(r1[0]);
+            console.log(r2[0]);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+<?php
+
+[静态资源文件路径的设置]
+    PATHINFO 模式下的相对路径会把根目录/当前目录视为当前控制器目录
+    应该使用绝对路径 /TP/A/Home/Public/css/style.css 形式,相对于虚拟主机根目录[www目录]
+[PATHINFO 形式的文件路径]
+    __CONTROLLER__ 表示 PATHINFO形式的URL中的控制器之前的部分
+    __MODULE__ / __ACTION__ / __ROOT__ / __SELF__ ...
+    # 在模版中设置frame 的 src属性
+    <frame name=head src="__CONTROLLER__/head.html" frameborder=0 noresize scrolling=no>
+
+[框架主要配置文件]
+    1./ThinkPHP/Conf/convention.php
+    2.应用配置文件
+    3.模块配置文件
+    后者会覆盖前者
+
+[设置应用默认模块]
+    'DEFAULT_MODULE'    =>  'Home',
+    'MODULE_ALLOW_LIST' =>  ['Home','Admin'],
+
+[where 和 having 的区别]
+    where           条件字段必须是数据表中存在的字段
+    having          条件字段必须是数据集中存在的字段
+
+[IS_GET 和 IS_POST]
+    默认情况下IS_GET为true;
+    当IS_POST和IS_AJAX为false时 IS_GET为true
+
+[执行原生SQL语句]
+    M()->query();                   // 查询
+    M()->execute();                 // 增删改
+
+[命名空间]
+    命名空间对空间内的函数/类/const常量起作用
+    difine()在命名空间中不起作用
+
+    [多级空间]
+        namespace Beijing\Haidian\Xinsanqi;
+        const GDP = 21798378;
+        ----------------------
+        echo \Beijing\Haidian\Xinsanqi\GDP;         // 访问某个命名空间的常量               
+    
+    [访问空间元素的3种方式]
+        echo USER;                  // 当前空间 USER
+        echo \Beijing\USER;         // 指定空间 USER
+        echo Beijing\USER;          // 当前空间内的 Beijing\USER
+
+    [引入命名空间和区分]
+        use Think\Controller;
+        var_dump(Controller);       // 引入具体的类时可以直接访问
+        use Think\A\B;
+        var_dump(A\B);              // 引入常量和函数必须使用限定名称来限定[限定名称是引入的命名空间的最后一级]
+
+    [别名]
+        use Think\Controller as Cont;
+        var_dump(Cont);
+
+    [公共空间]
+        没有声明命名空间的就是公共空间
+        namespace Think\A\B;
+        var_dump(\B);                       // 访问公共空间的B
+        var_dump(B);                        // 访问当前空间的B,如果没有就访问公共空间的B
+
+    [开发工具类]
+        1.定义工具类目录 /A/Tools
+        2.声明命名空间                      // 命名空间和具体的目录没有直接关系,TP中的类加载的时候会使用autoload(),在其内部将命名空间转换成了目录
+        3.实现功能
+
+    [RBAL 基于角色的用户访问权限控制]
+        建立两张表 sw_auth/sw_role
+        sw_auth 是权限表
+        sw_role 是角色表
+        sw_manager 中的管理员对应sw_role 中的role_id
+
+    [清空数据表中的数据]
+        truncate sw_role;
+
+    [禁止越权访问]
+        后台所有的功能对应一个页面,管理员可以通过URL直接访问某个功能,所以要先验证管理员权限

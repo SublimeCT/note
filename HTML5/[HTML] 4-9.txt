@@ -1,0 +1,43 @@
+第四章 超链接和路径
+
+<a>
+	href 属性： 相对路径		在父目录：../index2.html；	在爷爷目录：../../index2.html；
+		/绝对路径	<a href="file:///D:/备课/HTML5 第一季/code/index2.html">index2</a>
+	target属性： 属性名称                         说明
+		   		 _blank 			在新窗口或标签页中打开文档
+		   		 _self	 			在当前窗口打开文档（默认）
+	锚点设置：	通过属性 id 实现锚点定位。
+
+第五章 分组元素
+
+	<hr> 分割线
+	<ol>有序列表<ul>无序列表	<dl><dt><dd>定义列表
+	<figure> 图片	<figcaption> figure元素的标题
+		<figure>
+			<figcaption>这是一张图</figcaption>
+			<img src="img.png">
+		</figure>
+
+第六章 表格元素
+
+	<caption>添加表格标题</caption>
+	table>(tr+th*n)+(tr+td*n)*n	基本格式
+	table>thead>(tr+th*n)+tbody>(tr+td*n)*n+tfoot>(tr+td*n)	html5规范格式
+	<td> colspan横向合并/rowspan纵向合并
+	<colgroup>(colgroup>col) span选择列style设置列的样式
+	
+第七章 文档元素
+
+	<header>:头部	<footer>:尾部	<section>:主题部分	  <article>:一段独立内容	
+		<hgroup>:标题组			<aside>:表示与周边内容少有牵涉的内容[侧边栏]
+
+第八章 嵌入元素
+
+	a>img	alt:当图片不加载时显示的内容	ismap:创建响应分区 	
+	<embed>		加入插件	
+
+第九章 音频和视频
+
+	video>source 实现多浏览器兼容
+	<video> autoplay立即播放 loop反复播放 muted静音 poster视频载入时显示的图片 controls显示播放控件
+	<audio> 音频(属性同video)

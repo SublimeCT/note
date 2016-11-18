@@ -1,0 +1,225 @@
+第四章 数据库的基本应用
+
+    # 字段长度
+
+        # 类型                存储长度/字节           取值范围
+        char(n)               n                       1~255              -- 定长字符串,超出部分被截断,不足部分被空格填充
+        varchar(n)            n+1                     0~65535            -- 可变长度
+        enum                  1~2                                        -- 枚举类型,值为创建表时指定的列表中的值[最多65535个值]
+        date                  3                       ...                -- YYYY-MM-DD 形式
+        time                  3                                          -- HHHH-II-SS 形式
+        datetime              8                                          -- YYYY-MM-DD HHHH-II-SS 形式
+        tinyint               1                       -128~127/0~255
+        smallint              2                       ...
+        int                   4                       ...                -- UNSIGNED 最大值4294967295,可显示10位
+        float(p[,s])          4                                          -- 浮点数类型,插入的值精度高于定义的精度时,会四舍五入
+        double(p[,s])         8
+        decimal(p[,s])        p+2/s+2                                    -- 定点数类型,插入的值精度高于定义的精度时,会报错
+        blob                                                             -- 主要存储图片/音频等信息
+        ...
+
+    # 精度和小数位数
+        float(p[,s])
+        -- float(6,3) 表示定义精度为6/小数位数为3的float类型
+
+    # 创建表
+        -- 完整性约束条件
+            -- 列级完整性约束条件
+                PRIMARY KEY
+                NULL/NOT NULL
+                UNIQUE
+                DEFAULT <default value>
+                AUTO_INCREMENT
+                CHECK                               -- 只是一个注释,不起任何作用
+
+            -- 表级完整性约束条件
+                PRIMARY KEY                         -- CONSTRAINT <约束名> PRIMARY KEY [CLUSTERED](字段名1,字段名2,...)
+                FOREIGN KEY                         -- CONSTRAINT <约束名> FOREIGN KEY <外键> REFERENCES <被参照表(主键)>
+                UNIQUE                              -- CONSTRAINT <约束名> UNIQUE <字段名>
+
+        -- 使用SQL语句创建表
+            CREATE TABLE sdcit_sc                                   -- 成绩关系表
+            (
+                sno char(10) NOT NULL,                              -- 学号
+                cno char(3)  NOT NULL,                              -- 课程号
+                degree decimal(4,1),                                -- 成绩
+                cterm tinyint NOT NULL,                             -- 学期
+                CONSTRAINT A1 PRIMARY KEY(sno,cno,cterm),                                   -- 定义主键
+                CONSTRAINT A2 FOREIGN KEY(sno) REFERENCES sdcit_student(sno),               -- 定义外键,参照sdcit_student表中的sno
+                CONSTRAINT A2 FOREIGN KEY(cterm) REFERENCES sdcit_course(cterm),            -- 定义外键,参照sdcit_course表中的cterm
+            );
+
+    # 维护表
+        -- 查看表
+            DESC sdcit_sc;                       -- 查看表结构
+            SHOW CREATE TABLE sdcit_sc [\G];     -- 查看详细表结构,加\G更加美观
+            SHOW TABLE sdcit_sc;
+
+        -- 修改表
+            -- ADD/MODIFY <字段名> <数据类型> [列级完整性约束条件] [FIRST|AFTER 字段名]
+            ALTER TABLE sdcit_sc ADD class char(10) AFTER cno;          -- 添加字段
+            ALTER TABLE sdcit_sc MODIFY class char(10) AFTER cno;       -- 修改字段[数据类型/完整性约束条件]
+            -- CHANGE <旧字段名> <新字段名> <新数据类型>
+            ALTER TABLE sdcit_sc CHANGE cno cnos char(3);               -- 修改字段名和数据类型
+            -- DROP <字段名> <约束名>
+            ALTER TABLE sdcit_sc DROP cno;                              -- 删除cno字段
+            -- RENAME [TO] <新表名>
+            ALTER TABLE sdcit_sc RENAME TO sdcit_scc;                   -- 修改表名
+            -- ENGINE=<更改后的存储引擎名>
+            ALTER TABLE sdcit_sc ENGINE=MyISAM;                         -- 更改存储引擎
+
+        -- 复制表
+            CREATE TABLE users SELECT * FROM user;                      -- 复制全部
+            CREATE TABLE users SELECT * FROM user WHERE 0;              -- 仅复制表结构
+
+        -- 删除表
+            DROP TABLE IF EXISTS user;                                  -- 当表不存在时不报错
+            DELETE user;                                                -- 仅删除表中数据
+
+    # 数据查询
+        
+        SELECT [DISTANCT] ... FROM ... [WHERE ...][GROUP BY ...][HAVING ...][ORDER BY ...][UNION ...][INTO OUTFILE ...][LIMIT [M,]N];
+
+        -- YEAR()/CURDATE()
+            SELECT tname,YEAR(CURDATE())-YEAR(tbirthday) FROM teacher;              -- YEAR()获取年/CURDATE()获取当前日期
+
+        -- INTO OUTFILE
+            SELECT tname,tbirthday FROM teacher INTO OUTFILE 'D:mysql_test.txt';    -- 将数据输出到文件中
+
+        -- WHERE
+            # 语句常用运算符
+                = < > <> >= <= ...
+                BETWEEN AND / NOT BETWEEN AND
+                IN(...) / NOT IN(...)
+                LIKE / NOT LIKE
+                IN NULL / IS NOT NULL
+                AND / OR / NOT
+
+            # LIKE 通配符
+                _ 单个字符 / %多个字符
+
+            # REGEXP 正则匹配
+                SELECT name WHERE tel REGEXP '8964$';                    -- 查询电话号码以8964结尾的人
+
+            # 聚集函数
+                COUNT([DISTANCT]<列名>|*)/SUM()/AVG()/MAX()/MIN()
+
+            # GROUP BY 分组
+                分组可以将查询结果按照某一列或多列进行分类
+
+                -- 查询除软件系外各系老师男女人数
+                SELECT tdept,tsex,COUNT(*) FROM teacher GROUP BY tdept,tsex HAVING tdept<>'软件工程系';
+
+            # 多表连接查询
+                分为交叉连接/内连接/自连接/外连接(左外连接/右外连接/全外连接)
+                SELECT A.name1,B.name2 FROM student1 A,student2 B;                              -- 交叉连接[笛卡尔积]
+                SELECT * FROM user a,users b WHERE a.username=b.username;                       -- 内连接
+                SELECT * FROM user a,user b WHERE a.username=b.username;                        -- 自连接
+                    +----------+----------+----------+----------+
+                    | username | password | username | password |
+                    +----------+----------+----------+----------+
+                    | java1    | java1    | java1    | java1    |
+                    | java     | java     | java     | java     |
+                    +----------+----------+----------+----------+
+                SELECT b.tname,b.tdept FROM teacher a,teacher b WHERE a.tdept=b.tdept and a.tname='李新' and b.tname<>'李新';
+                -- 跟李新在同一个系的老师
+                SELECT a.name,b.degree FROM student a LEFT JOIN sc b ON a.sno=b.sno;            -- 左外连接
+                -- 保留左表中所有数据,右表中没有值的用NULL填充
+
+            # 嵌套查询
+                SELECT name,degree FROM student WHERE degree>ANY(SELECT degree FROM student WHERE name='孙%');
+
+            # 集合查询
+                集合查询包括 UNION[并]/INTERSECT[交]/MINUS[差]
+
+                SELECT sno FROM student WHERE sname='王倩' UNION 
+                SELECT tno FROM teacher WHERE tname='王倩';
+                -- 选择姓名为王倩的老师和学生
+
+    # 数据更新
+        -- 插入数据
+            INSERT INTO user(name,pass) VALUES('sc','sc'),('tt','tt');
+            INSERT INTO user(name,pass) SELECT name,pass FROM other;            -- 插入子查询结果
+
+        -- 修改数据
+            UPDATE user SET name='马冬梅' WHERE name='夏洛';
+
+        -- 删除数据
+            DELETE [FROM] user WHERE name='tt';
+
+第五章 数据库的高级应用
+    
+    # 索引
+        表的存储由两部分组成,一部分是数据页面,一部分是索引页面
+        当进行数据检索时,系统先搜索索引页面,找到所需数据的指针,然后通过指针在数据页面中提取数据
+        当表中数据更新[增删改]时,索引会自动做出相应修改
+
+        -- 索引的设计原则
+            避免对经常更新的表进行过多的索引
+            数据量小的表不使用索引
+            在不同值少的列上不使用索引
+            对具有唯一性的列设置唯一索引
+            对经常需要排序/分组/联合操作的字段建立组合索引
+
+        -- 创建索引
+            当给表创建UNIQUE约束时,MySQL会自动创建唯一索引
+
+            # 普通索引
+                默认索引类型,允许重复值和空值
+
+            # 唯一索引
+                创建唯一索引的列中不包含重复的值,只允许有(一个)空值
+
+            # 创建表时建立唯一索引
+                CREATE TABLE user(
+                    ...
+                    UNIQUE INDEX id_uid(uid) DESC,               -- 为uid建立唯一索引,id_uid为索引名,若不指定则为字段名
+                    INDEX user_birthday,user_more                -- 为user_birthday,user_more建立普通索引
+                );
+            # 现存表中建立唯一索引
+                CREATE UNIQUE id_uid ON user (uid);              -- 为user表的uid字段创建唯一索引id_uid
+
+            # 删除索引
+                DROP INDEX id_uid ON user;
+
+    # 视图
+        视图是从一个或多个基本表或视图中导出的虚拟表
+        只是把视图的定义存到数据库中,而不是存储视图对应的数据
+
+        -- 建立视图 test123
+            CREATE VIEW test123
+            AS
+            SELECT A.sno,A.sname,B.degree FROM student A,sc B,course C WHERE A.sno=B.sno AND B.cno=C.cno AND C.cname='大学英语';
+
+        -- 查询视图
+            SELECT * FROM test123;
+
+        -- 通过视图修改数据
+            INSERT INTO v_student1 VALUES('sc','123');
+
+        -- 通过视图修改数据的限制
+            视图中的数据来自多个表时操作失败/使用聚集函数/数据是分组和DISTINCT/数据列是从常量或表达式派生的
+
+        -- 修改视图
+            ALTER VIEW v_student1 
+            AS
+            SELECT * FROM user;
+
+        -- 删除视图
+            DELETE VIEW v_student1,v_student2,v_student3;
+
+    # MySQL 编程基础
+        
+
+
+
+
+
+    
+
+
+
+
+
+        
+

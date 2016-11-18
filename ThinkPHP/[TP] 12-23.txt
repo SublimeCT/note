@@ -1,0 +1,461 @@
+<?php
+
+[8] 自动验证
+    [验证规则]
+        [静态方式]
+            静态方式是通过模型类的$_validate属性定义的
+
+            [验证规则]
+            protected $_validate = [
+                # 字段/规则/错误提示[/验证条件/附加规则/验证时间]
+                ['user','/^\s(\w){2,7}\s$/','邮箱格式有误',1,'regex',3]
+            ];
+
+            [字段]
+                可以是表中的字段,也可以是其他字段[如重复密码]
+
+            [验证规则]
+                配合附加规则进行设置,默认为正则
+                系统内置: require/email/url/currency(货币)/number(正整数)/integer(整数)/double(浮点数)/zip(邮政编码)/english(英文)
+
+            [错误提示]
+                必填
+
+            [验证条件]
+                0:存在字段就验证[默认]
+                1:必须验证
+                2:不为空就验证
+
+            [附加规则]
+                配合验证规则使用
+                regex/function/callback[模型类中的方法,验证规则为字符串]
+                confirm[检测字段是否相同,验证规则为字段名]/equal[验证是否等于指定值,验证规则为指定值]/notequal[不等]
+                in[是否在指定范围内,验证规则为数组]/notin[不在范围内]/length[长度是否等于指定值或范围,验证规则为数值或数组]
+                between[是否在指定范围内,验证规则为数组]/notbetween[不在范围内]/expire[是否在指定时间/时间戳范围内,验证规则为逗号分隔的字符串]
+                ip_allow[验证ip是否在允许的范围内,验证规则为逗号分隔的字符串]/ip_deny[验证ip是否在禁止的范围内]
+                unique[验证是否唯一,根据数据库中该字段值进行检测,验证规则为空]
+
+                [callback]
+                    // UserModel.class.php
+                    protected $_validate=[
+                        ['test','checkTest','test值有误',1,'callback',3,[2,3]]             // 第7个参数是回调函数的参数
+                    ];
+
+                    protected function checkTest($str,$min,$max){
+                        if (...) {
+                            return false;
+                        }
+                        return true;
+                    }
+
+                [function]
+                    // UserModel.class.php
+                    protected $_validate=[
+                        ['test','checkTest','test值有误',1,'callback',3,[2,3]]
+                    ];
+
+                    // /Application/Common/Common/function.php
+                    function checkTest($str,$min,$max){
+                        if (...) {
+                            return false;
+                        }
+                        return true;
+                    }
+
+            [验证时间]
+                1:新增数据时验证
+                2:编辑数据时验证
+                3:必须验证
+                n:与create()第二个参数相同
+
+            [批量验证]
+                默认只显示第一条错误信息,在模型类设置$patchValidate属性为true可以显示所有错误提示
+                开启批量验证后,返回关联数组['字段名'=>'错误信息'...]
+
+            [返回JSON格式数据]
+                // IndexController.class.php
+                $this->ajaxReturn($user->getError());
+
+        [动态验证]
+            // IndexController.class.php
+            $rules = [
+                ['user','require','`user` is null']
+            ];
+            $user->validate($rules)->create();
+
+[9] 自动完成
+
+    [静态方式]
+        静态方式是通过模型类的$_auto属性定义的
+
+        [完成规则]
+            protected $_auto = [
+                # 字段/规则[/完成时间/附加规则]
+                ['user','sha1',3,'function']
+            ];
+        
+        [规则]
+            配合附加规则进行设置
+
+        [完成时间]
+            1:新增数据时处理[默认]
+            2:更新数据时处理
+            3:必须处理
+
+        [附加规则]
+            function/callback        
+            field[用其它字段填充，表示填充的内容是一个其他字段的值]
+            string[字符串][默认] 
+            ignore[为空则忽略(3.1.2新增)]
+
+        [将指定字段设置为指定值]
+            protected $_auto = [
+                ['count','0']
+            ];
+
+        [将指定字段填充为指定字段值]
+            protected $_auto = [
+                ['count','counts',3,'field']
+            ];
+
+        [修改数据时留空则忽略]
+            // 用户修改用户名时如果密码留空,则忽略密码进行更新操作
+            protected $_auto = [
+                ['password','',2,'ignore']
+            ];
+    
+    [动态方式]
+        // IndexController.class.php
+        $rules = [
+            ['count','0']
+        ];
+        $user->auto($rules)->create();
+        $user->add();
+
+[10] 视图
+    [模版配置]
+        当在Home模块Index控制器调用display方法时会解析 ./Application/Home/View/Index/view.html 文件
+        默认: 当前模块/默认视图目录/当前控制器/当前操作.html
+
+        [配置]
+            // /Application/Common/Conf/config.php
+            
+            'DEFAULT_V_LAYER' =>'Template'          // 修改模版的视图目录[默认view目录]
+            'TMPL_TEMPLATE_SUFFIX'=>'.tpl'          // 修改模版中的文件的后缀[默认为.html]
+            'TMPL_FILE_DEPR'=>'_'                   // 用下划线代替目录层次[Index_view.html]
+            'VIEW_PATH'=>'./Public/'                // 设置外部的模版目录
+            'DEFAULT_THEME'=>'default'              // 设置默认主题目录
+
+        [切换主题]
+            // 添加green主题
+            添加 /Application/Home/View/green/Index/view.html
+            // 切换主题
+            $this->theme('green')->display();
+
+    [主题]
+        设置默认主题后解析时会在 ./Application/Home/View/[定义的主题名] 寻找
+
+    [赋值和渲染]
+        [注入变量]
+            $this->assign('info','...');            // 模版文件中使用{$info}解析
+
+        [渲染]
+            // 更改引用的模版
+            $this->theme('green')->display('Home@Index:view');      // Home模块/调用green主题/Index控制器/view模版文件
+            模块@控制器:方法
+            // 加载指定模版文件
+            $this->display('./Application/Home/View/green/Index/view.html');
+
+        [模版地址]
+            T('Extend://Admin@Public/menu');
+            // 返回 Extend/Admin/View/Public/menu.html
+            T()返回完整的模版文件名,可直接用display/fetch渲染输出
+            $this->display(T());
+
+        [获取内容]
+            $contents = $this->fetch();             // 获取模版文件内容
+            $this->show($contents);                 // 输出
+
+[10] 模版基础
+    [修改模版标签定界符]
+        'TMPL_L_DELIM'=>'<{',
+        'TMPL_R_DELIM'=>'}>',
+
+    [变量输出]
+        <{$user['email']}>                      // 输出数组
+        <{$user.email}>
+
+        <{$user->email}>                        // 输出对象属性
+        <{$user:email}> 
+
+        <{$Think.server.script_name}>           // 输出系统变量$_SERVER['SCRIPT_NAME']
+        <{$Think.cosnt.APP_PATH}>               // 输出ThinkPHP系统变量[目录]
+
+    [使用函数]
+        <{$user|md5}>                           // 使用md5加密
+        <{$data|data="Y-m-d H:i:s",###}>        // 使用data函数,=后面是参数,使用,分隔###代表变量本身
+        <{$data|substr="3,7"}>                  // 如果函数第一个参数是变量,可以省略###
+        <{$data|substr="3,7"|md5}>              // 多函数
+        
+        <{:md5(substr($data,3,7))}>             // 同上
+        不建议在模版中对值进行处理
+
+    [变量不存在时的默认值]
+        <{$data|default='0'}>                   // 当$data不存在时输出0
+
+    [使用运算符]
+        支持的运算符 +-*/%++--三目运算符
+        <{$data+getNum()}>
+        <{$data ? 'y' : 'n'}>
+
+    [包含文件]
+        <include file="./Application/Home/View/green/public/header.html" />         // 直接使用路径
+        // 在view目录新建Public目录
+        <include file="Public/Index/header" />                                      // 模块@主题/控制器/操作
+        <include file="Public/Index/header,Public/Index/footer" />                  // 包含多个文件
+
+    [模版注释]
+        <{// this is comment}>
+        <{/*this is comment*/}>
+        <{/*this is 
+                    comment*/}>
+
+        // 不会再HTML代码中出现
+    
+    [模版继承]
+        // 模版继承是一种灵活的模版布局方式,类似于子类继承父类
+        # base.html
+        <block name="main">this is base contents</block>            // 在子类中可以修改<block>中内容,name值必填
+
+        # user.html
+        <extend name="Test/base" />
+        <block name="main">This is user contents</block>            // 子类使用<extend>继承,直接修改指定name值的block
+
+    [模版布局]
+        [BUG]
+            3.2.3使用模版布局会出现THEME_PATH未定义的错误,修改view.class.php parseTemplate() 144行
+            添加判断    defined('THEME_PATH') or    define('THEME_PATH', $this->getThemePath(MODULE_NAME));
+
+        [全局布局方式]
+            // 修改配置文件,适用于全站使用相同布局
+            
+            # config.php
+                'LAYOUT_ON'=>true,                          // 默认false
+                'LAYOUT_NAME'=>'Public/layout',             // 使用Public/layout.tpl文件
+                'TMPL_LAYOUT_ITEM' =>'<{__REPLACE__}>',     // 更改默认{__CONTENT__}为<{__REPLACE__}>
+
+            # layout.tpl
+                <include file="Public:header" />            // ':'为兼容写法
+                <{__CONTENT__}>
+                <include file="Public:footer" />
+
+            # 不需要载入layout的页面
+                <{__NOLAYOUT__}>                            // 文件开头写入
+
+            # 渲染过程
+                先渲染layout.tpl,再将<{__CONTENT__}>替换成Controller调用的模版文件
+
+        [模版标签方式]
+            ...
+        [layout()方式]
+            ...
+
+    [模版替换]
+        在模版渲染之前，系统还会对读取的模版内容进行一些特殊字符串替换操作
+        __SELF__ ...
+
+[11] 内置标签
+    [判断]
+        <if condition="strlen($info) eq 1">             // 支持函数
+            is a
+        <elseif condition="$info->data eq 'b'"/>
+            is b
+        <else />
+            error
+        </if>
+
+    [switch分支]
+        <switch name="info">
+            <case value="a">is a</case>                 // 自带break;
+            <case value="b">is b</case>
+            <case value="c">is c</case>
+            <default />error
+        </switch>
+
+    [比较标签]
+        <eq name="info" value="a">is a</eq>                         // eq/neq/lt/gt/elt/egt/heq[恒等]/nheq
+        <compare type="eq" name="info" value="a">is a</compare>     // 同上
+
+    [范围标签]
+        // in支持else
+        <in name="info" value="a,b,c,d,e,f,g">success</in>          // in/notin/between/notbetween
+        <range type"in" name="info" value="a,b,c,d,e,f,g"></range>  // 同上
+
+    [判断变量]
+        (not)present         判断变量是否已赋值
+        (not)empty           判断变量是否为空
+        (not)defined         判断变量是否定义
+        <present name="info">info is present</present>              // 支持else
+
+    [输出结果集]
+        <volist name="userList" id="data">                          // name对应结果集变量,id对应用于遍历的数组名
+            <{$data.name}>                                   
+        </volist>
+
+        <volist name="userList" id="data" offset="1" length="3">    // offset属性设置从第n-1条开始,length属性是显示的条数
+            <{$data.name}>
+        </volist>
+
+        <volist name="userList" id="data" mod="2">                  // 输出偶数条记录,当前index除以mod余数为1就是偶数条
+            <eq name="mod" value="1">
+            <{$data.name}>
+            </eq>
+        </volist>
+
+        <volist name="userList" id="data" empty="$empty_info">      // empty表示数据集为空或不存在时输出的信息,$info为controller注入的提示信息
+            <{$data.name}>
+        </volist>
+
+        <volist name="userList" id="data" key="k">                  // key属性对应第几条数据,从1开始
+            <{$k}><{$data.name}>
+        </volist>
+
+        <volist name="userList" id="data">                          // $key对应第几条数据,从0开始
+            <{$key}><{$data.name}>
+        </volist>
+
+    [foreach循环] 
+        <foreach>和<volist>类似,更加简单,没有额外属性
+        <foreach name="userList" item="data">                       // item是循环变量
+            <{$key}><{$data.name}>
+        </foreach>
+
+    [for循环]
+        <for start="0" end="100">
+            <{$key}><br>
+        </for>
+
+    [其他标签]
+        // 定义变量和常量
+        <assign name="test" value="1" />                        // 变量
+        <define name="TEST" value="2" />                        // 常量
+
+        // 加载js/css专用标签
+        <js href="./js/base.js" />
+        <css href="./css/base.css" />
+
+    [PHP代码快]
+        <php>
+            md5('24332232');
+        </php>
+
+        // 原样输出php代码
+        <literal>
+            <php>jdisfjoi</php>
+        </literal>
+
+[12] 标签库
+    [标签解析相关目录和类文件]
+        标签解析文件在 /ThinkPHP/Library/Think/Template 目录下
+        /ThinkPHP/Library/Think/Template/TagLib/Cx.class.php                // 内置标签核心类,对应内置标签
+        /ThinkPHP/Library/Think/Template/TagLib/html.class.php              // html扩展标签
+
+    [使用html扩展标签]
+        // 标签预加载
+        'TAGLIB_PRE_LOAD' => 'html';
+        // 如果不使用预加载就要引入扩展标签
+        <taglib name="html" />
+
+        // 使用扩展标签
+        <html:select options="name" selected="value" />
+
+    [扩展标签库]
+        新建Test.class.php 
+        protected $tags                 // 标签
+        public function _mytest         // 标签对应方法
+
+[13] 路由功能
+    [路由定义]
+        // 前提是URL模式为PATHINFO或兼容模式
+        # config.php
+        'URL_ROUTER_ON'   => true,      // 开启路由
+        //配置路由规则
+        'URL_ROUTE_RULES'=>array(
+            '路由表达式' => '路由地址和传入参数'
+        ),
+
+    [去除URL模块名]
+        // 设置为默认模块
+        'MODULE_ALLOW_LIST' => ['Home','Admin'],
+        'DEFAULT_MODULE' => 'Home',
+
+    [配置路由规则]
+        'URL_ROUTE_RULES'=>array(
+            // 静态地址路由
+            'u' => 'Index/view',
+            // 静态地址和动态地址结合路由[需要删除静态路由配置,路由地址不能重复]
+            'u/:id/:username/:level' => 'Index/view',
+            // 全动态地址
+            ':id/:username' => 'Index/view',
+            // 数字约束
+            'u/:id\d' => ...
+            // 支持函数
+            'u/:id|md5' => ...
+            // 可选传参
+            'u/[:id\d]' => ...
+            // 后面不允许再有东西
+            'u/:id$' => ...
+        ),
+
+        [正则路由]
+            '/^(\d)\-(\w)$/' => 'Index/test?id=:1&username=:2|md5',             //支持函数
+
+        [静态路由]
+            // 为了提高效率,静态路由使用URL_MAP_RULES定义
+            'URL_MAP_RULES'=>array(
+                'u/i'=>'User/index',
+            ),
+
+        [闭包支持]
+            'u/:id' => function($id){
+                echo $id;
+            },
+
+[14] URL操作
+    [Linux平台忽略大小写]
+        'URL_CASE_INSENSITIVE' => true
+
+    [URL伪静态]
+        // 默认情况下,伪静态后缀为.html
+        'URL_HTML_SUFFIX' => 'html|shtml'               // 更改伪静态后缀
+        'URL_DENY_SUFFIX' => 'xml|png'                  // 禁止访问的后缀
+
+    [URL生成]
+        动态的根据当前URL设置生成URL地址
+        U('地址表达式'[,'参数','伪静态后缀','显示域名']);
+
+        U();                                            // 得到当前URL  /TP/index.php/Index/test
+        U('Home/Index/test?id=1&username=sc');          // 更完整的地址表达式
+        U('Home/Index/test','id=1&username=sc');        // 同上
+        U('Home/Index/test','id=1&username=sc','xml');  // 设置伪静态后缀
+        U('/u');                                        // 使用路由地址
+        U('Index/test@sdcit.cn?id=1&username=sc');      // 生成域名
+        U('Index/test#sdcit?id=1&username=sc');         // 锚点
+
+        U('Home/Index/test/id/1/username/sc');          // 不允许使用PATHINFO写法
+
+    [模版中使用U()]
+        <{:U('Index/test?id=1')}>
+
+
+
+
+
+
+
+
+
+
+
+
+        

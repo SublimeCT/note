@@ -1,0 +1,85 @@
+第十章 表单元素
+
+	<form>	 method:表单的请求方式[post和get]	action:提交的页面	autocomplete自动完成表单 target name
+	<input>	 autofocus:获得光标		disabled:禁用input元素	form:绑定指定表单[from->id值]	name value
+			 type -> 
+			 		text[默认]/password/search/image/radio/checkbox/submit...[按钮]/number只能输入数值/range数值范围/hidden/file
+			 			text/password: placeholder 提示信息	readonly 只读	maxlength 最大长度	size 设置文本框宽度	  required 必须有值 pattern正则表达式
+			 			number/range: max/min step 指定上下调节的步长
+			 			radio/checkbox: checked 默认选中
+			 			image: 提交并传送分区相应数据
+			 			hidden：隐藏控件 name value
+			 			file: accept 指定文件的MIME类型
+	<label>  标签	for:标签包含的<input>[input->id值]
+	<fieldset> 	对表单进行分组		fieldset>legend 分组标题
+	<button>	type:	submit提交[默认] / reset重置 / button普通按钮
+				当type="submit"时 form:绑定指定表单[from->id值]	formaction formmethod formtarget 
+	<select>	下拉列表
+	<textarea>	文本区		rows:设置行数	cols:设置列数	warp:提交内容(soft)是(hard)否识别换行符
+
+第十一章 全局属性和其他
+
+	<meta>	定义文档中各种元数据 <meta name="author" content="sc">
+			name:author作者/description页面描述/keywords页面关键字/generator页面编码工具
+			meta->charset 指定编码格式
+	全局属性：id/class/contenteditable/dir[ltr左→右,rtl右→左]/hidden隐藏元素/lang/tabindex获得焦点顺序[-1不会被选中]/style
+
+第十二章 CSS 入门
+
+	css的三种方式：元素内嵌/文档内嵌/外部引用[<link href="xxx.css">]
+	浏览器样式：通过style属性设置样式
+	样式表层叠优先级：元素内嵌样式>文档内嵌>外部css文件>浏览器样式
+	强行设置优先级 color:red !important;
+	样式继承：继承父元素的外观(文字、颜色、字体)属性
+	强制继承：继承父元素的布局属性		[子元素]border:inherit;
+
+第十三章 css选择器
+
+	*/元素/#[id]/.[class]/元素.class/[type](属性)/
+		[属性选择器]
+		[type=""]/[href^="http"]/[href$=".com"]/[href*="baidu"]/[class~="def"]/[lang|="en"]
+		属性=""/属性开头=""/属性结尾=""/属性值包含""/属性值其中一个=""/属性值有"-"时匹配七中一个
+		[复合选择器]
+		p,b,i,span/p b[后代选择器]/ul>li[子选择器]/p+b[相邻兄弟选择器]/p~b[普通兄弟选择器](匹配p之后的所有b)
+		[伪元素选择器]
+		p::first-line[首行]/p::first-letter[首字母]/a::before[文本前插入]/::after[文本后插入]/::section[文本被选择]
+			a::before{content:'xxx';}
+		[伪类选择器]
+			[结构性伪类选择器]
+				ul>li:first-child/:last-child/:only-child/:nth-chlid(n)[第n个子元素]
+			[UI伪类选择器]
+				:enabled/:disabled/:checked/:required
+			[动态伪类选择器]
+				:link[未访问的URL]/:visited[以访问的url]/:hover[url鼠标悬停]/:active[点击url时]/:focus[url获得焦点时]
+			[其他伪类选择器]
+				a:not([href*="baidu"]){...}/:empty[]/
+	<span class="abc def">xxx</span>
+
+第14章 CSS颜色与度量单位
+
+	格式: 颜色名称/16进制代码/10进制代码
+		10进制:rgb(r,g,b)/rgba(r,g,b,a)[a表示透明度0~1]/hsl(h,s,l)[色相饱和度透明度]/hsla(h,s,l,a)
+	css度量单位： 
+		相对长度单位：	em[与元素字号挂钩]/px[与分辨率挂钩]/%[相对另一值的百分比]
+						em 	p{height:2em}[p的高度设置为字号的2倍]
+
+第十五章 CSS文本样式
+	
+	[字体设置]
+		font-style:italic;[设置字体倾斜]/normal[还原正常]
+		font-weight:bold;[加粗]
+		font-family: xxx,yyy,zzz;[(备用)字体]
+	[字体样式]
+		文本装饰	text-decoration:underline[下划线]/overline[上划线]/line-through[删除线]/none[取消样式]
+		大小写转换	text-transform:capitalize[首字母大写]/uppercase[大写字母]/lowercase[小写字母]
+		文本阴影	text-shadow:1px 2px 3px black;
+	[文本控制]
+		text-align:center/left/right
+		white-space:nowrap[压缩空格/不换行]/pre[不压缩空格/换行]
+		line-height:100%;[设置段落行高]
+		text-indent:-9999px;[设置文本首行缩进]
+	[服务器提供字体]
+		@font-face{
+			font-family:abc;
+			src:url('xxx.otf');
+		}

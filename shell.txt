@@ -1,0 +1,364 @@
+pwd 		当前路径
+cd  		进入目录		//cd /		cd ~
+cd ..		回退
+mkdir		创建子目录      -v 输出信息    -m 设置存取权限   -p 多重目录
+        mkdir -vm 775 tools [创建tools目录,输出信息]
+        mkdir -vp tools/tool1 [创建多层目录]
+
+touch		创建文件
+rmdir		删除[空]目录    -v  -p 递归删除目录,当父目录为空是，也一并删除
+rm          删除文件		-r[非空]文件 -f不提示信息直接删除
+            rm -vr testfiles/testfile [删除非空目录]
+
+cp			复制文件		-r目录 -a保持原有属性
+            cp -r tools /xxx/xxx [复制目录(包括目录内所以文件)]
+
+mv          移动、更名文件
+
+
+
+
+find 		文件搜索命令	-name	-size	-empty				//find /Desktop -name opt*
+
+tar			打包 / 备份		-c创建备份 -x将备份文件展开	-v回显	-f指定使用备份的文件 //tar -cvf	xx ../..	压缩
+				tar -cvf backup.tar /etc	将etc下所有文件打包成backup.tar
+				//tar -xvf backup.tar 		将backup.tar解包
+				gzip software.tar 		压缩为.tar.gz
+                    等价于
+                //tar -cvfz backup.tar /etc 打包并压缩
+
+shutdown	关机			-h关机	-r重启 -c 取消
+            shutdown -h 4[4分钟后关机]
+            shutdown -r 4[4分钟后重新启动]
+            shutdown -c [取消]
+            // reboot [立即重启]
+
+date		时间
+            date 052919382016   [设置时间]
+
+cat			输出文件信息	//cat abc
+du			统计目录或文件占用空间大小  -h以k/m/g为单位  -s 只显示目录的大小
+            du –sh /etc/    查看/etc/占用磁盘空间大小
+
+df			//df  -h 			查看磁盘分区使用情况
+
+
+rpm         -i安装 -u更新 -q查询 -V校验 -e 删除 -h 安装进度 -a 显示所有
+            rpm -qa [查看系统rpm包]
+
+rpm -ivh        //    /mnt
+
+// rpm -e perl-Convert-ASN1-0.20-1.1.noarch 	卸载 ...
+
+
+
+        1. 创建子目录/backup/etc/与/backup/var/。
+            mkdir –vp backup/etc/
+            mkdir –vp backup/var/
+        2. 复制/etc/下所有文件至目录/backup/etc/，保持原有属性。
+            cp  –ar  /etc /backup/etc/
+        3. 复制/var下所有文件至目录/backup/var/，保持原有属性。
+            cp  –ar  /var /backup/var/
+        4. 删除/backup/var/目录下所有内容,仅保留/backup/var/目录。
+            rm  -r  var
+        5. 查看/etc/占用磁盘空间大小。
+            du  –sh /etc/
+        6. 查看磁盘分区使用情况。
+            df  -h
+        7. 显示当前的日期和时间。
+            date
+        8. 清屏。
+            clear
+        9. 查看历史记录。
+            history
+        10. 重新执行最近的一次cd命令。
+            ! cd
+
+============================================================================================
+============================================================================================
+============================================================================================
+
+vim/vi      创建/编辑文件
+            :set nu 显示行号
+            :set nonu  关闭行号
+            15G     定位到15行
+            yy      复制一行
+            yw      复制一个单词
+            p       粘贴
+            G       最后一行
+            gg      首行
+            H/M/L   屏幕首行/中间/尾行
+            u       撤销
+            :wq     存档并退出 [:wq = :x]
+            :q!     直接退出不存档
+            :/wait  查找字符串wait
+            dd      删除一行
+            dw      删除一个单词
+            x       删除单个字符
+
+
+/etc 目录存放系统配置文件     /dev 存放[硬件]设备文件     /usr 存放应用程序/函数库...  
+/home 用户的主目录[除root]    /tmp 临时文件               /boot 系统启动的相关文件
+
+Linux系统中的用户分为超级用户 0[UID] / 普通用户 >499 / 系统用户 1-499[无法登陆]
+
+
+    [root@bogon c]# cat /etc/passwd     保存用户信息
+    root:x:0:0:root:/root:/bin/bash
+    .. 密码占位符 用户编号 用户组编号 用户注释信息 用户主目录 shell信息
+
+    [root@bogon c]# cat /etc/shadow     用户口令信息
+    root:$1$BVYOMvIQ$5CmKgDSsC2ZS6Vek507vn/:16876:0:99999:7:::
+
+    [root@bogon c]# cat /etc/group      用户组信息
+    root:x:0:root                       //1个用户
+    bin:x:1:root,bin,daemon             //3个用户
+
+    [root@bogon c]# cat /etc/gshadow    用户组口令
+    root:::root
+    bin:::root,bin,daemon               //用户组和用户名相同,:后可以为空
+
+
+useradd     -u 指定UID[>500]    -g 指定用户组    -e 帐号终止日期 12/23/2000
+            useradd -u 666 -e 31/5/2016 testuser  [创建并指定testuser用户UID=666,过期时间是 31/5/2016]
+
+su - xxx    切换用户[环境变量]
+who         查看所有登录用户信息
+passwd xxx  修改密码
+usermod     更改用户属性
+userdel     删除用户         -r删除用户家目录
+            userdel -r xxx [删除xxx用户并删除用户家目录]
+
+groupadd    添加用户组   -g 设置GID
+            groupadd -g 678 testgroup 
+
+groupdel    删除用户组
+gpasswd     管理用户组         -a 加入        -d  删除
+            gpasswd -a testuser testgroup [将testuser加入testgroup组]
+            gpasswd -d testuser testgroup [将testuser移出testgroup组]
+
+man date    获取命令帮助信息
+
+
+挂载点
+
+挂载
+mount /dev/sda1 /mnt/
+
+卸载
+umount /dev/sda1
+
+查看文件权限信息
+ls -l xxx
+
+ls -l abc   查看文件权限
+-rw-rw-r-- 1 c c 8 04-19 18:09 abc
+-[文件类型]rw-[文件所有者权限]rw-[同组者权限]r--[其他用户权限]
+
+
+修改文件权限          
+chmod o+w bcd                  +/-[添加/删除权限]    -u文件所有者   -g同组   -o其他用户    -a所有用户
+chmod 666 bcd                  w->4  r->2  x->1
+
+
+chown   修改文件属主属组  [-R] 属主[.属组] 文件名
+        chown testing1 abc
+
+
+
+主分区最多只有4个
+扩展分区：
+    最多1个
+    主+扩展最多4个
+    不能写入数据,只能包含逻辑分区
+
+IDE类型硬盘         hda
+SCSI类型硬盘        sda
+
+查看分区列表信息
+[root@localhost ~]# fdisk -l
+
+Disk /dev/sda: 21.4 GB, 21474836480 bytes
+255 heads, 63 sectors/track, 2610 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *           1          38      305203+  83  Linux
+/dev/sda2              39        2349    18563107+  83  Linux
+/dev/sda3            2350        2610     2096482+  82  Linux swap / Solaris
+
+fdisk /dev/hda          进行磁盘分区操作
+    ->n         创建分区            ->p 主分区        ->e 扩展分区         ->l 逻辑分区
+
+    ->w         写入硬盘
+    ->q         不操作/退出
+
+mkfs.ext2 /dev/hda1         格式化分区
+
+mount / umount      挂载/卸载
+        挂载
+        mount /dev/sda1 /mnt/
+        卸载
+        umount /dev/sda1
+
+
+=========================================================================================
+=========================================================================================
+=========================================================================================
+
+
+
+
+[root@localhost /]# cat /boot/grub/grub.conf
+..
+default=0
+timeout=5
+splashimage=(hd0,0)/grub/splash.xpm.gz
+..
+root (hd0,0)
+kernel /vmlinuz-2.6.18-128.el5 ro root=LABEL=/ rhgb quiet
+initrd /initrd-2.6.18-128.el5.img
+..
+
+
+
+CRUB 是一个将引导装载程序安装到主引导记录的程序
+
+修改root密码
+1.e
+2.e[选择]
+3. 1
+4.b
+5.passwd
+6.reboot
+
+
+cat /proc/cpuinfo           查看cpu详细信息
+cat /proc/partitions        查看分区详细信息
+who
+        c        :0           2016-05-10 17:36
+        c        pts/1        2016-05-10 17:36 (:0.0)
+
+who am i                    查看[我的]登录用户
+        c        pts/1        2016-05-10 17:36 (:0.0)
+
+who -a                      所有登录用户
+                                2016-05-10 17:35               531 id=si    term=0 exit=0
+                   system boot  2016-05-10 17:35
+                   run-level 5  2016-05-10 17:35                   last=S
+                                2016-05-10 17:36              2432 id=l5    term=0 exit=0
+                                2016-05-10 17:36              4234 id=1
+        LOGIN      tty2         2016-05-10 17:36              4235 id=2
+        LOGIN      tty3         2016-05-10 17:36              4236 id=3
+        LOGIN      tty4         2016-05-10 17:36              4237 id=4
+                                2016-05-10 17:36              4242 id=5
+                                2016-05-10 17:36              4243 id=6
+                                2016-05-10 17:36              4244 id=x
+        c        ? :0           2016-05-10 17:36   ?          4381
+        c        + pts/1        2016-05-10 17:36   .          4646 (:0.0)
+
+w                           查看系统登录信息
+        18:04:23 up 29 min,  2 users,  load average: 0.07, 0.08, 0.08
+        USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT
+        c        :0       -                17:36   ?xdm?  10.50s  0.14s /usr/bin/gnome-
+        c        pts/1    :0.0             17:36    0.00s  0.08s  0.89s gnome-terminal
+                 //:0是本地登录
+                 //pts/1是远程登录
+
+last             //历史登录信息
+last root        //root历史登录信息
+
+free             //内存使用情况
+                     total       used       free     shared    buffers     cached
+        Mem:       1035244     498932     536312          0      33476     332652
+        -/+ buffers/cache:     132804     902440
+        Swap:      2096472          0    2096472
+
+ps              //进程信息
+        PID TTY          TIME CMD         //PID进程号
+         4693 pts/1    00:00:00 su
+         4696 pts/1    00:00:00 bash
+         7807 pts/1    00:00:00 ps
+
+ps -aux         //用户为主显示所有进程,包括没有终端控制的进程
+ps -e           //显示所有进程和环境变量
+
+df           //显示磁盘使用情况
+        文件系统               1K-块        已用     可用 已用% 挂载点
+        /dev/sda2             17981340   2347096  14706092  14% /
+        /dev/sda1               295561     15966    264335   6% /boot
+        tmpfs                   517620         0    517620   0% /dev/shm
+        .host:/               83887100  42463172  41423928  51% /mnt/hgfs
+        /dev/scd0              2943222   2943222         0 100% /media/RHEL_5.3 i386 DVD
+
+du -sh /etc              //查看文件或文件夹占用磁盘空间信息
+        137M    /etc
+
+ps aux|grep sshd            //查找sshd后台服务进程
+        root      3939  0.0  0.0   7128  1012 ?        Ss   17:36   0:00 /usr/sbin/sshd
+        root      8255  0.0  0.0   4156   672 pts/1    R+   18:18   0:00 grep sshd
+
+kill -9 3939                //-9强制结束进程 -15正常终止
+
+top                         //动态监控系统资源
+
+[自动作业管理]
+...
+
+
+ifconfig        查看当前活动网络接口信息
+ifconfig eth0   
+ifconfig eth0 192.168.1.2 netmask 255.255.255.0         设置设备的ip和子网掩码
+service network restart             重启网络设备
+
+cd /mnt/hgfs/ssssssssss/samba     共享文件夹
+
+[root@localhost ~]# rpm -qa|grep samba      查找rpm包
+
+
+rpm -ivh xxx        安装
+
+service smb start       启动
+
+
+
+vi /etc/samba/smb.conf    
+
+
+smbpasswd -a 添加 -d 删除
+
+
+[root@localhost ~]# service sshd start
+启动 sshd：                                                [确定]
+
+ps -aux
+[root@localhost ~]# ps aux|grep sshd
+root      3939  0.0  0.0   7128  1012 ?        Ss   09:16   0:00 /usr/sbin/sshd
+root     18946  0.0  0.0   4156   672 pts/1    R+   17:24   0:00 grep sshd
+
+kill -9 -xxxx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,400 @@
+第二章 基础核心
+    
+    /*
+     *  
+     *  [加载模式]
+     *      $(function(){...});         在加载完毕[$(document).ready()]后,执行匿名函数
+     *      jQuery 的加载模式是$(document).ready(),只需要等待html 中的DOM 元素加载完毕就能执行,不存在覆盖问题
+     *      JavaScript 的加载模式window.onload(),需要等待网页所有数据加载完毕才能执行[包括图片],且存在覆盖问题
+     *  
+     *  [关于$]
+     *      $( ... ) 前的$ 就是jQuery对象,所以可以写成jQuery( ... );
+     *      $(...) / $('#box') / $('#box').css('','')   返回的都是jQuery对象
+     *  
+     *  [对象互换]
+     *      $('#box').get(0) / $('#box')[0]       // 将jQuery 对象转换为DOM 对象
+     *      $(document.getElementById('box'));    // 将DOM 对象转换为jQuery 对象
+     *  
+     *  [多个js库冲突问题]
+     *      var $$ = jQuery / jQuery( ... );      // 被其他库冲突
+     *      jQuery.noConflict();                  // 放弃$ 的所有权以兼容其他库
+     *  
+     */
+
+    $('#box');                      // 选择DOM元素
+    $('#box').css('color','red');   // 执行功能函数
+
+第三章 常规选择器
+
+
+    /*
+     *  如果页面有多个元素有相同的ID：
+     *      css 会操作所有的元素
+     *      jQuery 只会操作第一个元素
+     *  
+     *  在选择元素后：
+     *      css 只会添加样式,高级选择器部分浏览器不兼容
+     *      jQuery 添加动作行为,没有兼容问题
+     *  
+     *  当选择的是元素集合时：
+     *      js      无法操作
+     *      jQuery  可操作所有元素
+     *  
+     *  高级选择器：
+     *      后代选择器：div p{} / $('div p')    // 等同于$('div').find('p')
+     *      子选择器：  div>p{} / $('div>p')    // 等同于$('div').children('p')
+     *      next选择器：div+p{} / $('div+p')    // div后的第一个同级节点p     等同与$('div').next('p')
+     *      nextall ..: div~p{} / $('div~p')    // div后的所有同级节点p       等同于$('div').nextAll('p')
+     *      
+     *  选择所有子节点:
+     *      $('.box').children;
+     *      $('.box:nth-child(n)');
+     *  
+     *  jQuery提供的更多选择器方法:
+     *      prev('p') / prevAll('p') / prevUntil('p') / next('p') / nextAll('p') / nextUntil('p') / siblings('p')
+     *  
+     *  属性 选择器 ...
+     *  
+     */
+
+    $('div') / $('#box') / $('.box')        // 简单选择器
+    $('div').length / $('.box').size()      // 获取选择的元素个数
+
+    if($('#box').length > 0){               // 判断元素是否存在
+        ...
+    }
+
+    [属性选择器]
+        $('div[title]')               // 具有title属性的div
+        $('div[title=a]')             // title属性为test的div
+        $('div[title^=a]')            // title属性为test开头的div
+        $('div[title$=a]')            // title属性为test结尾的div
+        $('div[title!=a]')            // title属性不为test的div                         // jQuery 独有的选择器
+        $('div[class~=a]')            // class属性是以空格分割的列表且有a的div
+        $('div[title*=a]')            // title属性中有'a'的div
+        $('div[title|=a]')            // title属性为test开头或开头匹配且后有-的div
+
+
+第四章 过滤选择器
+
+    $('#box').find('p');                // 查找#box中的p元素
+    $('#box').find('p').end().html();   // 查找#box中的p元素,然后还原成$('#box'),再调用html()
+    $('#box').is('div');                // 检测#box是否是div元素
+    $('#box').is($('.box'));            // 检测#box是否是.box
+    $('#box').is($('.box').eq(0));      // 检测#box是否是第一个.box
+    $('#box').is($('.box').get(0));     // 检测#box是否是第一个.box
+    $('#box').is(function(){            // 同上
+        return $(this).attr('title') == 'a';
+    });
+    $('#box').hasClass('box');          // 检测#box 是否是 .box
+    $('#box').end();
+
+
+    /*
+     *  基本过滤规则：
+     *      $('div:first') / $(div:last) / $('div:eq(2)') / $('div:focus')
+     *      $('div').first() / $('div').last() / $('div').eq(2)               // jQuery 专有方法       .eq([可传负数,代表倒序])
+     *      // :focus 是指页面初始状态获得焦点的元素,可以先定义$('#a').focus()
+     *
+     *      // nth-child() 表示选择子元素,eq() 表示选择当前元素
+     *      // nth-child() 下标从1开始,eq() 从0开始
+     *  
+     *  内容过滤器：
+     *      $('div:contains("sc")') / $('div:has(".box")') / $('div:empty()')
+     *      // :has('.xxx') 获取子元素中属性为'.xxx' 的元素
+     *      // $('#box').parent()  获取父元素
+     *      // $('#box').parents('.frame')  获取祖先元素
+     *
+     *  子过滤选择器：    $('#ul li:nth-child(2n)')        li的父元素的第2n个li元素
+     *  
+     *  可见性选择器：    $(':hidden') / $(':visible')
+     *
+     */
+
+第五章 基础DOM 和 CSS操作
+
+    [设置元素和内容]
+        html()              获取元素中 HTML 内容
+        html(value)         设置元素中 HTML 内容
+        text()              获取元素中文本内容
+        text(value)         设置原生中文本内容
+        val()               获取表单中的文本内容
+        val(value)          设置表单中的文本内容
+
+        /*
+         *  可以通过给 val() 传递带有单选/复选框的value值的数组设置选定状态 
+         *      $('input').val(['男']);
+         */
+        
+        // 通过html()追加元素内容
+            $('#box').html(function(index,value){
+                return value+' test:'+index;
+            });
+
+    [元素属性操作]
+        $('#box').attr('title')                                 获取属性
+        $('#box').attr('title','hello Sc')                      设置属性
+        $('#box').attr({title:'this is title',type:'text'})     传递对象设置属性
+        $('#box').attr('title',function(index,value){...})      获取和设置属性
+        $('#box').removeAttr('title')                           获取和设置属性
+
+        /*
+         *  class/id属性不建议用attr()设置,jQuery 有专门的方法设置class
+         *  
+         *  attr()可以传回调函数,在attr()内部执行
+         *      回调函数index从0开始,value表示title值
+         *  
+         */
+
+    [元素样式操作]
+        $('#box').css('color');             // 获取元素属性[行内]
+        $('#box').css(['color','float']);   // 获取元素属性[行内]
+
+            // 遍历对象数组
+                var attributes = $('#box').css(['color','float']);
+                $.each(attributes,function(attr,value){
+                    console.log(attr+':'+value);
+                });
+
+                /*
+                 *  css([...]) 返回对象数组
+                 *  jquery提供了each()遍历数组
+                 *  
+                 */
+                
+            // 遍历jquery对象[只适用于操作jquery对象]
+                $('.box').each(function(index,element){         // element是DOM对象
+                    console.log(index+':'+element);
+                });
+
+
+        $('#box').css('color','red');           // 设置元素属性[行内]
+        $('#box').css({                         // 传递对象设置元素属性[行内]
+            color:'red',
+            float:'right'
+        });
+        $('#box').css(function(index,value){    // 同上
+            return ...;
+        });
+
+        /*
+         *  设置属性/css的方法可以通过传递对象和匿名函数实现
+         *  建议复杂的属性设置通过匿名函数进行操作
+         *  
+         */
+
+    [元素class操作]
+
+        $('#box').addClass('bg a b c');             // 添加class
+        $('#box').removeClass('bg a b c');          // 删除class
+        $('#box').toggleClass('bg ',[bool]);        // 在默认class和指定class间切换
+
+            // 使用toggleClass实现指定频率切换class 
+                var abc = 1;
+                $('li>span').click(function(){
+                    var t = (abc++ % 3) == 0;
+                    $('li>span').toggleClass('bg',t);       // t 控制是否切换
+                    console.log(t);
+                });
+
+    [其他操作css方法]
+
+        $('#box').width();                       // 直接获取元素宽度[Number]
+        $('#box').width(400);                    // 直接设置元素宽度[Number]
+        $('#box').width('400px');                // 直接设置元素宽度[String]
+        $('#box').width(function(index,value){   // 同上
+            return ...;                          // height()同上
+        });
+
+        $('#box').innerWidth();                  // 获取元素宽度[加内边距]
+        $('#box').outerWidth();                  // 获取元素宽度[加内边距和边框]
+        $('#box').outerWidth(true);              // 获取元素宽度[加内边距和边框和外边距]
+
+        $('#box').offset();                      // 获取元素相对视口的偏移量[返回值是Object,有left/top属性]
+        $('#box').position();                    // 获取元素相对父元素的偏移量[同上]
+        $(window).scrollTop();                   // 获取垂直滚动条距顶部的值
+        $(window).scrollTop(100);                // 设置垂直滚动条距顶部的值
+        $(window).scrollLeft();                  // 获取水平滚动条距顶部的值
+
+第六章 DOM节点操作
+    
+    [元素内部插入节点]
+
+        // 追加
+            var text = '<span>contents</span>';             // 创建节点
+
+            $('body').append(text);                         // 插入节点
+            $('body').append(function(index,html){          // 传入匿名函数插入节点
+                return html+index;
+            });
+            $('#box').appendTo('#fm');                      // 将现有的DOM元素追加到元素中
+
+        // 插入到元素内部最前
+            $('body').prepend(text);                        // 插入节点
+            $('body').prepend(function(index,html){         // 传入匿名函数插入节点
+                return html+index;
+            });
+            $('#box').prependTo('#fm');                     // 将现有的DOM元素追加到元素中
+
+    [元素外部插入节点]
+
+        // 追加到元素后面
+            $('body').after('<span>test</span>');            // 添加节点
+            $('body').after(function(index,html){            // 同上
+                return ...;
+            });
+            $('body').insertAfter('<span>test</span>');      // 将现有的DOM元素添加到元素外部之后
+
+        // 追加到元素前面
+            $('body').before('<span>test</span>');           // 添加节点
+            $('body').before(function(index,html){           // 同上
+                return ...;
+            });
+            $('body').insertBefore('<span>test</span>');     // 将现有的DOM元素添加到元素外部之前
+
+    [包裹节点]
+
+        $('#box').wrap('<div />');                           // 用html代码包裹节点
+        $('#box').wrap('<div class="xxx"><i></i></div>');    // 用html代码包裹节点
+        $('#box').wrap($('#block').get(0));                  // 用DOM元素包裹节点
+        $('#box').wrap(document.createElement('p'));         // 同上
+        $('#box').wrap(function(index){                      // 同上
+            return ...;
+        });
+
+        $('#box').unwrap();                                  // 清除一层包裹的元素
+
+        $('ul:first>li').wrapAll('<em></em>');               // 用html代码包裹所有节点
+        $('ul:first>li').wrapAll(document.createElement('em'));
+                                                             // 用html代码包裹所有节点
+        $('#box').wrapInner('<em></em>');                    // 为元素所有子元素包裹指定元素
+        $('#box').wrapInner(document.createElement('em'));   // 同上
+        $('#box').wrapInner(function(index){                 // 同上
+            return ...;
+        });
+
+        /**
+         *  wrap()          为每个节点外面都包裹元素
+         *  wrapAll()       为所有节点外面包裹一层元素
+         *  wrapInner()     为所有节点内部都包裹元素
+         *  
+         */
+
+    [克隆/复制节点]
+        $('#fm').clone(true).insertAfter($('#a'));           // 克隆并追加到元素后面[参数为是否克隆属性]
+
+    [删除节点]
+        $('ul').remove();                                    // 删除ul元素[返回元素移除事件]
+        $('ul').detach();                                    // 删除ul元素[返回元素保留事件]
+
+        $('ul').remove().appendTo('body');                   // 将ul删除,并添加到<body>中
+
+        /*
+         *  remove()和detach()都返回元素本身
+         *  remove返回的元素移除了事件,detach保留事件
+         */
+
+    [清空元素内的内容]
+        $('#fm').empty();                               // 清空元素内的内容
+
+    [替换元素]
+        $('#box').replaceWith('<span>test</span>');     // 替换
+        $('<span>test</span>').replaceAll('#box');      // 同上
+
+第七章 表单选择器
+
+    [表单选择器]
+        $('#fm :input');                        // 获取表单元素[input/textarea/button/select]
+        $('#fm :submit');                       // 获取所有提交按钮
+        $('#fm :reset');                        // 获取所有重置按钮
+        $('#fm :button');                       // 获取所有普通按钮
+        $('#fm :image');                        // 获取所有图片按钮
+        $('#fm :hidden');                       // 获取所有隐藏字段[type=hidden]
+        ...
+        $('#fm :checked');                      // 获取所有被选中的元素
+        $('#fm :selected');                     // 获取所有被选择的元素
+    /**
+     *  '#fm :input' 是指form的子元素中所有表单元素
+     *  
+     */
+
+第八章 基础事件
+
+    [绑定事件]
+        $('#box').bind('click dblclick',fun);              // 绑定事件
+        $('#box').bind('click dblclick',function(){        // 传入函数绑定事件
+            consloe.log('contents');
+        });
+        $('#box').bind({                                   // 传入对象绑定事件
+            click:function(){
+                consloe.log('contents1');
+            }
+            dblclick:function(){
+                consloe.log('contents2');
+            }
+        });
+
+    [删除绑定事件]
+        $('#box').unbind();                                 // 删除所有事件
+        $('#box').unbind('click');                          // 删除指定事件
+        $('#box').unbind('click',fun);                      // 删除指定事件函数
+
+    [简写事件]
+        // jQuery提供了绑定事件的简写方法
+            click(fun) / dblclick(fun)
+            mousedown / mouseup / mouseover / mouseout / mousemove
+            mouseenter / mouseleave
+            keydown / keyup /keypress
+            unload / resize / scroll
+            focus / blur / focusin /focusout
+            select / change / submit
+
+            /*
+             *  
+             *  nouseover 和 mouseout 当移入和移出子元素都会触发该事件
+             *  
+             *  mouseenter      鼠标移入,禁止冒泡
+             *  mouseleave      鼠标移出,禁止冒泡
+             *  
+             *  blur            失去焦点
+             *  focusin         得到焦点,冒泡[当子元素触发focus事件时执行]
+             *  focusout        失去焦点,冒泡[当子元素触发blur事件时执行]
+             *  
+             *  select          文本选定
+             *  change          值改变
+             *  
+             */
+
+    [复合事件]
+
+        ready               DOM元素加载完毕
+        hover               鼠标移入和移出
+            $('#box').ready(fun1[,fun2]);
+            /*
+             *  fun1 对应 mouseenter
+             *  fun2 对应 mouseleave
+             */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,526 @@
+<?php
+[15] 控制器
+    [方法名后缀]
+        定义控制器方法后缀[用于解决方法与关键字冲突,例如class]
+        'ACTION_SUFFIX'=>'Action'
+        定义之后所有的方法名必须加后缀Action,URL不变
+
+    [多层控制器]
+        当项目比较业务逻辑比较繁杂的时候,就可能需要将部分业务逻辑分离到其他层,比如事件控制器层
+        # 新建事件控制器目录,创建UesrEvent.class.php类 [ /Application/Home/Event/IndexEvent.class.php ]
+        # 事件控制器负责内部的事件响应,一般只允许内部调用
+        # 控制器中直接实例化或使用A('[Home/]Index','Event');
+ 
+    [多级控制器]
+        # 在配置文件中写入
+        'CONTROLLER_LEVEL' => 2,                     // 设置二级控制器为访问控制器
+        # 在Controller目录中新建二级控制器目录...
+        # 配置完成后将只允许访问二级控制器
+
+    [前置方法和后置方法]
+        # test()的前置后置方法
+        public function _before_test(){echo 'before ';}
+        public function _after_test(){echo ' after';}
+
+    [Action参数绑定]
+        # 默认情况下Action参数绑定是开启的
+        # 开启后URL中传参时如果参数不存在或方法中未定义初始值就会报错
+
+        [定义顺序传参绑定]
+            'URL_PARAMS_BIND_TYPE'=>1,
+            # 定义之后可以省略URL中的参数名部分
+            http://sc/Index/test/id/2/user/sc
+                        ↓
+            http://sc/Index/test/2/sc
+
+    [跳转和重定向]
+        [成功和失败的跳转]
+            $flag = true;
+            if ($flag) {
+                $this->success('操作成功','otherFun',5);           // 默认返回当前页[提示信息,本控制器方法名或其他URL,秒数]
+            }else {
+                $this->error('操作失败',10);                       // 默认跳转到上一页[history.back]
+            }
+
+        [成功和失败页面模版文件]
+            //默认错误跳转对应的模板文件
+            'TMPL_ACTION_ERROR' =>THINK_PATH .'Tpl/dispatch_jump.tpl',
+            //默认成功跳转对应的模板文件
+            'TMPL_ACTION_SUCCESS'=>THINK_PATH.'Tpl/dispatch_jump.tpl',
+        
+        [自定义成功和失败模版页面]
+            'TMPL_ACTION_SUCCESS'=>'Public/success',
+            'TMPL_ACTION_ERROR'=>'Public/error',
+
+        [提供的模版信息变量]
+            $msgTitle           操作标题 
+            $message            页面提示信息 
+            $status             操作状态 1表示成功 0 表示失败 具体还可以由项目本身定义规则 
+            $waitSecond         跳转等待时间 单位为秒 
+            $jumpUrl            跳转页面地址 
+
+        [重定向方法]
+            $this->redirect('all','flag=1',4,'successssssssssssssssssss');
+            // 参数为地址表达式/参数/时间/提示信息
+            redirect('http://sdcit.cn',4,'successsssssss');
+            // 直接使用URL跳转
+
+    [输入变量]
+        ThinkPHP 提供 I()方法进行变量的获取和过滤,使用PATHINFO模式自动过滤,普通模式需要进行过滤
+        过滤方式为htmlspecialchars(),转义html tags
+        # I('变量类型.变量名',['默认值'],['过滤方法']);
+        I('get.');                      // 获取所有get请求
+        I('get.content','',false);      // 不使用过滤规则
+
+    [请求类型]
+        使用IS_GET/IS_POST/IS_AJAX/... 判断GET/POST/AJAX请求
+
+    [空操作]
+        控制器中使用_empty()实现不存在的方法的错误提示
+        public function _empty($name){echo $name;}
+
+    [空控制器]
+        # 新建EmptyController.class.php控制器类
+        # 当访问不存在的控制器的时候会执行index()方法[构造方法也会执行]
+        class EmptyController extends Controller {
+            function index(){echo CONTROLLER_NAME;}
+        }
+
+    [操作绑定到类]
+        将controller中每一个方法绑定到一个类中
+        # config.php
+        'ACTION_BIND_CLASS'=>True,
+        在controller目录中新建Index目录
+        # 新建_empty类实现空方法
+        # 新建_empty目录实现空控制器
+
+[16] Session与Cookie
+    [session]
+        系统启动时会自动初始化session
+
+    [手动初始化sesssion]
+        session()第一个参数传入数组session初始化设置
+        session(array('name'=>'session_id','expire'=>3600));                // expire 单位为秒
+
+    [session操作]
+        session('user','sc');               // 创建
+        session('user',null);               // 销毁
+        session(null);                      // 销毁所有
+        session('?user');                   // 判断是否存在
+        session('[pause]');                 // 暂停session写入
+        session('[start]');                 // 开启session写入
+        session('[destory]');               // 销毁session
+        session('[pause]');                 // 暂停session写入
+        session('[regenerate]');            // 重新生成session_id
+
+    [cookie]
+        # 读写操作同session
+        cookie('user','sc',3600);           // 设置时间
+        cookie('user','sc',['expire'=>3600,'prefix'=>'think_']);             // 设置过期时间和前缀
+        cookie('user','sc','expire=3600&prefix=think_');                     // 同上
+
+[17] 图像处理
+    使用Think\Image类进行图像处理功能,支持Gd库和Imagick库
+
+    [实例化类库]
+        $image = new \Think\Image();                    // 实例化图像处理类库,默认为GD库
+        $image = new \Think\Image('Imagick');           // 改为Imagick类库
+
+    [获取图像信息]
+        $image->open('./Public/cup.jpg');               // 加载一张图片 
+        $image = new \THink\Image(\Think\Image::GD,'./Public/cup.jpg');      // 简化写法,同上
+        # 获取图像信息
+        $arr['width'] = $image->width();
+        $arr['height'] = $image->height();
+        $arr['type'] = $image->type();
+        $arr['mime'] = $image->mime();
+        $arr['size'] = $image->size();
+
+    [图像处理]
+        [裁剪]
+            // 将图片从100,100开始裁剪为宽高为300*300的图片并压缩为200*200的图片
+            $image->crop(300,300[,100,100,200,200])->save('./Public/new.jpg');
+
+        [缩略图]
+            // 等比例生成最大尺寸为300*100的图片,图片实际尺寸可能会小于100[设置的最小边],但会完全显示图片
+            $image->thumb(300,100)->save('./Public/new.jpg');
+
+            [其他缩略方式]
+                IMAGE_THUMB_SCALE     =   1 ;       //等比例缩放类型[默认]
+                IMAGE_THUMB_FILLED    =   2 ;       //缩放后填充类型[可能产生白边]
+                IMAGE_THUMB_CENTER    =   3 ;       //居中裁剪类型
+                IMAGE_THUMB_NORTHWEST =   4 ;       //左上角裁剪类型
+                IMAGE_THUMB_SOUTHEAST =   5 ;       //右下角裁剪类型
+                IMAGE_THUMB_FIXED     =   6 ;       //固定尺寸缩放类型
+
+        [水印]
+            [图片水印]
+                // 添加logo.png图片作为水印,设置透明度为50%,位于左上角
+                $image->water('./Public/logo.png'[,1,50]);
+
+                [其他水印位置]
+                    IMAGE_WATER_NORTHWEST =   1 ;       //左上角水印
+                    IMAGE_WATER_NORTH     =   2 ;       //上居中水印
+                    IMAGE_WATER_NORTHEAST =   3 ;       //右上角水印
+                    IMAGE_WATER_WEST      =   4 ;       //左居中水印
+                    IMAGE_WATER_CENTER    =   5 ;       //居中水印
+                    IMAGE_WATER_EAST      =   6 ;       //右居中水印
+                    IMAGE_WATER_SOUTHWEST =   7 ;       //左下角水印
+                    IMAGE_WATER_SOUTH     =   8 ;       //下居中水印
+                    IMAGE_WATER_SOUTHEAST =   9 ;       //右下角水印[默认]
+
+            [文字水印]
+                $image->text('sdcit.cn','./Public/consola.ttf',20,'#000',1)->save('./Public/new.png');
+
+[18] 验证码
+    Think\Verify 类可以支持验证码的生成和验证功能
+
+    [生成验证码]
+        $verify = new \Think\Verify();
+        $verify->entry();
+        # 生成多个验证码[传入可标识的信息]
+        $verify->entry(1);
+        $verify->entry(2);
+
+    [验证码参数]
+        [参数]
+            expire/fontSize/fontttf[字体]/imageW[宽度,设为0自动计算]/imageH/useNoise[是否显示杂点]/length[验证码长度]/useZh[使用中文]
+            设置中文验证码需要将中文字体放到/ThinkPHP/Library/Think/Verify/zhttfs目录中
+
+        [传参方式]
+            $config = [
+                'length' => 5,
+                'fontttf' => '4.ttf',
+                'useNoise' => false,
+            ];
+            $verify = new \Think\Verify($config);
+            $verify->entry();
+
+        [动态设置]
+            $verify = new \Think\Verify();
+            $verify->length = 5;
+            $verify->fontttg = '4.ttf';
+            $verify->useNoise = false;
+            $verify->entry();
+
+        [指定验证码字符]
+            # 英文字体
+            'codeSet' => 'qwertyuiop';
+
+            # 中文字体
+            'zhSet' => '们以我到他会作时要动国产'
+ 
+        [检测验证码]
+            // id为验证码的标识
+            function check_verify($code, $id = ''){
+                $verify = new \Think\Verify();
+                return $verify->check($code, $id);
+            }
+
+[19] 文件上传
+    # 将文件上传到upload页面
+    # 在upload方法中实例化\Think\Upload类
+    
+    [上传]
+        public function upload(){
+            $upload = new \Think\Upload();
+            $upload->maxSize  = 3145728;                 // 单位为字节
+            $upload->exts     = ['png','jpg'];
+            $upload->rootPath = './Uploads/';            // 文件上传根路径[默认为./Uploads]
+            $upload->savePath = './';                    // 相对于文件上传跟路径
+            $info = $upload->upload();
+            if ($info) {
+                $this->success('上传成功');
+            }else{
+                $this->error($upload->getError());
+            }
+        }
+
+        [上传文件参数]
+            $upload->saveName = 'xxx.png';               // 设置文件名[可能会产生同名问题导致上传失败]
+            $upload->mimes = ['image/jpeg'];             // MIME类型
+            $upload->replace = true;                     // 同名覆盖[默认false]
+            $upload->subName = ['date','Ymd'];           // 子目录创建方式
+            $upload->hash = false;                       // 不生成hash编码[md5和sha1]
+
+            [文件名命名]
+                # 默认使用uniqid()生成
+                # 采用函数命名
+                $upload->saveName = 'myfun';
+                $upload->saveName = ['date','Y-m-d'];    // 如果使用函数方式且需要传参,可使用数组
+
+            [子目录采用函数返回]
+                $upload->subName = 'get_user_id';
+                # 在/Application/Common/Common/function.php 中写入get_user_id函数
+                function get_user_id(){
+                    return rand();          // 返回目录名
+                }
+
+        [获取上传文件信息]
+            $info = $upload->upload();
+            var_dump($info);                // 打印上传文件信息
+            # 结果如下
+            array (size=1)
+              'myFile' =>                               // 表单名
+                array (size=9)
+                  'name' => string '3.jpg'              // 源文件名
+                  'type' => string 'image/jpeg'
+                  'size' => int 14021
+                  'key' => string 'myFile'              // 表单名
+                  'ext' => string 'jpg'
+                  'md5' => string '851c5bacec25a7c09eadf543f151b558'                // 开启hash时才显示
+                  'sha1' => string '86bc5ec52f101612357ca8a420877d98d255d213'       // 同上
+                  'savename' => string '580717c45e109.jpg'                          // 文件名
+                  'savepath' => string './2016-10-19/'                              // 目录名
+
+[20] 多语言
+    [系统语言包]
+        语言检测并自动加载语言包类 /ThinkPHP/Library/Behavior/CheckLangBehavior.class.php
+        [开启多语言行为]
+            # /Application/Common/Conf目录下新建tags.php 并写入
+            return [
+                'app_begin' => ['Behavior\CheckLangBehavior'],
+            ];
+
+            # config.php
+                'LANG_SWITCH_ON' => true,                    // 开启语言包功能
+                'LANG_AUTO_DETECT' => true,                  // 自动侦测语言 开启多语言功能后有效[和上面是一组]
+                'LANG_LIST' => 'zh-cn,en-us',                // 允许切换的语言列表 用逗号分隔[和下面是一组]
+                'VAR_LANGUAGE' => 'lang',                    // 默认语言切换变量
+
+            配置完成后访问一个错误的地址 http://sc/TP/tset/df?lang=en-us 将会显示英文提示
+            客户端修改lang后会生成cookie 存储语言类型,时效1小时,所以会暂时记住语言类型而无需再使用lang指定
+            语言包在Think\Lang 下 
+
+    [应用语言]
+        # 在Home目录下新建Lang目录
+        # 分别建立zh-ch.php和en-us.php两个文件
+        # zh-ch.php
+        return [
+            'form_user' => '用户名',
+        ];
+        # en-us.php
+        return [
+            'form_user' => 'username',
+        ];
+        # 模版文件
+        <{$Think.lang.form_user}> 或 <{:L('form_user')}>
+
+[21] auth 权限控制
+    [权限介绍]
+        ThinkPHP 提供了一个内置的 Auth.class.php 类来实现权限控制
+        这个类提供了三个表：think_auth_rule(认证规则表)/think_auth_group(用户组表)/think_auth_group_access(用户和组对应关系表)
+
+    [简单登录]
+        创建 /Application/Common/Controller/AuthController.class.php 文件用于权限控制
+        # 添加_initialize()
+        protected function _initialize(){                       // 方法名固定为_initialize()
+            $auth = new Auth();
+            if(!$auth->check()) $this->error('没有权限');
+        }
+        将需要权限控制的controller继承AuthController
+
+    ...
+
+[22] 关联模型
+    # 关联模型分为三种模式
+        一对一关联 ：ONE_TO_ONE,包括HAS_ONE 和 BELONGS_TO
+        一对多关联 ：ONE_TO_MANY,包括HAS_MANY 和 BELONGS_TO
+        多对多关联 ：MANY_TO_MANY
+
+    # 关联模型扩展类
+        /ThinkPHP/Library/Think/Model/RelationModel.class.php
+
+    [关联操作]
+        [一对一]
+            创建UserModel,继承RelationModel,创建$_link属性
+            # UserModel.class.php
+                protected $_link = [
+                    'Card' => [
+                        'mapping_type'   => self::HAS_ONE,           // 关联类型
+                        'class_name'     => 'Card',                  // 关联表的模型名
+                        'mapping_name'   => 'cards',                 // 获取关联模型数据的数组名,不能和当前模型字段重复
+                        'foreign_key'    => 'uid',                   // 关联外键的名称
+                        'mapping_fields' => 'code',                  // 关联模型字段
+                        'as_fields'      => 'code:卡号',             // 映射成的同级字段名
+                        'condition'      => '1=1'                    // 关联条件
+                    ]   
+                ];
+            实例化User模型类,执行relation(true)->select()或relation('code')
+            # BELONGS_TO同上,只需修改mapping_type
+
+        [一对多]
+            # 同上并支持mapping_limit 和 mapping_order属性,
+            'mapping_limit' => '0,2',
+            'mapping_order' => 'id DESC'
+
+        [多对多]
+            # 多对多需要中间表(think_group)
+            'Role'=>[
+                'mapping_type'         =>   self::MANY_TO_MANY,
+                'foreign_key'          =>   'uid',
+                'relation_foreign_key' =>   'gid',                      // 中间表的外键名称
+                'relation_table'       =>   'think_group',              // 中间表
+            ],
+
+        [增删改]
+            # add
+            $data['user'] = 'sc';
+            $data['Card'] = ['code'=>'9jf83fniosf'];                    // Card值为 mapping_name属性值
+            $user->relation(true)->add($data);
+
+            # delete
+            $user->->relation()->delete(23);
+
+            # update
+                $data['user'] = 'sc';
+                $data['Card'] = ['code'=>'9jf83fniosf'];
+                $user->relation(true)->where(['id'=>23])->save($data);
+
+[23] 视图模型和分页
+    [视图模型]
+        关联模型通过多条SQL语句实现各种关联操作,对于一对一的关联关系更适合使用视图模型来完成
+        视图模型通过JOIN实现 HAS_ONE和BELONGS_TO
+        # 创建UserViewModel继承Think\Model\ViewModel
+        # 创建$viewFields属性
+            public $viewFields = [
+                'User' => ['id','user','email','_type'=>'LEFT'],            // type为左连接,实现HAS_ONE
+                'Card' => ['code','_on'=>'User.id=Card.id']
+            ];
+            _on对应 JOIN ON 语句
+            _type对应 LEFT JOIN / RIGHT JOIN
+
+
+        # 执行的SQL
+            SHOW COLUMNS FROM `think_user`
+            SHOW COLUMNS FROM `think_card`
+            SELECT User.id AS id,User.user AS user,User.email AS email,Card.code AS code 
+                FROM think_user User 
+                JOIN think_card Card 
+                ON User.id=Card.id 
+
+        [分页]
+            $user = M('User');
+            $count = $user->where('id>2')->count();                 // 按照查询条件获取总页数
+            $page = new \Think\Page($count,3);
+            $page->setConfig('first','|<');                         // 设置分页参数
+            $page->setConfig('prev','<');
+            $page->setConfig('next','>');
+            $page->setConfig('last','>|');
+            $page->setConfig('theme', '%HEADER%,共%TOTAL_PAGE%页 %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
+            $show = $page->show();                                  // 获取分页html代码
+            $data = $user->where('id>2')->order('id DESC')->limit($page->firstRow.','.$page->listRows)->select();
+
+            var_dump($data);
+            echo $show;
+
+            [分页参数]
+                ...
+                %FIRST%          表示第一页的链接显示 
+                %UP_PAGE%        表示上一页的链接显示 
+                %LINK_PAGE%      表示分页的链接显示 
+                %DOWN_PAGE%      表示下一页的链接显示 
+                %END%            表示最后一页的链接显示 
+
+[24] 缓存处理
+    TP 默认使用File 缓存方式
+    一般情况下并不需要直接操作缓存类,系统内置对缓存操作进行了封装，直接采用S()即可
+    [其他缓存方式初始化]
+        S(array(
+            'type'=>'memcache',
+            'host'=>'192.168.1.10',
+            'port'=>'11211',
+            'prefix'=>'think',
+            'expire'=>60)
+        );
+
+    [设置缓存]
+        if (!$list = S('list')) {                       // 判断缓存是否存在
+            $user = M('User');
+            $list = $user->select();
+            S('list',$list,20);                         // 写入缓存
+        }
+        $this->assign('tableName','用户信息表');
+        $this->assign('list',$list);
+        $this->display();
+
+    [缓存方法]
+        S('list',$list,30);                 // 缓存30秒
+        S('list',null);                     // 删除缓存
+
+    [缓存数据的存放地址]
+        /Application/Runtime/Temp
+
+    [快速缓存]
+        使用F() 永久缓存数据
+        F('list',$list,DATA_PATH);
+
+    [缓存数据的默认存放地址]
+        DATA_PATH
+        /Application/Runtime/Data
+
+    [查询缓存]
+        对于及时性要求不高的数据,可以使用查询缓存提高效率
+        $list = $user->cache('app_user',10)->where('status=1')->select();
+
+        [获取和删除]
+            var_dump(S('app_user'));
+            S('app_user',null);
+
+    [静态缓存]
+
+        'HTML_CACHE_ON'=>true,                  //开启静态缓存
+        'HTML_CACHE_TIME'=>60,                  //全局缓存时间60秒
+        'HTML_FILE_SUFFIX'=>'.html',            //缓存的后缀
+        'HTML_CACHE_RULES'=>[
+            # 控制器:方法 //模块_控制器_方法_ID，局部60秒
+            'User:index'=>['{:module}_{:controller}_{:action}',60],
+        ],
+
+        // 生成的缓存文件在 /Application/Html/Home/Index/test.html
+
+[25] 调试方法
+    [调试模式]
+        # 入口文件
+        define('APP_DEBUG',true);
+
+    [手动抛出异常]
+        E('error',25);              // 支持错误代码
+
+    [模型调试]
+        $user->getLastSql();            // 获取最近执行的sql
+        $user->getDbError();            // 获取SQL错误信息
+
+    [性能调试]
+        G('begin');
+        $user = M('User');
+        $list = $user->select();
+        G('end');
+        echo G('begin','end');                  // 运行时间
+        echo G('begin','end','m');              // 内存开销
+
+    [日志记录]
+        日至记录要在调试模式下才有效,部署模式下需要进行配置
+        # 部署模式下的配置方式
+        # config.php
+        'LOG_RECORD'    => true,                           // 开启日志记录
+        'LOG_LEVEL'     => 'EMERG,ALERT,CRIT,ERR',         // 运行的日志记录级别
+        # TP对系统日志按照级别分类
+        
+        [手动写入日志]
+            Log::record('法克','WARN',true);              // 第三个参数是强制记录[record() 只会记录当前配置允许的日志级别的信息]
+            Log::write('法克','WARN');                    // 强制写入
+
+    [TRACK 调试工具] 
+        # 显示页面Trace信息
+        'SHOW_PAGE_TRACE' =>true, 
+
+        trace('变量','标签','级别','是否记录日志')
+        
+        # 把变量输出到track的调试标签中
+        trace($info,'提示');
+
+
+
+
+

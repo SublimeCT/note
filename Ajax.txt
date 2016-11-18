@@ -1,0 +1,85 @@
+[创建Ajax对象]
+    // IE9-
+    var xhr = new ActiveXObject('Msxml2.XMLHTTP.6.0');
+    // 非IE9
+    var xhr = new XMLHttpRequest();
+
+[发送Ajax请求]
+    xhr.open('get','test.php',true);    // true为异步(默认),false为同步
+    xhr.send(null);                     // get方式不需要传参
+
+[接收ajax返回信息]
+    1. 创建xhr对象
+    2. 绑定readyStateChange事件
+    3. 创建请求open()
+    4. 发送请求send()
+    5. 接收请求xhr.responseText
+
+    [readyState 属性]
+        0:已创建xhr对象
+        1:已调用open()
+        2:已调用send()
+        3:已经返回部分数据
+        4:请求完成,数据返回成功
+
+    [xhr 其他属性]
+        status/stautsText
+        304 -- 请求缓存
+        403 -- 禁止访问
+
+[GET 和 PSOT 方式的不同]
+    1. 传递的数据量不同
+    2. POST更安全
+    3. 传递数据的形式不同
+        GET     --   字符串形式
+        POST    --   xml形式
+
+[GET Ajax]
+    [特殊字符处理]
+        需要对请求字符串中的中文/&/=等特殊符号进行编码处理
+            php --   urlencode()
+            JS  --   encodeComponentURI()
+
+[POST Ajax]
+    [特殊字符处理]
+        post 方式中文自动进行编码,但 & = 等特殊符号需要编码处理
+    [发送方式]
+        /*
+         *  在XForms的世界中,数据是以xml格式传递的
+         *  所以POST Ajax时需要设置request header 模仿form表单传输数据
+         *  
+         */
+        // 设置请求消息报头
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+[使用DOM 处理XML数据]
+    使用xhr.responseXML 获取服务器返回的xml格式文件
+
+[禁止缓存]
+    在URL后面追加随机数
+
+[JSON]
+    [PHP 对JSON处理方式]
+        json_encode()/json_decode()
+        json_encode($obj) 时只考虑对象属性,忽略$obj 中的方法
+        json_decode($arr[,$assoc]), 第二个参数true array/false object
+
+    [JS 处理JSON对象]
+        JSON.parse()        json字符串转换为js对象
+        JSON.stringify()    json字符串转换为js对象
+
+[使用HTML5 FormData 无刷新提交表单数据]
+    // FormData对象自动收集表单数据,Ajax 提交时不需要设置request header
+    // 无需对字段值进行编码
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData(document.getElementById('fm'));
+    xhr.onreadystatechange = function(){...}
+    xhr.open('post','x.php');
+    xhr.send(fd);
+    [获取表单上传文件]
+        // FormData收集上传文件数据时不需要设置 enctype="nultipart/form-data" 属性
+        
+[进度条]
+    // 上传文件时可以通过 xhr.upload.onprogress 事件的属性来获取文件上传进度
+    xhr.upload.onprogress.loaded             已上传大小
+    xhr.upload.onprogress.total              文件总大小
