@@ -1,0 +1,148 @@
+# Linux常用目录
+    /bin            存放了一些二进制文件,在Linux中是可以被执行的,目录中的命令是给普通用户使用的
+    /sbin           存放了一些二进制文件,目录中的命令是给root 用户使用的
+    /etc            Linux下所有的配置文件都会存放到/etc 目录下
+    /home           所有非root 用户的家目录
+    /root           root 用户的家目录
+    /usr            存放用户自己安装的软件
+    /var            存放Linux 下的一些日志文件
+
+# Linux网络配置[桥接]
+    1. 虚拟机 === 编辑 === 虚拟网络编辑器 === VMNet0 桥接 === 自动
+    2. 设置ip 为dhcp 自动获得
+       vi /etc/sysconfig/network-scripts/ifcfg-eth0
+       -- insert --
+       NM_CONTROLLED=yes 
+    3. service network restart === ifconfig
+
+# XShell连接red hat
+    -- 关闭Linux 防火墙
+    service iptables stop
+    chkconfig iptables off
+
+    -- 启动ssh
+    service sshd restart
+
+# 基本命令
+    ls
+        -- 显示文件信息
+        -l[每列显示一个文件或目录名称]
+        -a[显示隐藏文件]
+
+    init
+        -- 切换Linux 运行模式
+        0[关机]
+        3[命令行模式]
+        5[桌面模式]
+        6[重启]
+
+    touch
+        -- 创建文件
+
+    cp
+        -- [copy]复制文件或目录
+        [被复制的文件路径] [复制到的路径]
+        -r(recursive)[递归删除,如果不使用,则只删除文件]
+        -f(force)[强制删除]
+
+    mv
+        -- [move]移动文件或目录/重命名
+        [被移动的文件路径] [移动到的路径]
+        [被重命名的文件路径] [文件名]
+        -r(recursive)
+        -f(force)
+
+    rm
+        -- [remove]删除文件或目录
+        -r(recursive)
+        -f(force)
+
+# 快捷键
+    ctrl+c
+        -- 停止当前命令
+
+    ctrl+a
+        -- [ahead]将光标移至当前命令行的最前
+
+    ctrl+e
+        -- [ahead]将光标移至当前命令行的最后
+
+# vim 编辑器
+    -- 三种模式
+        命令模式(Command mode)
+            -- 快捷键
+                # 定位
+                    hjkl[分别对应左上下右]
+                    H(Highest)[当前屏幕首行行首]
+                    M(Middle)[当前屏幕中间行行首]
+                    L(Lowest)[当前屏幕中间行行首]
+                    0[本行行首]
+                    $[本行行尾]
+                    gg[文本开头]
+                    G[文本结尾]
+                    nG[第n行]
+
+                # 操作[需要在command mode下]
+                    yy[复制当前行]
+                    nyy[复制当前行以下n行]
+                    p[粘贴]
+                    dd[删除当前行并将删除的内容复制]                      -- vim 中删除即剪切
+                    D[删除当前行,删除后用换行填充,下一行不上移]
+                    ndd[删除当前行以下n行]
+                    u[撤销]
+                    uu[撤销所有操作]
+                    .[重复最后执行的操作]
+
+        插入模式(Insert mode)
+            -- 快捷键
+                i[在当前位置输入]
+                o[当前位置下创建一行输入]
+
+        末行模式(Lastline mode)
+            -- 快捷键
+                # 命令操作
+                    :w
+                        -- 保存(另存)修改,可以继续编辑
+                        [文件路径]
+
+                    :q[退出]
+                    :x[保存并退出]
+                    :q![不保存强制退出]
+                    :set nu[显示行号]
+                    :set nonu[隐藏行号]
+
+                # 字符串操作
+                    -- 查找
+                        /string[向下查找string]{n下一个,N上一个}
+                        ?string[向上查找string]
+
+                    -- 替换
+                        :s/[需要替换的字符串]/[替换成的字符串]             -- 替换当前行首个出现的字符串
+                        :s/[需要替换的字符串]/[替换成的字符串]/g           -- 替换当前行所有出现的字符串
+                        :%s/[需要替换的字符串]/[替换成的字符串]            -- 替换所有行首个出现的字符串
+                        :%s/[需要替换的字符串]/[替换成的字符串]/g          -- 替换所有
+
+    vim
+        -- 打开文件
+        -- 如果不存在该文件就新建
+        [文件名]
+        +/string[打开文件并高亮显示string]{n下一个,N上一个}
+        +5[打开文件并定位到第5行]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
