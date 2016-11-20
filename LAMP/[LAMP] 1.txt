@@ -6,6 +6,8 @@
     /root           root 用户的家目录
     /usr            存放用户自己安装的软件
     /var            存放Linux 下的一些日志文件
+    /dev            存放(硬件)设备文件
+    /tmp            临时文件
 
 # Linux网络配置[桥接]
     1. 虚拟机 === 编辑 === 虚拟网络编辑器 === VMNet0 桥接 === 自动
@@ -57,6 +59,21 @@
         -r(recursive)
         -f(force)
 
+# 将命令添加到PATH中
+    1. 直接在命令行中设置PATH
+        PATH=$PATH:/sbin                -- 仅对当前会话有效
+
+    2. 为所有用户设置
+        vi /etc/profile
+        -- 在export 行下加入
+        export PATH=$PATH:/usr/local/apache/bin
+        source /etc/profile
+
+    3. 为当前用户设置
+        vi ~/.bash_profile
+        PATH=$PATH:$HOME/bin:/sbin
+        source ~/.bash_profile
+
 # 快捷键
     ctrl+c
         -- 停止当前命令
@@ -68,6 +85,13 @@
         -- [ahead]将光标移至当前命令行的最后
 
 # vim 编辑器
+    vim
+        -- 打开文件
+        -- 如果不存在该文件就新建
+        [文件名]
+        +/string[打开文件并高亮显示string]{n下一个,N上一个}
+        +5[打开文件并定位到第5行]
+
     -- 三种模式
         命令模式(Command mode)
             -- 快捷键
@@ -75,7 +99,7 @@
                     hjkl[分别对应左上下右]
                     H(Highest)[当前屏幕首行行首]
                     M(Middle)[当前屏幕中间行行首]
-                    L(Lowest)[当前屏幕中间行行首]
+                    L(Lowest)[当前屏幕末行行首]
                     0[本行行首]
                     $[本行行尾]
                     gg[文本开头]
@@ -91,6 +115,7 @@
                     ndd[删除当前行以下n行]
                     u[撤销]
                     uu[撤销所有操作]
+                    ctrl+r[取消撤销]
                     .[重复最后执行的操作]
 
         插入模式(Insert mode)
@@ -107,6 +132,10 @@
 
                     :q[退出]
                     :x[保存并退出]
+                        -- :wq 和:x 的区别
+                            :wq无论文件是否被修改,文件的最后修改时间都会发生改变
+                            :x只有产生修改之后文件的最后修改时间才会改变
+
                     :q![不保存强制退出]
                     :set nu[显示行号]
                     :set nonu[隐藏行号]
@@ -122,18 +151,50 @@
                         :%s/[需要替换的字符串]/[替换成的字符串]            -- 替换所有行首个出现的字符串
                         :%s/[需要替换的字符串]/[替换成的字符串]/g          -- 替换所有
 
-    vim
-        -- 打开文件
-        -- 如果不存在该文件就新建
-        [文件名]
-        +/string[打开文件并高亮显示string]{n下一个,N上一个}
-        +5[打开文件并定位到第5行]
+    -- vim配置文件
+        vim ~/.vimrc                -- 如果不存在就创建
+        -- insert --
+        set nu
 
+# 配置命令别名
+    vim ~/.bashrc               -- 如果不存在就创建
+    -- insert --
+    alias cl='clear'
+    -- 保存后重新登录(切换用户)
 
+# 异常关闭处理
+    当文件没有正常关闭时,下次打开是会出现提示并在同目录下多出一个交换文件
+    test.js === .test.js.swp
+    可以按实际情况选择删除该文件
 
+# rpm软件管理
+    -- 查询安装
+        rpm 
+            -- (redhat package manager)软件管理
+            -q(query)[查询]
+            -a(all)[所有]
+            [|grep]
+            -e[卸载]
+            -i(install)[安装]
+            -v[显示进度条]
+            -h[以'#'显示进度条]
+            # 常用
+            rpm -ivh        -- 安装
+            rpm -e          -- 卸载
+            rpm -qa         -- 查询
 
+# 修改默认的Linux 运行模式
+    vim /etc/inittab
 
+# 网卡设置
+    vim /etc/sysconfig/network-scripts/ifcfg-eth0           -- 配置文件
+    ifdown eth0         -- 禁用网卡[实际开发中不要随意禁用]
+    ifup eth0
 
+# 用户和用户组
+    -- 用户管理
+        useradd phper
+    
 
 
 
