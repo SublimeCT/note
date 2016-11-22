@@ -190,6 +190,7 @@
 
         <{$Think.server.script_name}>           // 输出系统变量$_SERVER['SCRIPT_NAME']
         <{$Think.cosnt.APP_PATH}>               // 输出ThinkPHP系统变量[目录]
+        <{$Tkink.IMAGE_PATH}>                   // 输出常量
 
     [使用函数]
         <{$user|md5}>                           // 使用md5加密

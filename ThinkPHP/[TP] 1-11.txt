@@ -36,7 +36,7 @@
             // 导入命名空间
             use Think\Controller;
             // 控制器类
-            class IndexController extends Controller(){
+            class IndexController extends Controller{
                 public function index(){
                     // ...
                 }

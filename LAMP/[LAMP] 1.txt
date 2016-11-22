@@ -192,8 +192,83 @@
     ifup eth0
 
 # 用户和用户组
+    -- 用户
+        Linux系统的用户分为超级用户[UID=0]/普通用户[UID>499]/系统用户[1~499]
+
+    -- 相关配置文件
+        /etc/passwd         用户信息
+        /etc/shadow         用户口令
+        /etc/group          用户组信息
+        /etc/gshadow        用户组口令
+
     -- 用户管理
-        useradd phper
+        su 
+            -- 切换用户
+            - [用户名][切换环境变量]
+
+        useradd
+            -- 添加用户
+            [用户名]
+            -u[指定UID]
+            -g[指定用户组]
+            -e[指定帐号终止日期]
+            # 常用
+            useradd -u 666 -e 31/5/2017 tester
+
+        passwd
+            -- 修改密码
+            [用户名]
+
+        usremod
+            -- 编辑用户
+            -l[新用户名][原用户名][修改用户名]
+            -g[用户组id][原用户名][修改用户组]
+
+        userdel
+            -- 删除用户
+            -r[删除用户家目录]
+
+        groupadd
+            -- 添加用户组
+            -g[设置GID]
+
+        groupdel
+            -- 删除用户组
+
+        groupmod
+            -- 编辑用户组
+            [新用户组名][原用户组名]
+
+        gpasswd
+            -- 管理用户组
+            -a[用户][用户组][将用户添加到用户组]
+            -d[用户][用户组][将用户移出到用户组]
+
+# 文件权限
+    -rw-rw-r-- 1 c c 8 04-19 18:09 abc
+    [文档类型(文件或目录)][文件所有者权限][同组者权限][其他用户权限]
+
+    chmod
+        -- 修改文件权限
+        [用户范围(ugoa)]+/-/=[权限(wrx)][为用户添加或删除权限]
+        [数字形式权限(w->4/r->2/x->1)][设置文件权限]
+        -- code
+        chmod u=rw,g=w,o=w a.js
+        chmod 764 a.js
+        {-wx权限是错误的,如果要写入,就必须先打开}
+
+# 将执行结果写入文件
+    ls /etc > a.txt         将结果覆盖写入a.txt
+    ls /etc >> a.txt        将结果追加写入a.txt
+
+# 查找文件或目录
+    find /etc -name a.txt
+
+# ssh 协议
+    -- 管理进程
+    service network [start|stop|restart|reload|status]
+
+    
     
 
 
