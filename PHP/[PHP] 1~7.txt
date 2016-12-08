@@ -127,6 +127,7 @@
 				flock($f,LOCK_EX);				写操作被锁定
 				flock($f,LOCK_UN);				解锁
 			汉字在utf-8中占3个字节
+		fclose($f);								[关闭文件]将句柄$f关闭
 		[目录句柄操作]
 			opendir('D:\x')						打开目录流
 			readdir($d)							返回目录中的元素并后移指针
@@ -135,7 +136,6 @@
 			rmdir('D:\x');						删除目录
 			rename('Demo.c','Demo1.c');			重命名文件(将Demo替换成Demo1)
 			closedir($d)						关闭目录流					
-		fclose($f);								[关闭文件]将句柄$f关闭	
 
 第七章 自定义函数
 	函数调用不区分大小写

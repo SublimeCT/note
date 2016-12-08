@@ -18,7 +18,7 @@
 			    	echo $str.'<br>';
 			    	$str=strtok('@.');		//执行一次之后就不需要传$str了
 			    }
-		//有mt_前缀的为中文方法
+		//有mb_前缀的为中文方法
 		implode('@',$array);			将一维数组连接成一个字符串
 		substr($str,1,4);				从第一个位置开始截取$str,长度为4
 		str_split($str);				按字节分割$str,返回数组

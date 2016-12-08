@@ -63,15 +63,15 @@
             var date=new Date();
             date.setDate(date.getDate()+7);                               //删除/设置过期cookie        date.setDate(date.getDate()-7);
             console.log(date);
-            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date;
+            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date.toGMTString();        // 转换为string类型
 
         [设置允许访问的路径]
-            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date+';path='+'/E:/web/js/xxx';
+            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date.toGMTString()+';path='+'/E:/web/js/xxx';
 
 
         [设置允许访问的域名]
             //只能在当前域名服务器设置,一般用于设置二级域名时
-            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date+';domain='+'google.com';
+            document.cookie='username='+encodeURIComponent('孙冲')+';expires='+date.toGMTString()+';domain='+'google.com';
 
         [仅限加密连接]
             document.cookie='username='+encodeURIComponent('孙冲')+';secure';             //https

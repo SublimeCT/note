@@ -78,7 +78,7 @@
 
     # 数据查询
         
-        SELECT [DISTANCT] ... FROM ... [WHERE ...][GROUP BY ...][HAVING ...][ORDER BY ...][UNION ...][INTO OUTFILE ...][LIMIT [M,]N];
+        SELECT [DISTINCT] ... FROM ... [WHERE ...][GROUP BY ...][HAVING ...][ORDER BY ...][UNION ...][INTO OUTFILE ...][LIMIT [M,]N];
 
         -- YEAR()/CURDATE()
             SELECT tname,YEAR(CURDATE())-YEAR(tbirthday) FROM teacher;              -- YEAR()获取年/CURDATE()获取当前日期
@@ -102,7 +102,7 @@
                 SELECT name WHERE tel REGEXP '8964$';                    -- 查询电话号码以8964结尾的人
 
             # 聚集函数
-                COUNT([DISTANCT]<列名>|*)/SUM()/AVG()/MAX()/MIN()
+                COUNT([DISTINCT]<列名>|*)/SUM()/AVG()/MAX()/MIN()
 
             # GROUP BY 分组
                 分组可以将查询结果按照某一列或多列进行分类

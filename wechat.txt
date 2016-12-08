@@ -1,0 +1,127 @@
+# https://git.duapp.com/appidcm6fv2wmad
+#刂巾耳阝/*******
+
+# 流程
+    微信手机端 <=> 腾讯web服务器 <=> 自定义服务器 <= 本地(git/svn)
+
+    -- 使用git 克隆远程库
+    $ git clone https://username:password@git.duapp.com/xxx
+
+    -- 设置 bae git传输文件大小
+    git config --global http.postBuffer 524288000
+
+# wechat 官方接口
+    -- 对接微信公众平台
+        1. 下载API接口文件
+        2. 将接口文件更名为api.php,设置TOEKN密钥
+        3. 在微信公众开发平台填入接口文件URL和TOKEN密钥
+
+    -- 设置自动回复
+        将接口文件中的valid验证方法注释,并调用responseMsg方法
+
+# wechat 的6大接收接口
+    -- 获取用户发送数据类型
+        $postObj->MsgType
+        text/image/voice/vodeo/shortvideo/location/link
+
+    -- 文本消息
+         <xml>
+             <ToUserName><![CDATA[toUser]]></ToUserName>
+             <FromUserName><![CDATA[fromUser]]></FromUserName> 
+             <CreateTime>1348831860</CreateTime>
+             <MsgType><![CDATA[text]]></MsgType>
+             <Content><![CDATA[this is a test]]></Content>
+             <MsgId>1234567890123456</MsgId>
+         </xml>
+
+    -- 对于接收的数据来说,FromUserName 是手机端,ToUserName 是微信公众平台
+    -- 对于发送的数据来说,FromUserName 是微信公众平台,ToUserName 是手机端
+
+# wechat 的回复接口
+    text/image/voice/video/music/news
+
+# 响应式设计
+    1. 设置页面宽度为默认宽度,缩放比例为1
+        <meta name="viewport" content"width=device-width,initial-scale=1" />
+    2. 设置媒体查询,加载不同的css文件
+        -- 自适应网页设计的核心就是 CSS3 的 Media Query
+        -- 自动检测屏幕宽度,加载响应的css文件
+        <link rel="stylesheet" type="text/css" media="screen and (max-width: 767px)" href="phone.css" />
+        <link rel="stylesheet" type="text/css" media="screen and (min-width: 768px)" href="style.css" />
+        -- 如果屏幕大小大于767,就加载style.css ...
+    3. 不使用绝对宽度
+        -- 由于网页会根据屏幕宽度调整布局,所以不能使用绝对宽度的布局和元素
+        width:80%;
+    4. 使用相对根元素大小的字体
+        1rem = 16px;
+        -- 为了使字体也根据屏幕宽度变化,字体大小必须设置为相对屏幕大小
+        html{font-size:62.5%;}
+    5. 图片和多媒体自适应
+        -- 当宽度较小时适应屏幕宽度
+        img,object,embed{max-width:100%;}
+
+# 部署项目
+    -- 本地
+        1. 修改apache httpd.conf
+            去除#Include conf/extra/httpd-vhosts.conf 前的#, 开启虚拟主机配置
+        2. 修改httpd-vhosts.conf 配置
+            <VirtualHost *:80>
+                ServerName www.hnthdl.com
+                DocumentRoot "D:\wamp\www\dedecms"
+                <Directory "D:\wamp\www\dedecms">
+                    AllowOverride All
+                    Options FollowSymLinks
+                    Order Allow,Deny
+                    Allow from all
+                    DirectoryIndex index.php index.html
+                </Directory>
+            </VirtualHost>
+        3. 修改本地hosts文件
+        4. 新建hnthdl数据库并导入 hnthdl.sql
+        5. 推送到bae
+        6. 在bae 中导入 hnthdl.sql
+
+# 自定义菜单
+    1. 调用自定义菜单接口(POST方式)
+    2. 获取ACCESS_TOKEN(GET方式)
+        -- ACCESS_TOKEN 是微信公众号的全局唯一票据,调用各接口都需要使用它,有效期2h,占用512字节
+    3. 使用cURL库发送请求
+        -- cURL 是一个利用URL 语法规定来传输数据的工具
+        $cl = curl_init();
+        curl_setopt($cl, CURLOPT_URL, 'http://www.baidu.com');
+        curl_exec($cl);
+        curl_close($cl);
+    4. 使用cURL 请求设置自定义菜单
+        # code
+            $cl = curl_init();
+            $token = 'xxx';
+            $data = ' ... ';
+
+            curl_setopt($cl, CURLOPT_URL, 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$token);
+            curl_setopt($cl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($cl, CURLOPT_POST, true);
+            curl_setopt($cl, CURLOPT_POSTFIELDS, true);
+            curl_setopt($cl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($cl, CURLOPT_SSL_VERIFYPEER, false);
+
+            $output = curl_exec($cl);
+            $output ? var_dump($output) : var_dump(curl_error($cl));
+
+            curl_close($cl);
+
+        -- cURL 常用参数
+            CURLOPT_URL                     url
+            CURLOPT_RETURNTRANSFER          请求后不输出
+            CURLOPT_POST                    使用POST方式传输
+            CURLOPT_POSTFIELDS              POST传输的内容
+            CURLOPT_HTTPHEADER              传输的数据编码
+            CURLOPT_SSL_VERIFYHOST          
+            CURLOPT_SSL_VERIFYPEER
+
+        -- 为请求设置数据格式
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8'));
+
+        -- 自定义菜单按钮类型
+            click/view
+
+        
