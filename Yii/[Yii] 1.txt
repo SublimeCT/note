@@ -59,6 +59,48 @@
         class Country extends ActiveRecord{}            // Yii根据类名对应表名, 单独设置需要修改 Yii\db\ActiveRecord::$tableName()
 
 
+================================
+
+# 请求处理
+    $request = \Yii::$app->request;
+    echo $request->get('name', 'sc');
+    echo $request->post('name', 'sc');
+    echo $request->isGet;
+    echo $request->isPost;
+    echo \Yii::$app->request->userIp;           // 打印用户ip
+
+# session/cookie
+    \Yii::$app->session->open();                // 开启session
+    \Yii::$app->session->set('name','sc');      // 设置
+    \Yii::$app->session->get('name');           // 获取
+    \Yii::$app->session->remove('name');        // 删除
+
+    \Yii::$app->session['name'] = 'sc';         // 同上
+    
+    $cookies = \Yii::$app->response->cookies;
+    $cookies->set() / $cookies->set()
+
+# 视图
+    return $this->renderPartial('/site/say', ['status', 'success']);              // 渲染视图
+    -- xss过滤
+        <?php use yii\helpers\Html; ?>
+        <?= Html::encode($message); ?>
+
+# 布局
+    public $layout = 'common';                              // 设置layout文件名,路径为views/layouts/
+    ...
+    return $this->render('say', ['status', 'error']);       // 使用render渲染可以显示布局
+
+# 数据块
+    -- say.php
+        <?php $this->beginBlock('houseDate'); ?>            // 在视图文件中定义数据块
+            <h1>Has house data ...</h1>
+        <?php $this->endBlock(); ?>
+
+    -- other.php
+        <?=$this->blocks['houseDate']?>
+
+
 
 
 
