@@ -1,0 +1,47 @@
+# 数据库增删改查
+	-- show
+		Model::find()->all()[0]->name				// 查询(对象方式)
+		Model::find()->all()[0]['name']				// 查询(数组方式)
+		Model::find()->one()[0]['name']				// 查询一条
+		count()		返回记录数量
+
+	-- update
+		Model::updateAll(['email'=>'sc@qq.com'],'email=:email',[':email'=>'sc@sc.com']))
+	
+	-- inset
+		Model->name = 'sc';
+		Model->email = 'sc@sc.com';
+		Model->save();
+	
+	-- delete
+		Model::find()->where(['id'=>5])->one()->delete();
+	
+# 连贯操作
+	where/orderBy
+	-- where
+		where(['OR','name'=>'sc'])
+	-- and
+		where(['AND',['name'=>'a'],['email'=>'b']])
+	-- like
+		where(['LIKE','name','sc'])					LIKE '%sc%'
+		where(['LIKE','name','%sc',false])			LIKE '%sc'
+	-- ><>=<=!=
+		where(['>','id',3])
+	-- offset/limit
+		...
+	-- select
+		select('count(*)')
+
+# 预处理语句
+	$connection = Yii::$app->db;
+	$command = $connection->createCommand('SELECT * FROM post WHERE id=:id');
+	$command->bindValue(':id', $_GET['id']);
+	$post = $command->query();
+
+# 输入验证
+	['email','match','pattern'=>'/php7/','message'=>'not PHP7']					// 正则
+	['email', 'compare', 'compareValue'=>30, 'operator'=>'>']					// email>30
+	['email', 'exist']															// 检测是否存在与该字段中
+	['email', 'in', 'range'=>[1,2,3]]											// in
+	['username', 'unique']														// 唯一
+
