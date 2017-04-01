@@ -197,7 +197,7 @@
             },1000,fun);
 
         // 实现队列动画[单元素]
-            $('#box').animate({left:'+=100px'})         // 连缀实现单元素队列动画
+            $('#box').animate({left:'+=100px'})         // 链式调用实现单元素队列动画
                      .animate({top:'700px'})
                      .animate({opacity:'0.3'})
                      .animate({borderRadio:'50%'});
@@ -479,7 +479,7 @@
         // php文件
             <?php
                 $arr = ['a'=>1,'b'=>2];
-                echo $_GET['callback'].json_encode($arr);
+                echo $_GET['callback'].=json_encode($arr);
             ?>
 
             $.getJSON('http://www.li.cc?callback=?',function(response){             // callback=? jQuery会自动生成随机值

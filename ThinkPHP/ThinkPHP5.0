@@ -1,0 +1,137 @@
+# 基础
+    -- 目录结构
+        5.0的部署建议是public目录作为web目录访问内容,其它都是web目录之外
+    -- 开发规范
+        -- 目录和文件
+            除了类文件以外所有的文件和目录采用小写+下划线命名
+        -- 函数/类/属性命名
+            函数          小写字母+下划线
+            方法/属性     驼峰法
+
+
+# 架构
+    -- URL访问
+        5.0取消了URL模式的概念，并且普通模式的URL访问不再支持
+        -- URL大小写
+            URL不区分大小写
+            URL里面的模块/控制器/操作名会自动转换为小写
+            控制器在最后调用的时候会转换为驼峰法处理
+            -- 如果要访问驼峰法的控制器类,则需要使用这种格式,模块名和操作名会直接转换为小写处理
+                http://localhost/index.php/Index/blog_test/read     -- BlogTest
+            -- 严格区分大小写[关闭URL中控制器和操作名的自动转换]
+                'url_convert'    =>  false,                         -- 这种情况下使用blog_test方式依然有效
+    -- 模块设计
+        -- 目录结构
+            模块目录全部采用小写和下划线命名[ThinkPHP5 命名规范]
+        -- 模块和控制器隐藏
+            define('BIND_MODULE','index');
+            define('BIND_MODULE','index/index');                    -- 绑定到index模块的Index控制器
+    -- 命名空间
+        -- 如果调用PHP内置的类库/第三方没有使用命名空间的类库,必须在实例化类库的时候加上 \
+            $class = new \stdClass();
+            $xml   = new \SimpleXMLElement($xmlStr);
+        -- 5.0默认的目录规范是小写,类文件命名是驼峰法,并且首字母大写
+        -- 自动注册根命名空间(类库包)
+            把类库包目录放入EXTEND_PATH目录(extend目录)就可以自动注册对应的命名空间
+        -- 手动注册根命名空间内
+            # 入口文件
+                \think\Loader::addNamespace([
+                    'my'  => '../application/extend/my/',
+                    'org' => '../application/extend/org/',
+                ]);
+            # 或者应用的修改配置文件
+                'root_namespace' => [
+                    'my'  => '../application/extend/my/',
+                    'org' => '../application/extend/org/',
+                ]
+    -- API友好
+        -- 数据输出
+            return xml($data);
+            return json($data);
+
+# 路由
+    -- 路由模式
+        -- 普通模式
+            'url_route_on'  =>  false,                  -- 关闭路由,完全使用PATH_INFO 模式
+        -- 混合模式
+            'url_route_on'  =>  true,
+            'url_route_must'=>  false,                  -- 可以通过PATH_INFO 和已经定义的路由规则来访问
+        -- 强制模式
+            'url_route_on'  =>  true,
+            'url_route_must'=>  true,                   -- 必须定义路由规则才能访问
+    -- 注册路由规则
+        -- 动态注册
+            use think\Route;
+            Route::rule('new/:id','index/News/read');
+        -- 配置文件注册
+            # rote.php
+                return [
+                    'test/[:id]' => ['index/Index/test', ['method'=>'get'], ['id'=>'\d+']],
+                ];
+    -- MISS 路由
+        -- 全局MISS 路由
+            # 在没有匹配到所有的路由规则时可以使用MISS路由功能
+                return [
+                    '__miss__' => 'index/Index/test',
+                ];
+    -- 闭包支持
+        retrun ['test/:id'=>function($id){echo $id;}];
+
+# 控制器
+    -- 控制器定义
+        -- 5.0中控制器可以不继承任何基础类,也可以继承 \think\Controller
+            # 控制器中渲染模版
+                use \think\View;
+                ...
+                // 没有继承Controller类
+                $view = new View();
+                return $view->fetch('index');
+                // 继承Controller类后,可以直接调用think\View think\Request类的方法
+                $this->assign('domain', $this->request->url(true));
+                return $this->fetch('index');
+            -- 渲染输出
+                一般情况下控制器中的输出使用 return 方式
+    -- 控制器初始化
+        -- init初始化方法,在调用该控制器的方法之前执行
+            public function _initialize(){}             // 必须继承Controller 类
+    -- 前置操作
+        -- 设置 $beforeActionList 属性实现前置操作
+            protected $beforeActionList = [
+                'first',                                // 在所有操作之前执行
+                'second' => ['except'=>'hello'],        // 除了hello操作
+                'third' => ['only'=>'hello,hi'],        // 只在hello/hi操作之前执行
+            ];
+    -- 跳转和重定向
+        $this->redirect('go', ['param'=>'1']);
+    -- 多级控制器
+        /application/index/controller/one/Go.php
+        # 访问
+            http://tp5.com/index/one.Go/go
+        # 路由定义
+            \think\Route::get('go', 'index/one.Go/go');
+    -- 分层控制器
+        /application/index/event/Go.php
+        # 分层控制器不能被URL访问到,只能在控制器/模型类/视图文件中调用
+        -- 实例化分层控制器
+            \think\Loader::controller('Go', 'event');
+            \think\Loader::controller('Admin/Go', 'event');     // 跨模块调用
+        -- Widget
+            # 利用分层控制器机制,可以实现widget(在模版中调用分层控制器)
+            -- 在模版文件中调用分层控制器
+                {:action('Go/hello', '', 'widget')}
+                {:action('Go/hi', ['name' => 'think'], 'widget')}
+            -- widget助手函数
+                {:widget('Go/hello')}
+                {:widget('Go/hi', ['name' => 'think'])}
+    -- 自动定位控制器
+        # 实际上是简化多级控制器的URL
+            'controller_auto_search' => true,
+        # 访问
+            http://tp5.com/index/one/Go/go
+    -- 资源控制器
+        
+
+
+
+
+

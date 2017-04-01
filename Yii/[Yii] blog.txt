@@ -1,0 +1,45 @@
+# 基础配置
+    -- 路由配置
+        通过 .htdclass 和 'urlManager' 美化URL
+        # main.php
+            'urlManager' => [
+                'enablePrettyUrl' => true,              // 美化开关
+                'showScriptName' => false,
+                'suffix' => '.html',                    // 伪静态
+            ],
+    
+    -- 独立的用户系统
+        -- 语言包配置
+            1. 修改配置文件
+                'language' => 'zh-CN'
+                'i18n' => [
+                    'translations' => [
+                        '*' => [
+                            'class' => 'yii\i18nPhpMessageSource',
+                            'basePath' => '/messages',
+                            'fileMap' => [
+                                'common' => 'common.php'
+                            ]
+                        ],
+                    ]
+                ],
+
+            2. 创建指向的语言包文件(当前模块\messages\zh-CN\common.php)
+                return ['Blog'=>'sungo\'s blog'];
+
+            3. 视图中使用t() 翻译
+                \Yii::t('common', 'Blog');
+
+# 前台开发
+    静态资源控制类 /frontend/assets/AppAsset.php
+
+    -- 注册登录
+        
+
+
+
+
+
+
+
+

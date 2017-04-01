@@ -191,10 +191,10 @@
                         ];
             $user->where($condition)->select();
             // 对象条件查询
-            $condition       = new \stdClass();
-            $condition->id   = 1;
-            $condition->user = '小明';
-            $condition->id   = 'OR';
+            $condition         = new \stdClass();
+            $condition->id     = 1;
+            $condition->user   = '小明';
+            $condition->_logic = 'OR';
 
             [表达式查询]
 

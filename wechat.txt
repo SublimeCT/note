@@ -1,5 +1,5 @@
 # https://git.duapp.com/appidcm6fv2wmad
-#刂巾耳阝/*******
+# 刂巾耳阝/*******
 
 # 流程
     微信手机端 <=> 腾讯web服务器 <=> 自定义服务器 <= 本地(git/svn)
@@ -22,7 +22,7 @@
 # wechat 的6大接收接口
     -- 获取用户发送数据类型
         $postObj->MsgType
-        text/image/voice/vodeo/shortvideo/location/link
+        text/image/voice/video/shortvideo/location/link
 
     -- 文本消息
          <xml>
@@ -36,6 +36,8 @@
 
     -- 对于接收的数据来说,FromUserName 是手机端,ToUserName 是微信公众平台
     -- 对于发送的数据来说,FromUserName 是微信公众平台,ToUserName 是手机端
+
+    文本消息可以使用 <a href="http://google.cn">test</a> 回复链接
 
 # wechat 的回复接口
     text/image/voice/video/music/news
@@ -100,7 +102,7 @@
             curl_setopt($cl, CURLOPT_URL, 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$token);
             curl_setopt($cl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($cl, CURLOPT_POST, true);
-            curl_setopt($cl, CURLOPT_POSTFIELDS, true);
+            curl_setopt($cl, CURLOPT_POSTFIELDS, $data);
             curl_setopt($cl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($cl, CURLOPT_SSL_VERIFYPEER, false);
 
@@ -124,4 +126,28 @@
         -- 自定义菜单按钮类型
             click/view
 
-        
+# 模版消息接口
+    用户公众号向公寓发送重要的服务通知(信用卡消费,已购买商品信息)
+
+# 网页授权
+    -- 两种接口
+        snsapi_base             只获取用户openid,静默授权并跳转
+        snsapi_userinfo         获取详细信息,需要用户同意
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

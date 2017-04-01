@@ -1,0 +1,265 @@
+# 简介
+    代码重用性发挥到极致,惰性加载框架
+
+# 安装运行
+    /basic 即应用根目录
+    首次运行需要设置 /config/web.php 中的 cookieValidationKey 的值
+
+# 目录结构
+    basic/                  应用根目录
+        composer.json       Composer 配置文件, 描述包信息
+        config/             包含应用配置及其它配置
+            console.php     控制台应用配置信息
+            web.php         Web 应用配置信息
+        commands/           包含控制台命令类
+        controllers/        包含控制器类
+        models/             包含模型类
+        runtime/            包含 Yii 在运行时生成的文件，例如日志和缓存文件
+        vendor/             包含已经安装的 Composer 包，包括 Yii 框架自身
+        views/              包含视图文件
+        web/                Web 应用根目录，包含 Web 入口文件
+            assets/         包含 Yii 发布的资源文件（javascript 和 css）
+            index.php       应用入口文件
+        yii                 Yii 控制台命令执行脚本
+
+# saying hello
+    -- 在siteController 中添加say 方法
+        retuan $this->render('say',['message' => $message]);
+    -- 在 views/site 创建视图 say.php
+        <?php use yii\helpers\Html; ?>
+        <?= Html::encode($message); ?>
+
+# working with forms
+    -- 创建模型 models/EntryForm.php
+        use yii;
+        use yii\base\Model;
+        # yii\db\Model 通常是普通模型类的父类与数据表无关
+        # yii\db\ActiveRecord 通常是普通模型类的父类但与数据表有关联
+    -- 新建 rules 方法
+        return [
+            [['name', 'email'], 'required'],
+            ['email', 'email']
+        ];
+    -- 添加entry 方法
+        $model = new EntryForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // 验证数据 ...
+            return $this->render('entry-confirm', ['model'=>$model]);
+        }else{
+            return $this->render('entry', ['model'=>$model]);
+        }
+
+# working with databases
+    -- 建立yii2basic 数据库, 建立country 表
+    -- 配置数据库
+        config/db.php
+    -- 在 models/ 创建活动记录 Country.php
+        namespace app\models;
+        use yii\db\ActiveRecord;
+        class Country extends ActiveRecord{}            // Yii根据类名对应表名, 单独设置需要修改 Yii\db\ActiveRecord::$tableName()
+
+
+================================
+
+# 请求处理
+    $request = \Yii::$app->request;
+    echo $request->get('name', 'sc');
+    echo $request->post('name', 'sc');
+    echo $request->isGet;
+    echo $request->isPost;
+    echo \Yii::$app->request->userIp;           // 打印用户ip
+
+# session/cookie
+    \Yii::$app->session->open();                // 开启session
+    \Yii::$app->session->set('name','sc');      // 设置
+    \Yii::$app->session->get('name');           // 获取
+    \Yii::$app->session->remove('name');        // 删除
+
+    \Yii::$app->session['name'] = 'sc';         // 同上
+    
+    $cookies = \Yii::$app->response->cookies;
+    $cookies->set() / $cookies->set()
+
+# 视图
+    return $this->renderPartial('/site/say', ['status', 'success']);              // 渲染视图
+    -- xss过滤
+        <?php use yii\helpers\Html; ?>
+        <?= Html::encode($message); ?>
+
+# 布局
+    public $layout = 'common';                              // 设置layout文件名,路径为views/layouts/
+    ...
+    return $this->render('say', ['status', 'error']);       // 使用render渲染可以显示布局
+
+# 数据块
+    -- say.php
+        <?php $this->beginBlock('houseDate'); ?>            // 在视图文件中定义数据块
+            <h1>Has house data ...</h1>
+        <?php $this->endBlock(); ?>
+
+    -- other.php
+        <?=$this->blocks['houseDate']?>
+
+# 数据库增删改查
+    -- show
+        Model::find()->all()[0]->name               // 查询(对象方式)
+        Model::find()->all()[0]['name']             // 查询(数组方式)
+        Model::find()->one()[0]['name']             // 查询一条
+        count()     返回记录数量
+
+    -- update
+        Model::updateAll(['email'=>'sc@qq.com'],'email=:email',[':email'=>'sc@sc.com']))
+    
+    -- inset
+        Model->name = 'sc';
+        Model->email = 'sc@sc.com';                 // 需要进行数据验证
+        Model->save();
+    
+    -- delete
+        Model::find()->where(['id'=>5])->one()->delete();
+        Model::deleteAll('id>:id',[':id'=>5]);
+
+# 关联查询数据模型
+    -- 1.顾客表 customer       id, name
+    -- 2.订单表 order          id, customer_id, price
+    # Order.php->getCustomer方法
+        return $this->hasOne(Customer::className(), ['id'=>'customer_id']);             // 一对一关系, 一对多使用 hasMany
+    # controller
+        $order = Order::find()->where(['id'=>3])->one();
+        $customer = $order->customer;                               // 在__get() 中调用getCustomer()
+        var_dump($customer);
+
+    使用关联查询数据模型会产生缓存,使用unset() 可以释放缓存
+
+# Yii 延迟加载
+    因为Yii框架使用延迟加载机制, 所以Yii的运行速度很快
+    spl_autoload_register($className);
+
+# 类的映射表机制
+    \Yii::$classMap['app\models\Order'] = 'D:/wamp/www/basic/models/Order.php';   
+    $order = new Order();
+
+# 组件的延迟加载
+    使用 __get() 实现延迟加载
+    $session = \Yii::$app->session;             // 调用__get()加载组件
+
+# 数据缓存
+    -- 使用缓存组件
+        $cache = \Yii::$app->cache;
+        $cache->add('key', 'hi cache');
+        $cache->set('key', 'hi Yii cache', 15);             // 为缓存数据设置15秒的有效期
+        var_dump($cache->get('key'));
+        $cache->delete('key');
+        $cache->flush();
+
+    -- 依赖缓存
+        $dependency = new \yii\caching\FileDependency(['fileName'=>'xx.txt']);              // 文件依赖,当文件被修改时缓存数据失效
+        $dependency = new \yii\caching\ExpressionDependency(['expression'=>'Yii::$app->request->get("name")']);
+                                                                                            // 表达式依赖,当表达式值被修改时缓存数据失效
+        $dependency = new \yii\caching\DbDependency(['sql'=>'SELECT * FROM xx']);           // 数据库依赖,当sql结果发生变化时缓存数据失效
+
+        $cache = \yii::$app->cache->set('key1', 'xxxxx', 600, $dependency);
+        var_dump($cache->get('key1'));
+
+    -- 片段缓存
+        # code.php
+            <?php if($this->beginCache('key')){ ?>                   // beginCache() 尝试渲染内容并返回false,如果该缓存不存在就缓存并返回true
+            <div class="cache-block">
+                <h2>This is cache content ...</h2>
+            </div>
+            <?php 
+                $this->endCache();
+                }
+             ?>
+
+            beginCache('key', ['duration'=>15])                 // 设置缓存时间
+            beginCache('key', ['enabled'=>false])               // 开关
+            beginCache('key', [
+                'class'=>'\yii\caching\FileDependency',         // 依赖缓存 ...
+                'fileName'=>'xxx.txt'
+            ])
+
+    -- 页面缓存
+        # xxxController.php
+            function behaviors(){                                               // behaviors() 先于其他方法执行, 返回值可以配置页面缓存
+                return [
+                    [
+                        'class'=>'yii\filters\PageCache',
+                        'duration'=>1000,
+                        'only'=>['index'],                                      // 缓存的操作集合
+                        'dependency'=>[
+                            'class'=>'yii\caching\FileDependency',
+                            'fileName'=>'xx.txt'
+                        ]
+                    ]
+                ];
+            }
+            function actionIndex(){
+                echo '1';
+            }
+
+    -- http缓存
+        使用http 响应头中的 last modified 和 etag 属性来控制是否使用浏览器端的缓存
+        # xxxController.php behaviors()
+        return [
+            [
+                'class'=>'yii\caching\HttpCache',
+                'lastModified'=>function(){
+                    return 12332432423;                 // http响应头中的last modified属性
+                }
+                'etagSeed'=>function(){
+                    return 'hello moto';                // 如果last modified发生变化,就验证etag是否改变
+                }
+            ]
+        ];
+
+# gii 工具
+    ...
+
+
+# 防范xss攻击
+    xss通过运行恶意js代码获取客户端数据
+    服务器端可以将cookie设置为httponly, 设置之后将不能通过控制台获取该cookie
+    -- 防范xss攻击的两种情况
+        <?= \yii\helpers\Html::encode($username) ?>                         // 输出纯文本
+        <?= \yii\helpers\HtmlPurifier::process($description) ?>             // 输出html, 使用lexer 技术识别html和js
+
+# csrf攻击(跨站请求伪造)
+    csrf通过GET/POST模拟提交数据使用户执行相应的操作
+    -- 防范方式
+        Yii框架通过在表单中添加_csrf字段并存储一个加密后的_csrf的cookie防范csrf攻击
+        不要使用GET方式实现数据修改和删除等逻辑
+    -- 原理
+        每次提交表单时,在后台将cookie中的csrf解密并与_csrf字段比对,如果不一致就视为csrf攻击
+
+# 上传文件漏洞
+    客户端可以任意修改 文件属性($_FILES中获取的文件属性)
+    -- 防范方式
+        1.不能使用$_FILES['image']['tmp_name']作为文件名保存在服务器上
+        2.不能相信$_FILES中的属性
+
+    -- 获取上传文件的扩展名
+        $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+
+# 模块化
+    使用Gii添加模块,将配置信息复制到配置文件(web.php)中
+
+# 事件机制
+    on()/trigger()
+
+# mixin
+    
+# 依赖注入
+    
+
+
+
+
+
+
+
+
+
+
+
+
