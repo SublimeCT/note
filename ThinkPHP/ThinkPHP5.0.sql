@@ -173,13 +173,71 @@
         -- 排除部分变量
             $request->except(['username','password'], 'get');
     -- 更改变量
+        $request->get(['username'=>'Sc']);                  // 不能使用param()更改
+    -- 请求类型
+        # 获取请求类型
+            $request->isPost();
+            $request->isAjax();
+            $request->isMobile();                   // 判断是否为手机请求
+    -- 伪静态
+        # 伪静态通常是为了满足更好的SEO优化
+        'url_html_suffix' => 'html|shtml|xml',      // 设置伪静态后缀
+        'url_html_suffix' => false,                 // 不使用伪静态
+    -- 参数绑定
+        -- 按顺序绑定
+            'url_param_type'         => 1,          // 可以省略 tp5.com/test/username/Sc/age/21 中的username/age
+    -- 依赖注入
         
+    -- 请求缓存
+        \think\Route::get('test', 'index/Index/test', ['cache'=>60]);
 
-
-
-
-
-
-
+# 数据库
+    -- 基本使用
+        Db::query('SELECT * FROM tp5_user WHERE name=?', ['Sc']);               // 查询(参数绑定)
+        Db::query('SELECT * FROM tp5_user WHERE name=:name', ['name'=>'Sc']);   // 占位符绑定
+        Db::execute('SELECT 1+1;');          // 写入
+    -- 查询构造器
+        -- 基本查询
+            # find()/select()
+                // table(全名)/name(不带表前缀的表名)
+                Db::table('tp_user')->where(['email'=>'test@test.com'])->find();        // 如果结果不存在返回null
+                Db::table('tp_user')->where(['email'=>'test@test.com'])->select();      // 结果不存在返回空数组
+            # column()
+                Db::table('tp_user')->where([])->value('username');             // 查询一条数据(指定一个字段)
+                Db::table('tp_user')->where([])->column('username');            // 查询所有(指定字段)
+        -- CURD 操作
+            -- insert
+                # insert() 添加一条数据
+                    Db::table('tp_user')->insert(['username'=>'Sc','age'=>21]);             // 返回1(受影响条数)
+                    // 获取新增数据的主键值
+                    Db::table('tp_user')->getLastInsID();
+                # insertAll() 添加多条数据
+                    Db::table('tp_user')->insertAll($data);                                 // 返回受影响条数
+            -- update
+                # update()
+                    Db::table('tp_user')->where(['id'=>1])->update(['username'=>'Sc']);     // 返回受影响条数
+                    -- 使用SQL函数或其他字段
+                        Db::table('tp_user')->update([
+                            'create_time' => ['exp','now()'],
+                            'login_time'  => ['exp','create_time+1'],
+                        ]);
+            -- delete
+                # delete()
+                    Db::table('tp_user')->delete([1,3,5]);
+                    Db::table('tp_user')->where(['username'=>'Sc'])->delete();
+        -- 条件查询
+            # where() AND条件查询
+                Db::table('tp_user')->where('id', 1)->where('username', 'Sc');
+            # whereOr() OR条件查询
+                Db::table('tp_user')->where('id', 1)->whereOr('age', 21);
+            # 混合查询
+                // SELECT * FROM tp_user WHERE (id=1 OR id=2) OR (name LIKE 'think' OR name LIKE 'thinkphp')
+                $result = Db::table('tp_user')->where(function ($query) {
+                    $query->where('id', 1)->whereor('id', 2);
+                })->whereOr(function ($query) {
+                    $query->where('name', 'like', 'think')->whereOr('name', 'like', 'thinkphp');
+                })->select();
+        -- 获取表结构信息
+            Db::getTableInfo('tp_user');
 
 
