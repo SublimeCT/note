@@ -129,7 +129,55 @@
         # 访问
             http://tp5.com/index/one/Go/go
     -- 资源控制器
+
+# 请求
+    -- 请求信息
+        $request->domain();                 // 包含协议的域名
+        $request->baseFIle();               // 入口文件
+        $request->url(true);                // 包含协议/域名/query string的完整URL地址
+        $request->baseUrl();                // 同上,不含 query string
+        $request->path();                   // PATH_INFO 信息
+
+        $request->module();                 // 模块/控制器/操作名称
+        $request->controller();             
+        $request->action();                 
+
+        $request->method();                 // 请求方法 GET/POST
+        $request->isAjax();                 // 是否是ajax请求
+
+        $request->route();                  // 路由信息
+    -- 输入变量
+        -- 检测变量是否设置
+            $request->has('id','GET');
+        -- 变量获取
+            -- param
+                $request->param();              // 获取(经过过滤的)当前请求类型的参数/PATH_INFO参数/GET参数
+                $request->param(false);         // 原始数据(未经过滤的)
+                $request->param(true);          // 包含上传文件
+                $request->param('name');        // name 变量
+            -- get/post/put/request
+                $request->get(false);           // 获取(未经过滤的)GET数据
+            -- cookie/session
+                $request->cookie('name');
+                $request->session('name');
+        -- 变量过滤
+            # 配置文件
+            'default_filter'         => 'htmlspecialchars',
+
+            $request->filter('strip_tags');
+            $request->filter(['strip_tags','htmlspecialchars']);
+            $request->post('username', 'strip_tags,htmlspecialchars');
+            $request->post('username', 'app\index\widget\StringFilter::safeHTML');
+        -- 获取部分变量
+            $request->only(['username','password'], 'get');
+        -- 排除部分变量
+            $request->except(['username','password'], 'get');
+    -- 更改变量
         
+
+
+
+
 
 
 
