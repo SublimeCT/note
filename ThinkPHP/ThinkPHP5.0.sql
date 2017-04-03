@@ -163,7 +163,7 @@
         -- 变量过滤
             # 配置文件
             'default_filter'         => 'htmlspecialchars',
-
+            # 指定过滤函数
             $request->filter('strip_tags');
             $request->filter(['strip_tags','htmlspecialchars']);
             $request->post('username', 'strip_tags,htmlspecialchars');
@@ -202,9 +202,13 @@
                 // table(全名)/name(不带表前缀的表名)
                 Db::table('tp_user')->where(['email'=>'test@test.com'])->find();        // 如果结果不存在返回null
                 Db::table('tp_user')->where(['email'=>'test@test.com'])->select();      // 结果不存在返回空数组
+                Db::table('tp_user')->select(3);                    // 按主键id查询
+                Db::table('tp_user')->select(false);                // 直接返回SQL语句
             # column()
-                Db::table('tp_user')->where([])->value('username');             // 查询一条数据(指定一个字段)
-                Db::table('tp_user')->where([])->column('username');            // 查询所有(指定字段)
+                Db::table('tp_user')->where([])->value('username');                 // 查询一条数据(指定一个字段)
+                Db::table('tp_user')->where([])->column('username');                // 查询所有(指定字段)
+            # field()
+                Db::table('tp_user')->where([])->field(['id','username'])->select();        // 查询所有(指定字段)
         -- CURD 操作
             -- insert
                 # insert() 添加一条数据
@@ -237,7 +241,135 @@
                 })->whereOr(function ($query) {
                     $query->where('name', 'like', 'think')->whereOr('name', 'like', 'thinkphp');
                 })->select();
+            # 批量AND查询
+                Db::table('tp_user')->where([
+                    'id' => ['GT', 2],
+                    'username' => ['LIKE', 'Sc%'],
+                    ...
+                ]);
         -- 获取表结构信息
             Db::getTableInfo('tp_user');
+        -- 聚合查询
+            # count()/max()/min()/svg()/sum()
+                Db::table('tp_user')->count();
+        -- 表达式查询
+            Db::table('tp_user')->where('id', 'exp', 'IN (1,3,4)');
+        -- 区间查询
+            # 同一字段多个条件查询的简化写法
+                // SELECT * id,column FROM tp_user WHERE 
+                // (username LIKE 'Sc%' AND username <> 'Sc001') AND 
+                // (id<10 OR id>5)
+                Db::table('tp_user')
+                    ->where('username', ['LIKE', 'Sc%'], ['NEQ', 'Sc001'])
+                    ->where('id', ['LT', '10'], ['GT', '5'], 'OR')
+                    ->field(['id', 'username'])
+                    ->select();
+        -- 子查询
+            # fetchSql() 只构建SQL语句而不执行,可以支持所有的CURD查询
+        -- 事务操作
+            // 开启事务(数据库引擎必须是InnoDB)
+            Db::startTrans();
+            try{
+                Db::table('tp_user')->delete(2);
+            }catch(\Exception $e){
+                Db::rollback();
+            }
+
+# 模型
+    -- 定义
+        # 具体的模型类要继承\think\Model 类
+    -- 模型调用
+        -- 静态调用
+            $user = User::get($condition);
+            $user->name = 'Sc';
+            $user->save();
+        -- 实例化调用
+            $user = new User();
+        -- Loader 类实例化(单例)
+            Loaser::model('User');
+    -- 初始化
+        # 通过重写 protected function initialize(){parent::initialize();}/pretected static init()实现初始化
+        # init() 只在第一次实例化的时候执行
+    -- CURD操作
+        -- 新增
+            # save() 新增数据,返回写入的记录数量
+                $user->save(['username'=>'Sc', 'age'=>21]);
+                $user->allowField(true)->save($data);                       // 过滤表中不存在的字段
+                $user->allowField(['username', 'email'])->save($data);      // 过滤指定字段
+            # saveAll() 写入多条,返回模型对象
+                $user->saveAll($data);
+            -- 静态方法
+                # create() 新增一条数据,返回模型对象
+                    User::create($data);
+        -- 更新
+            # save() 更新
+                User::get(2)->save(['username'=>'蛤蟆']);             // 查询后更新
+                $user->save(['username'=>'蛤蟆'], ['id'=>2]);         // 按条件更新
+                $user->save(['id'=>1, 'username'=>'蛤蟆']);
+            -- 静态方法
+                # update() 更新一条数据
+                    User::where($condition)->update($data);           // 数据库对象操作
+        -- save() 多次新增
+            # 调用save() 后再执行就会视为更新数据,需要显式地指定更新还是新增
+                $user->save($data1);
+                $user->isUpdate(false)->save($data2);       // 指明新增
+        -- 删除
+            # delete()
+                $user->where($condition)->delete();
+            -- 静态方法
+                User::destory($condition);
+        -- 查询
+            -- 静态方法
+                # get() 查询一条
+                    User::get($condition);
+                # all() 查询多条
+                    User::all($condition);
+                    // 使用闭包方式可以支持连贯操作
+                    User::all(function($query){
+                        $query->where($condition)->order('id', 'DESC')->limit(10);
+                    });
+    -- 聚合
+
+    -- 获取器
+        # 获取字段值的时候对其进行处理后再输出
+            public function getStatusAttr($value){
+                $attributes = ['富强','民主','问明','和谐'];
+                return $attributes[$value];
+            }
+            // 获取原始数据
+            User::get(2)->getData('username');
+    -- 修改器
+        # 更新/新增前对其进行处理
+            public function setStatusAttr($value){
+                return strtolower($value);
+            }
+            // 必须使用具体的模型对象更新才有效
+            (new User())->save($data, $condition);
+    -- 只读字段
+        # 使指定字段值不被修改
+            protected $readOnly = ['create_time'];
+    -- 自动完成
+        # 设定修改器在更新还是新增时触发
+            protected $auto = ['username','email'];             // 更新和新增时都触发修改器
+            protected $insert = ['create_time'=>time()];
+            protected $update = [];
+
+# 视图
+    -- 动态设置模版引擎参数
+        $this->view->config('view_path', APP_PATH.'templates/');
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
