@@ -317,7 +317,8 @@
             # delete()
                 $user->where($condition)->delete();
             -- 静态方法
-                User::destory($condition);
+                # destory()
+                    User::destory($condition);
         -- 查询
             -- 静态方法
                 # get() 查询一条
