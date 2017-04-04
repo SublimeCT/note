@@ -30,6 +30,7 @@
         -- 如果调用PHP内置的类库/第三方没有使用命名空间的类库,必须在实例化类库的时候加上 \
             $class = new \stdClass();
             $xml   = new \SimpleXMLElement($xmlStr);
+            throw new \Exception("Error Processing Request", 1);
         -- 5.0默认的目录规范是小写,类文件命名是驼峰法,并且首字母大写
         -- 自动注册根命名空间(类库包)
             把类库包目录放入EXTEND_PATH目录(extend目录)就可以自动注册对应的命名空间
@@ -357,19 +358,170 @@
 
 # 视图
     -- 动态设置模版引擎参数
+        $this->view = new View();             // 控制器未继承Controller 类时需要实例化View 类
         $this->view->config('view_path', APP_PATH.'templates/');
-    
+    -- 模版赋值
+        # assign()
+            $this->assign([
+                'username' => $username,
+                'password' => $password
+            ]);
+        -- 静态方法
+            # share()
+                \think\View::share('username','Sc');
+    -- 模版渲染
+        # fetch()
+            $this->view->fetch('/index');           // 5.0.4+ 支持从根目录开始读取
+        # dispaly() 直接解析内容,不通过模版文件
+    -- 输出替换
+        # config.php
+            'view_replace_str' => [
+                '__PUBLIC__'=>'/public/',
+                '__ROOT__' => '/',
+            ],
+        # Index.php
+            return $this->fetch('index', $vars, ['__PUBLIC__'=>'/public/', '__ROOT__' => '/',]);
+            return (new View($vars, \think\Config::get('view_replace_str')))->fetch();
+# 模版标签
+    -- 模版标签
+        -- 普通标签
+            # 普通标签用于变量输出和模版注释
+        -- 标签库标签
+            # 用于变量输出/文件包含/条件控制/循环输出... 可以扩展功能
+    -- 变量输出
+        // 已在配置文件修改开始/结束标签
+        <{$username}>
+        <{$user['username']}>/<{$user.username}>
+        <{$user->username}>/<{$user:username}>
+    -- 系统变量
+        # 支持$_SERVER/$_ENV/$_POST/$_GET/$_REQUEST/$_SESSION/$_COOKIE
+        <{$Think.server.script_name}>               // $_SERVER['SCRIPT_NAME']
+    -- 常量输出
+        <{$Think.APP_PATH}>
+    -- 配置输出
+        <{$Think.config.default_module}>
+    -- 语言变量
+        <{$Think.lang.page_error}>
+    -- 请求参数
+        <{$Request.get.user.username}>              // 对应$request->get('user.username')/只支持传一个参数
+    -- 函数
+        <{$username|substr=0,21|strtolower}>
+    -- 默认值
+        <{$username|strtolower|default="暂无"}>
+    -- 运算符
+        <{$count++}>
+    -- 注释
+        <{// test}>
+        <{/*test*/}>
+    -- 模版布局
+        -- 直接配置实现布局
+            -- 开启模版布局
+                'template'  =>  [
+                    'layout_on'     =>  true,
+                    'layout_name'   =>  'layout',               // 布局模版文件名(相对于模目录的路径)
+                    'layout_item'   =>  '<{__REPLACE__}>'       // 替换字符串
+                ]
+            # 先渲染模版文件目录中的layout[.tpl]文件,将<{__CONTENT__}>替换为渲染的模版文件内容
+                # layout.tpl
+                    <{include file="layout/header"}>
+                    <{__CONTENT__}>
+                    <{include file="layout/footer"}>
+        -- 模版标签实现布局
+            <{layout name="layout"}>
+    -- 包含文件
+        <{include file="layout/header"}>
+    -- 内置标签
+        # foreach
+            <{foreach name="userInfo" key="user_id" item="user"}>
+            <{/foreach}>
+        # if
+            <{if strtolower($framework)==='thinkphp5'}>
+            This is tp5
+            <{else}>
+            Other framework
+            <{/if}>
+        # php
+            <{php}>
+            PHP code ...
+            <{/php}>
+# 错误和调试
+    -- 异常处理
+        -- 设置错误报错级别
+            # common.php(公共函数文件或配置文件)
+                error_reporting(E_ERROR | E_PARSE);
+# 验证
+    -- 验证器
+        # ThinkPHP5.0使用独立的\think\Validate 类或验证器进行验证
+            -- 验证器
+                1. 定义\app\index\validate\User 类并继承\think\Validate 类
+                    pretected $rule = [
+                        'name'  =>  'require|max:21',
+                        'email' =>  'email'
+                    ];
+                2. 使用验证器进行验证
+                    $data = [
+                        'name'=>'Sc',
+                        'email'=>'hellosc@qq.com'
+                    ];
+                    $validate = Loader::validate('User');
+                    if(!$validate->check($data)){
+                        dump($validate->getError());
+                    }
+    -- 验证规则
+        -- 定义错误提示信息
+            protected $message = [
+                'name.require' => '名字不能为空'
+            ];
+        -- 自定义验证规则
+            protected $rule = [
+                'name' => 'checkName:ruleName'
+            ];
+            pretected function checkName($value, $rule[, $data, ...]){
+                reutrn (strpos('系统', $value)===false ? true : '用户名中不能包含敏感字符');
+            }
+            # 验证类设置验证规则
+                $validate = new \think\Validate(['name' => 'checkName:test']);
+                // 添加规则
+                $validate->rule('user_id', '/^\d{6}$/');
+                // 添加场景
+                $validate->scene('edit', ['name', 'email']);
+                // 验证
+                $validate->scene('edit')->extend('checkName', function($value, $rule, $data){
+                    # ...
+                });
+    -- 验证场景
+        protected $scene = [
+            'edit' => [
+                'name', 
+                'age'=>'require|number|between:1,120'           // 也可以重新设置规则
+            ]
+        ];
 
-
-
-
-
-
-
-
-
-
-
+        Loader::validate('User')->scene('edit')->check($data);
+    -- 控制器中验证
+        // 如果控制器继承了\think\Controller 类
+        $this->validate($data, 'User.edit');                    // edit是场景
+    -- 使用模型验证
+        $user = new User();
+        // 自动使用当前模型类对应的验证器类进行验证,可以指定验证器类名称'User.edit'
+        $result = $user->validate(true)->save($data);
+        if(false === $result){
+            dump($User->getError());
+        }
+    -- 内置规则
+        require/number/email
+        in:1,2,3/
+        notIn:1,2,3/
+        between:1,100/
+        notBetween:1,100/
+        ...
+# 缓存
+    -- 设置缓存
+        Cache::set('name', $value, 3600);
+    -- 获取缓存
+        Cache::get('name', $value, 3600);
+    -- 删除缓存
+        Cache::rm('name', $value, 3600);
 
 
 
