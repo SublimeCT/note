@@ -67,7 +67,8 @@
         -- 配置文件注册
             # rote.php
                 return [
-                    'test/[:id]' => ['index/Index/test', ['method'=>'get'], ['id'=>'\d+']],
+                    'test/[:id]' => ['index/Index/test', '*', ['id'=>'\d+']],           // * 表示所有请求
+                    'aaa' => ['index/Index/aaa', ['method'=>'get']];
                 ];
     -- MISS 路由
         -- 全局MISS 路由
@@ -382,6 +383,7 @@
         # Index.php
             return $this->fetch('index', $vars, ['__PUBLIC__'=>'/public/', '__ROOT__' => '/',]);
             return (new View($vars, \think\Config::get('view_replace_str')))->fetch();
+
 # 模版标签
     -- 模版标签
         -- 普通标签
@@ -444,11 +446,13 @@
             <{php}>
             PHP code ...
             <{/php}>
+
 # 错误和调试
     -- 异常处理
         -- 设置错误报错级别
             # common.php(公共函数文件或配置文件)
                 error_reporting(E_ERROR | E_PARSE);
+
 # 验证
     -- 验证器
         # ThinkPHP5.0使用独立的\think\Validate 类或验证器进行验证
@@ -485,10 +489,17 @@
                 $validate->rule('user_id', '/^\d{6}$/');
                 // 添加场景
                 $validate->scene('edit', ['name', 'email']);
-                // 验证
+                // 添加闭包验证函数
                 $validate->scene('edit')->extend('checkName', function($value, $rule, $data){
                     # ...
                 });
+                // batch() 显示所有错误信息
+                $isPass = $validate->batch()->check($this->request->post());
+                if(!$isPass){
+                    foreach($validate->getError() as $error){
+                        echo $error;
+                    }
+                }
     -- 验证场景
         protected $scene = [
             'edit' => [
@@ -515,6 +526,7 @@
         between:1,100/
         notBetween:1,100/
         ...
+
 # 缓存
     -- 设置缓存
         Cache::set('name', $value, 3600);
@@ -523,6 +535,113 @@
     -- 删除缓存
         Cache::rm('name', $value, 3600);
 
+# 分页
+    # controller file
+        $users = Db::name('user')->where('is_delete', 0)->paginate(5);
+        $this->assign('userInfo', $users);
+        return $this->fetch('index');
+    # template file
+        <{// 分页div数据}>
+        <{$this->render()}>
 
+# 上传文件
+    # template file
+        <form action="/index/Index/upload" enctype="multipart/form-data" method="post">
+            <input type="file" name="goods_thumb" /> <br> 
+            <input type="submit" value="上传" /> 
+        </form>
+    # controller file
+        public function upload(){
+            $rule = ['size'=>204800, 'ext'=>'png,jpg'];
+            $uploadsPath = ROOT_PATH.'public'.DS.'uploads/goods/goods_thumb';
+            $fileName = $_SESSION['goods_id'].'.png';
+            $goodsThumb = $this->request->file('goods_thumb');
+            // 验证后移动
+            $goodsThumbInfo = $goodsThumb->validate($rule)->move($uploadsPath, $fileName);
+            if ($goodsThumbInfo) {
+                dump($goodsThumbInfo);
+            }else{
+                dump($goodsThumb->getError());
+            }
+        }
 
+# 验证码
+    # 使用Composer 安装 think-captcha 扩展包
+        D:\phpStudy\WWW\TP5>php composer.phar require topthink/think-captcha
+        Using version ^1.0 for topthink/think-captcha
+        ./composer.json has been updated
+        Loading composer repositories with package information
+        Updating dependencies (including require-dev)
+        Nothing to install or update
+        Writing lock file
+        Generating autoload files
+    # template file
+        <div><img src="<{:captcha_src()}>" alt="captcha" /></div>
+    # config file
+        'captcha'  => [
+                // 验证码字符集合
+                'codeSet'  => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY', 
+                // 验证码字体大小(px)
+                'fontSize' => 20, 
+                // 是否画混淆曲线
+                'useCurve' => false, 
+                // 验证码图片高度
+                'imageH'   => 45,
+                // 验证码图片宽度
+                'imageW'   => 150, 
+                // 验证码位数
+                'length'   => 4, 
+                // 验证成功后是否重置        
+                'reset'    => true
+        ],
+    # controller file
+        -- 直接使用Captcha 类进行验证
+            if ($this->request->post('captcha_code')) {
+                $captcha = new \think\captcha\Captcha();
+                if ($captcha->check($this->request->post('captcha_code'))) {
+                    echo '验证通过';
+                }else{
+                    echo '验证失败';
+                }
+            }
+        -- 使用验证器
+            if ($this->request->post('captcha_code')) {
+                $validate = new Validate();
+                $captcha = new Captcha();
+                $validate->rule('captcha_code', function($value) use($captcha) {
+                    return $captcha->check($value) ? true : '验证码错误';
+                });
+                if ($validate->check($this->request->post())) {
+                    echo '验证通过';
+                }else{
+                    echo '验证失败';
+                }
+            }
+# 图像处理
+
+# 文件处理
+
+# 扩展
+    -- 类库
+
+    -- 行为
+        # 行为既可以独立调用,也可以绑定到某个标签中进行侦听
+        -- 添加行为标签位[钩子]
+            $params = '测试输出';
+            \think\Hook::listen('register_begin', $params);             // 参数只能有一个,引用传值,必须是变量
+        -- 定义行为类
+            namespace app\index\behavior;
+            class Test{
+                public function run(&$params){// 行为入口方法 ...}
+                public function printLog(&$params){// code ...}
+            }
+        -- 行为绑定
+            # tags.php
+            return [
+                'print_log' => [
+                    'app\\index\\behavior\\Test'
+                ]
+            ];
+        -- 直接执行行为
+            Hook::exec('app\\index\\behavior\\Test', 'printLog', $params);
 
