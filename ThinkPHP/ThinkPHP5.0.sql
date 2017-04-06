@@ -623,6 +623,33 @@
 
 # 扩展
     -- 类库
+        ┏━━━━━━━━━━━┓
+        ┃使用Composer 安装依赖 ┃
+        ┗━━━━━━━━━━━┛
+            # [例]安装(yii)项目
+                // 设置依赖, 也可通过composer.json 设置
+                composer global require "fxp/composer-asset-plugin:^1.2.0"
+                // 安装yii 库
+                php composer.phar create-project --prefer-dist yiisoft/yii2-app-basic basic
+                // create-project 强制使用压缩包
+                // 安装过程中可能需要输入token, 访问Head to后面的URL, 设置token
+            -- composer.json
+                {
+                    "require":{
+                        // "包名称":"包版本"
+                        // ~1.2.3 表示 >=1.2.3 且 <1.3
+                        "monolog/monolog":"~1.2.3"
+                    }
+                }
+            # 安装依赖包
+                // 通过composer.json 或composer require 配置好依赖后执行命令安装依赖包
+                php composer.phar install
+                // 安装后可以将安装的依赖包在.gitigonre 中设置为不提交
+                // 安装后将创建一个包含安装时的确切版本号的composer.lock 到根目录
+                // 每次install 时都会优先使用compoesr.lock 中的版本号
+                // 将composer.lock 提交到git 可以避免协同开发时的版本错误引起的问题
+            # 删除依赖包
+                php composer.phar remove "endroid/QrCode"
 
     -- 行为
         # 行为既可以独立调用,也可以绑定到某个标签中进行侦听
