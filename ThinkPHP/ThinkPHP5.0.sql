@@ -623,9 +623,9 @@
 
 # 扩展
     -- 类库
-        ┏━━━━━━━━━━━┓
-        ┃使用Composer 安装依赖 ┃
-        ┗━━━━━━━━━━━┛
+        ┏━━━━━━━━━━━━━━━━━━
+        ┃使用Composer 安装依赖 
+        ┗━━━━━━━━━━━━━━━━━━
             # [例]安装(yii)项目
                 // 设置依赖, 也可通过composer.json 设置
                 composer global require "fxp/composer-asset-plugin:^1.2.0"
@@ -651,6 +651,24 @@
             # 删除依赖包
                 php composer.phar remove "endroid/QrCode"
 
+        ┏━━━━━━━━━━━━━━━━━━━━━
+        ┃使用Composer 安装QRcdoe 类库
+        ┗━━━━━━━━━━━━━━━━━━━━━
+            php composer.phar require "SimpleSoftwareIO/simple-qrcode:~1.5"
+            # controller file
+                use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
+                ...
+                $path = ROOT_PATH.'public'.DS.'static'.DS.'qrcode'.DS.'qrcode.png';
+                $qrcode = new BaconQrCodeGenerator;
+                // 输出为<svg>
+                return $qrcode->size(250)->color(150,90,10)->margin(0)->generate('Make me a QrCode!');
+                // 或直接保存为图片
+                return $qrcode->format('png')
+                            ->size(250)
+                            ->color(150,90,10)
+                            ->margin(0)
+                            ->generate('Make me a QrCode!', $path);
+
     -- 行为
         # 行为既可以独立调用,也可以绑定到某个标签中进行侦听
         -- 添加行为标签位[钩子]
@@ -671,4 +689,34 @@
             ];
         -- 直接执行行为
             Hook::exec('app\\index\\behavior\\Test', 'printLog', $params);
+
+# 命令行
+    -- 命令格式
+        php think [指令] [参数]
+    -- 常用指令
+        bulid/make:controller/make:model/
+    -- 自动生成目录结构
+        1. 定义APP_PATH 下的 build.php
+            return [
+                // 应用下的公共文件
+                '__file__' => ['common.php', 'config.php', 'database.php', 'build.php'],
+                // 应用下的目录
+                '__dir__' => ['templates'],
+                // 应用下的模块
+                'test'     => [
+                    '__dir__'    => ['behavior', 'controller', 'model'],
+                    'controller' => ['Index', 'Supplier'],
+                    'model'      => ['User', 'Supplier'],
+                ],
+                // 其他更多的模块定义
+            ];
+        2. php think build
+    -- 生成控制器/模型
+        php think make:controller index/User
+        php think make:model index/User
+
+
+
+
+
 
