@@ -8,7 +8,6 @@
             函数          小写字母+下划线
             方法/属性     驼峰法
 
-
 # 架构
     -- URL访问
         5.0取消了URL模式的概念，并且普通模式的URL访问不再支持
@@ -53,13 +52,13 @@
 # 路由
     -- 路由模式
         -- 普通模式
-            'url_route_on'  =>  false,                  -- 关闭路由,完全使用PATH_INFO 模式
+            'url_route_on'  =>  false,                  // 关闭路由,完全使用PATH_INFO 模式
         -- 混合模式
             'url_route_on'  =>  true,
-            'url_route_must'=>  false,                  -- 可以通过PATH_INFO 和已经定义的路由规则来访问
+            'url_route_must'=>  false,                  // 可以通过PATH_INFO 和已经定义的路由规则来访问
         -- 强制模式
             'url_route_on'  =>  true,
-            'url_route_must'=>  true,                   -- 必须定义路由规则才能访问
+            'url_route_must'=>  true,                   // 必须定义路由规则才能访问
     -- 注册路由规则
         -- 动态注册
             use think\Route;
@@ -94,7 +93,7 @@
             -- 渲染输出
                 一般情况下控制器中的输出使用 return 方式
     -- 控制器初始化
-        -- init初始化方法,在调用该控制器的方法之前执行
+        -- 初始化方法,在调用该控制器的方法之前执行
             public function _initialize(){}             // 必须继承Controller 类
     -- 前置操作
         -- 设置 $beforeActionList 属性实现前置操作
@@ -138,7 +137,8 @@
         $request->baseFIle();               // 入口文件
         $request->url(true);                // 包含协议/域名/query string的完整URL地址
         $request->baseUrl();                // 同上,不含 query string
-        $request->path();                   // PATH_INFO 信息
+
+        $request->path();                   // 获取PATH_INFO 信息,不含后缀
 
         $request->module();                 // 模块/控制器/操作名称
         $request->controller();             
@@ -164,12 +164,12 @@
                 $request->session('name');
         -- 变量过滤
             # 配置文件
-            'default_filter'         => 'htmlspecialchars',
+                'default_filter'         => 'htmlspecialchars',
             # 指定过滤函数
-            $request->filter('strip_tags');
-            $request->filter(['strip_tags','htmlspecialchars']);
-            $request->post('username', 'strip_tags,htmlspecialchars');
-            $request->post('username', 'app\index\widget\StringFilter::safeHTML');
+                $request->filter('strip_tags');
+                $request->filter(['strip_tags','htmlspecialchars']);
+                $request->post('username', 'strip_tags,htmlspecialchars');
+                $request->post('username', 'app\index\widget\StringFilter::safeHTML');
         -- 获取部分变量
             $request->only(['username','password'], 'get');
         -- 排除部分变量
@@ -183,8 +183,8 @@
             $request->isMobile();                   // 判断是否为手机请求
     -- 伪静态
         # 伪静态通常是为了满足更好的SEO优化
-        'url_html_suffix' => 'html|shtml|xml',      // 设置伪静态后缀
-        'url_html_suffix' => false,                 // 不使用伪静态
+            'url_html_suffix' => 'html|shtml|xml',      // 设置伪静态后缀
+            'url_html_suffix' => false,                 // 不使用伪静态
     -- 参数绑定
         -- 按顺序绑定
             'url_param_type'         => 1,          // 可以省略 tp5.com/test/username/Sc/age/21 中的username/age
@@ -288,7 +288,7 @@
         -- 实例化调用
             $user = new User();
         -- Loader 类实例化(单例)
-            Loaser::model('User');
+            Loader::model('User');
     -- 初始化
         # 通过重写 protected function initialize(){parent::initialize();}/pretected static init()实现初始化
         # init() 只在第一次实例化的时候执行
@@ -336,7 +336,7 @@
     -- 获取器
         # 获取字段值的时候对其进行处理后再输出
             public function getStatusAttr($value){
-                $attributes = ['富强','民主','问明','和谐'];
+                $attributes = ['富强','民主','文明','和谐'];
                 return $attributes[$value];
             }
             // 获取原始数据
@@ -525,6 +525,8 @@
         notIn:1,2,3/
         between:1,100/
         notBetween:1,100/
+        length:1,21
+        max:21
         ...
 
 # 缓存
@@ -556,6 +558,9 @@
             $uploadsPath = ROOT_PATH.'public'.DS.'uploads/goods/goods_thumb';
             $fileName = $_SESSION['goods_id'].'.png';
             $goodsThumb = $this->request->file('goods_thumb');
+            if(!$goodsThumb){
+                $this->error('上传失败');
+            }
             // 验证后移动
             $goodsThumbInfo = $goodsThumb->validate($rule)->move($uploadsPath, $fileName);
             if ($goodsThumbInfo) {
