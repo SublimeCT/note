@@ -49,6 +49,15 @@
             return xml($data);
             return json($data);
 
+# 配置
+    -- 读取配置
+        \think\Config::get('sex');
+        \think\Config::get('sex.0');
+        \think\Config::get('sex.0')[1];
+        config('sex.0');
+    -- 动态设置配置(临时)
+        \think\Config::set(['sex'=>['女'], ['男'], ['保密']]);
+
 # 路由
     -- 路由模式
         -- 普通模式
