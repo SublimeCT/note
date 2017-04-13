@@ -225,7 +225,14 @@
         # person file
         Thumbs.db
 
-
+````````````````````````````````````````````````````````````
+# .gitigonre 文件设置忽略失败
+    -- 原因
+        不能忽略已经push 或者track的文件, 需要先删除本地缓存
+    -- 解决方法
+        git rm -r --cached .
+        git add .
+        git commit -m 'update .gitigonre'
 
 
 
