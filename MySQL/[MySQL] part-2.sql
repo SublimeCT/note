@@ -14,7 +14,6 @@
             select A.id,B.address from test A right join test1 B on A.id = B.id;
     -- 自然连接
         从某张表取出所有数据, 与另一张表中每条记录匹配, 条件是所有同名字段相等
-            # 自然连接可以通过做
             select A.id,B.address from test A natural [left/right] join test1 B;
 
 # 外键
@@ -49,7 +48,7 @@
             父表更新/删除, 子表对应外键字段值置空, 此时外键字段必须允许为空
         -- 合理做法
             删除时置空, 更新时级联
-            foreign key(class_id) references class(id) on delete set null pudate cascade;
+            foreign key(class_id) references class(id) on delete set null update cascade;
 
 # 联合查询
     将多次 select 结果拼接
@@ -60,9 +59,9 @@
         select * from test1;
     -- 意义
         1. 查询针对同一张表, 但需求不同(如男生身高升序, 女生身高降序)
-            select * from test where sex='男' order by height limit 99999
+            (select * from test where sex='男' order by height limit 99999)
             union 
-            select * from test where sex='男' order by height limit 99999
+            (select * from test where sex='男' order by height limit 99999)
         2. 多张表的结构完全一致(如腾讯qq号码分表查询)
 
 # 子查询
