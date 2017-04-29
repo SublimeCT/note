@@ -26,7 +26,6 @@
             NaN 表示非数值, 但仍然属于 number 类型
             >>> 1+'a'                       // 返回NaN, 当 number 类型值运算失败, 就会返回 NaN
             >>> NaN === NaN                 // false, NaN 不等于任何东西, 包括它自己
-
     -- string 类型
         -- 自动类型转换
             >>> var a = '3';
@@ -35,13 +34,23 @@
             >>> typeof a++                  // number
         -- 特殊字符串
             \'  \"  \\  \n  \r[回车]  \t[制表符]    \u[unicode 码]   \b[退格符]    \v[纵向制表符]   \f[换页符]   '
-
     -- boolean
         -- 将其它类型值转换为boolean
             除了 ''/null/undefined/0 外其他值转换 boolean 类型都返回true
-
     -- array
+        -- 删除元素
+            >>> var a = [1,33,4];
+            >>> delete a[0];
+            >>> a.length                        // 3, delete 操作符只是将 a[0] 设置为 undefined, 数组长度不变
+        -- 数组方式访问字符串
+            >>> var a = '只有你';
+            >>> a[1];                           // 有
+    -- 检测变量是否存在
+        >>> if(typeof a !== 'undefined'){console.log('a is defined');}
         
+
+
+
         
 
 
