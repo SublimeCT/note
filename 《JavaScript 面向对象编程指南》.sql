@@ -47,8 +47,36 @@
             >>> a[1];                           // 有
     -- 检测变量是否存在
         >>> if(typeof a !== 'undefined'){console.log('a is defined');}
-        
 
+# 函数
+    -- 预定义函数
+        parseInt/parseFloat/isNaN/encodeURIComponent/decodeURIComponent/eval/ ...
+        -- parseInt
+            转换成功返回数值, 失败时返回 NaN
+        -- isNaN
+            通过 isNaN() 判断是否是 NaN 类型值
+    -- 作用域
+        -- 全局变量
+            // 不建议使用全局变量
+            >>> function test(){local=1;}
+            >>> local                                   // 报错
+            >>> test();
+            >>> local                                   // 1
+        -- 作用域链
+            var a1 = 1;
+            function a(){
+                var b1 = 2;
+                function c(){
+                    var c1 = 3;
+                    function d(){
+                        var d1 = 4;
+                        console.log(b1);                // 2
+                    }
+                    d();
+                }
+                c();
+            }
+            a();
 
 
         

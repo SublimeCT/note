@@ -10,15 +10,22 @@
 <body>
 
     <script type="text/javascript">
-        var myObject = (function(){
-            var _name = 'sc';
-            return {
-                getName : function(){
-                    return _name;
+
+        var a1 = 1;
+        function a(){
+            var b1 = 2;
+            function c(){
+                var c1 = 3;
+                function d(){
+                    var d1 = 4;
+                    console.log(b1);
                 }
-            };
-        })();
-        console.log(myObject.getName());
+                d();
+            }
+            c();
+        }
+        a();
+
 
 
 
