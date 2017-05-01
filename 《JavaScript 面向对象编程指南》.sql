@@ -63,20 +63,21 @@
             >>> test();
             >>> local                                   // 1
         -- 作用域链
+            // 在函数内部声明函数, 可以访问函数内部和作用域中的变量, 从而实现作用域链
             var a1 = 1;
-            function a(){
+            function x(){
                 var b1 = 2;
-                function c(){
+                function xx(){
                     var c1 = 3;
-                    function d(){
+                    function xxx(){
                         var d1 = 4;
                         console.log(b1);                // 2
                     }
-                    d();
+                    xxx();
                 }
-                c();
+                xx();
             }
-            a();
+            x();
 
 
         
