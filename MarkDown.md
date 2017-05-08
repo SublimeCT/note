@@ -20,11 +20,11 @@ URL和标题之间有空格
 
 - 参考式
 学习编程经常去的网站[百度][baidu],[google][2]
-[baidu]:https://baidu.com "百度一下，你就知道"
+[1]:https://baidu.com "百度一下，你就知道"
 [2]:https://google.com
 ```
 学习编程经常去的网站[百度][1],[google][2]
-[baidu]:https://baidu.com "百度一下，你就知道"
+[1]:https://baidu.com "百度一下，你就知道"
 [2]:https://google.com
 ```
 
