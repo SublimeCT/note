@@ -11,25 +11,15 @@
 
     <script type="text/javascript">
 
-        var a1 = 1;
-        function a(){
-            var b1 = 2;
-            function c(){
-                var c1 = 3;
-                function d(){
-                    var d1 = 4;
-                    console.log(b1);
-                }
-                d();
-            }
-            c();
-        }
-        a();
-
-
-
-
-
+        function Person(name, age){
+            this.name = name;
+            this.age = age;
+            this.sayName = function(){return this.name;}
+        };
+        var person1 = new Person('sc', 21);
+        var person2 = new Person('sc', 21);
+        var test = new Function('alert("123");');
+        console.log(person2 instanceof Person);
 
 
     </script>

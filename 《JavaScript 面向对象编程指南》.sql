@@ -78,15 +78,81 @@
                 xx();
             }
             x();
+        -- 删除变量
+            >>> function fun(){alert('test');}
+            >>> delete fun;
+        -- 闭包
+            # demo 1
+                function test(){
+                    var a = 1;
+                    return function(){
+                        return a;
+                    }
+                }
+                var fun = test();
+                fun();
+            # demo 2
+                var n;
+                function test(){
+                    var a = 1;
+                    n = function(){             // 并且在 test 重复声明后可以访问 test 作用域
+                        return a;
+                    }
+                }
+                test();                         // 执行 test 方法, 将 n 修改为全局函数
+                n();                            // 1
+            # 循环中的闭包
+                function f(){
+                    var a = [];
+                    var i;
+                    for(i=0;i<3;i++){
+                        a[i] = function(){
+                            return i;           // 这里的函数并没有执行
+                        }
+                    }
+                    return a;
+                }
+                >>> var a = f();
+                >>> a[0]                        // 执行完 f() 时 i 的值已经变成 3
+                >>> a[1]
+                >>> a[2]
+            # 迭代器
+                function setup(arr){
+                    var i = 0;
+                    return function(){
+                        return arr[i++];
+                    }
+                }
+                var next = setup(['a','b','c']);
+                >>> next();                     // 执行闭包函数实现访问数组下一项
+                >>> next();
+                >>> next();
 
-
+# 对象
+    -- 声明
+        // 关键字/空格和特殊符号/以数字开头
+        var o = {name:sc};
+        var o = {'name':sc};
+        var o = {"name":sc};
+    -- 属性
+        >>> window.jsidfio                      // 如果访问的对象的属性不存在, 会返回undefined, 不会报错
+    -- this
+        var o = {
+            name:'sc',
+            sayName:function(){
+                return this.name;
+            }
+        };
+        o.sayName();
+    -- 构造函数
+        function Test(name){
+            this.name = name;
+            this.sayName = function(){
+                return this.name;
+            };
+        }
+        var test = new Test('sc');
         
-
-
-
-
-
-
 
 
 
