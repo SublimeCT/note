@@ -11,15 +11,14 @@
 
     <script type="text/javascript">
 
-        function Person(name, age){
-            this.name = name;
-            this.age = age;
-            this.sayName = function(){return this.name;}
+        function Person(){
+            this.name = 'sc';
         };
-        var person1 = new Person('sc', 21);
-        var person2 = new Person('sc', 21);
-        var test = new Function('alert("123");');
-        console.log(person2 instanceof Person);
+        Person.prototype.age = 21;
+        var person1 = new Person();
+        var person2 = new Person();
+        person1.age = 120;
+        console.log(Object.getPrototypeOf(person1));
 
 
     </script>
