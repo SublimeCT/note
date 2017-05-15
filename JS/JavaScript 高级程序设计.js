@@ -6,12 +6,12 @@
                     var num = 3;
                     switch(num){
                         case 3: console.log(3);
-                        case 5: console.log('5 ?');break;               // 前一个 case 如果执行且没有 break 将会贯穿执行
+                        case 5: console.log('5 ?');break;          // 前一个 case 如果执行且没有 break 将会贯穿执行
                         case '3': console.log('string');
                     }
                 // demo 2
                     var num = 3;
-                    switch(true){                                       // 因为 case 返回布尔值, 所以用 true 匹配符合条件的
+                    switch(true){                                  // 因为 case 返回布尔值, 所以用 true 匹配符合条件的
                         case num<10: console.log('<10');
                             break;
                         case num>0 && num<5: console.log('0~5');
@@ -160,7 +160,44 @@
             2. 访问属性
                 访问实例属性时, 会优先使用实例的属性, 其次是原型对象的属性
                 这也是原型属性被所有实例共享的原因
-
+                1. 顺序
+                    var o = {};
+                    o.prototype.name = 'tom';
+                    o.name = 'jack';
+                    // delete o.name                    只有 delete 属性之后才会访问原型对象中的属性
+                    console.log(o.name);                // jack
+                2. 属性判断
+                    1. hasOwnPrototype
+                        person1.hasOwnPrototype('name');    // 判断 name 属性是否存在于实例中
+                    2. in
+                        console.log('name' in person1);     // 判断实例中是否有该属性
+                    3. 判断属性是否是原型对象中的
+                        function hasProrortypeProperty(obj, name){
+                            return !obj.hasOwnPrototype(name) && (name in obj);
+                        }
+                    4. for-in
+                        枚举对象的属性, 标记为 [[Enumerable]] 的属性不可枚举
+                    5. Object.keys()
+                        // 返回实例属性
+                        console.log(person1);
+                    6. Object.getOwnPropertyNames()
+                        // 返回所有实例属性, 包含不可枚举的属性
+                        // 将包含 constructor 等木刻枚举的属性
+                        console.log(Object.getOwnPropertyNames(person1.prototype));
+                3. 设置原型属性
+                    function Person(){}
+                    Person.prototype = {                    // 通过对象赋值的方式其实是重写了原型属性
+                        // 手动指向 Person
+                        // 此时的 construct [[Enumerable]] 特性为 true
+                        constructor: Person,
+                        name: 'sc',
+                        age: 21
+                    };
+                    // 重新设置 construct 的特性
+                    Object.defineProperty(Person.prototype, 'construct', {
+                        enumerable: false,
+                        value: Person
+                    });
 
 
 
