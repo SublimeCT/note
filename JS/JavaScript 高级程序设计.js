@@ -198,6 +198,134 @@
                         enumerable: false,
                         value: Person
                     });
+                4. 原型与实例间的松散关系
+                    function Person(){}
+                    var p = new Person();
+                    // 将 Person prototype 对象指向其他对象, 此时p.prototype 指向的原 原型对象并没有添加任何属性
+                    Person.prototype = {
+                        name: 'sc'
+                    };
+                    console.log(Person.prototype);                // undefined
+                5. 原生对象
+                    typeof Array.prototype.sort                 // function
+                6. 缺点
+                    // 引用类型属性将在所有实例中保持一个引用
+                    function Person(){};
+                    Person.prototype = {
+                        construct: Person,
+                        name: 'sc';
+                        firends: ['Tom', 'Jack']
+                    }
+                    var p1 = new Person();
+                    var p2 = new Person();
+                    p1.friends.push('Kobe');
+                    console.log(p1.friends === p2.friends);             // true
+            3. 组合使用构造函数模式和原型模式
+                /*
+                 *  结合构造函数和原型模式的特点, 组合使用最为合理
+                 *      1. 在构造函数中定义实例属性
+                 *      2. 在原型中定义方法和共享的属性
+                 *          原型中定义共享方法, 最大限度的节省内存 
+                 */
+                function Person(name, age){this.name=name;this.age=age;}
+                Person.prototype = {constructor: Person,sayName:function(){return this.name;}}
+            4. 动态原型模式
+                /*
+                 *  最接近 OOP语言 的对象声明方式
+                 *  
+                 */
+                function Person(name){
+                    this.name = name;
+                    this.age = age;
+                    if (typeof this.sayName != 'function') {
+                        Person.prototype.sayName = function(){
+                            return this.name;
+                        }
+                        Person.prototype.sayAge = function(){
+                            return this.age;
+                        }
+                    }
+                }
+            5. 寄生构造函数模式
+            6. 稳妥构造函数模式
+        3. 继承
+            1. 通过原型链继承
+                /*
+                 *  缺点: 
+                 *      1. 对于实例来说, 继承的所有属性都是原型属性, 原型中的引用类型值将被所有实例共享
+                 *      2. 无法在子类中向父类构造函数传参
+                 */
+                function Person(){this.name = 'sc';};
+                function Sc(){}
+                Sc.prototype = new Person();                    // 重写原型对象
+                var sc = new Sc();
+                console.log(sc);
+            2. 借用构造函数
+                /*
+                 *  优点:   
+                 *      1. 解决原型链继承中的引用类型属性问题
+                 *      2. 可在子类内部传参
+                 *  缺点:
+                 *      1. 使用借用方式, 子类无法继承父类的原型属性
+                 */
+                function Person(name){this.name=name;this.friends=['jiangzemin','zhaoziyang'];};
+                function Sc(){
+                    Person.call(this, 'sc');                          // 可传参
+                }
+                var sc = new Sc();
+                console.log(sc);
+            3. 组合继承
+                /*
+                 *  相对于组合使用构造函数和原型创建对象  
+                 *  组合继承融合了原型继承和借用构造函数的优点, 是ES中最常用的继承方式
+                 *  缺点:
+                 *      需要执行两次构造函数
+                 */
+                function Person(name){this.name=name;this.friends=['jiangzemin','zhaoziyang'];};
+                function Sc(){
+                    Person.call(this, 'sc');                          // 继承属性
+                }
+                Sc.prototype = new Person();                          // 继承方法
+                var sc = new Sc();
+                console.log(sc);                
+            4. 原型式继承
+                /*
+                 *  只想简单的实现继承, 又不必创建新类型, 可以使用原型式继承
+                 *  ECMAScript5 通过 Object.create() 规范化了原型式继承
+                 */
+                var person = {
+                    name: 'sc',
+                    age: 21
+                };
+                var p1 = Object.create(person);
+                var p2 = Object.create(person, {
+                    name: {
+                        value: 'Sc'
+                    }
+                });
+                console.log(p2.name);                                   // Sc
+            n. 寄生组合式继承
+                /*
+                 *  
+                 *  
+                 */
+                // 原型式继承
+                function obejct(o){
+                    function F(){}
+                    F.prototype = o;
+                    return F;
+                }
+                
+                function inheritPrototype(subType, superType){
+                    var prototype = object(superType.prototype);            // 创建对象
+                    prototype.construct = subType;                          // 增强对象
+                    subType.prototype = prototype;                          // 指定对象
+                }
+
+
+
+
+
 
 
 

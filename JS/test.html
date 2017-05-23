@@ -11,15 +11,13 @@
 
     <script type="text/javascript">
 
-        function Person(){
-            this.name = 'sc';
-        };
+        function Person(){this.name = 'sc';};
         Person.prototype.age = 21;
-        var person1 = new Person();
-        var person2 = new Person();
-        person1.age = 120;
-        console.log(person1);
-
+        function Sc(){
+            Person.call(this);
+        }
+        var sc = new Sc();
+        console.log(sc);
 
     </script>
 </body>
