@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>test file</title>
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
 </head>
 <style type="text/css">
     html,body{background: gray;}
@@ -11,13 +12,36 @@
 
     <script type="text/javascript">
 
-        function Person(){this.name = 'sc';};
-        Person.prototype.age = 21;
-        function Sc(){
-            Person.call(this);
+        Function.prototype.before = function(beforefn){
+            var __self = this;
+            return function(){
+                beforefn.apply(this, arguments);
+                return __self.apply(this, arguments);
+            }
         }
-        var sc = new Sc();
-        console.log(sc);
+
+        Function.prototype.after = function(afterfn){
+            var __self = this;
+            return function(){
+                var ret = __self.apply(this, arguments);
+                afterfn.apply(this, arguments);
+                return ret;
+            }
+        }
+
+        var func = function(){
+            console.log('func');
+        }
+
+
+        func = func.before(function(){
+            console.log(1);
+        }).after(function(){
+            console.log(3);
+        });
+
+
+        func();
 
     </script>
 </body>
