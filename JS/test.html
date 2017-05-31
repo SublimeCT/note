@@ -12,36 +12,31 @@
 
     <script type="text/javascript">
 
-        Function.prototype.before = function(beforefn){
-            var __self = this;
-            return function(){
-                beforefn.apply(this, arguments);
-                return __self.apply(this, arguments);
+        var currying = (function(){
+            var args = [];
+            return function(fn){
+                if (arguments.length === 0) {
+                    return fn.apply(null, args);
+                }else{
+                    [].push.apply(args, arguments);
+                }
             }
-        }
+        })();
 
-        Function.prototype.after = function(afterfn){
-            var __self = this;
+        var cost = (function(){
+            var money = 0;
             return function(){
-                var ret = __self.apply(this, arguments);
-                afterfn.apply(this, arguments);
-                return ret;
-            }
-        }
+                for (var i=0, len=args.length;i<len;i++) {
+                    money += args[i];
+                }
+                return money;
+            };
+        })();
 
-        var func = function(){
-            console.log('func');
-        }
+        var cost = currying(cost);
 
-
-        func = func.before(function(){
-            console.log(1);
-        }).after(function(){
-            console.log(3);
-        });
-
-
-        func();
+        cost(123);
+        console.log(cost());
 
     </script>
 </body>

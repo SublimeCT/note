@@ -470,9 +470,31 @@
                 func();                                                     // 1 2 3
             4 其他应用
                 1 currying
-
-
-
+                    /*
+                     *  curring 又称部分求值
+                     *      先将参数在闭包环境中保存起来, 不会立即求值
+                     *      到真正需要求值的时候再将之前传入的参数一次性求值
+                     */
+                    var cost = (function(){
+                        var args = [];
+                        return function(){
+                            if (arguments.length === 0) {
+                                var money = 0;
+                                for (var i=0, len=args.length;i<len;i++) {
+                                    money += args[i];
+                                }
+                                return money;
+                            }else{
+                                /*
+                                 *  arguments 并不是 Array 类型, 而是包含参数集合的 类数组对象  
+                                 *  使用 apply 可以将 arguments 转换为参数数组传递给 push 方法
+                                 */
+                                [].push.apply(args, arguments);
+                            }
+                        }
+                    })();
+                    cost(2);cost(2);console.log(cost());                    // 4
+                    
 
 
 
