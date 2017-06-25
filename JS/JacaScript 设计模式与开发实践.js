@@ -494,8 +494,33 @@
                         }
                     })();
                     cost(2);cost(2);console.log(cost());                    // 4
-                    
-
+                    /*
+                     *  为 cost 创建公共的 currying 化函数
+                     *  
+                     */
+                    var currying = function(fn){
+                        var args = [];
+                        return function(){
+                            if (arguments.length === 0) {
+                                return fn.apply(null, args);
+                            }else{
+                                [].push.apply(args, arguments);
+                                return arguments.callee;
+                            }
+                        }
+                    };
+                    var cost = (function(){
+                        var money = 0;
+                        return function(){
+                            for (var i=0, len=arguments.length;i<len;i++) {
+                                money += arguments[i];
+                            }
+                            return money;
+                        };
+                    })();
+                    // 将函数 currying 化
+                    var cost = currying(cost);
+                    cost(21)(21);cost(21);console.log(cost());
 
 
 

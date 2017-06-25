@@ -12,31 +12,29 @@
 
     <script type="text/javascript">
 
-        var currying = (function(){
+        var currying = function(fn){
             var args = [];
-            return function(fn){
+            return function(){
                 if (arguments.length === 0) {
                     return fn.apply(null, args);
                 }else{
                     [].push.apply(args, arguments);
+                    return arguments.callee;
                 }
             }
-        })();
-
-        var cost = (function(){
+        };
+        var cost = function(){
             var money = 0;
-            return function(){
-                for (var i=0, len=args.length;i<len;i++) {
-                    money += args[i];
+            // return function(){
+                for (var i=0, len=arguments.length;i<len;i++) {
+                    money += arguments[i];
                 }
                 return money;
-            };
-        })();
-
+            // };
+        };
+        // 将函数 currying 化
         var cost = currying(cost);
-
-        cost(123);
-        console.log(cost());
+        cost(21)(21);cost(21);console.log(cost());
 
     </script>
 </body>
