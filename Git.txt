@@ -22,7 +22,7 @@
     版本库(Git Repository)
         -- 最终提交到仓库
     # 目录结构
-        在test目录(工作区)中有个隐藏目录.git(版本库),在.git中最重要的是被称为stage的暂存区,还有git自动创建的master分支和指向master分支的HEAD指针
+        在test目录(工作区)中有个隐藏目录.git(版本库), 在.git中最重要的是被称为stage的暂存区,还有git自动创建的master分支和指向master分支的HEAD指针
         test => a.js/.git
         .git => stage/HEAD/master 
 
@@ -30,7 +30,7 @@
     # 基本信息设置
     在文件夹内 Git Bash Here
     git config --global user.name 'SublimeCT'
-    git config --global user.name 'hellosc@qq.com'
+    git config --global user.email 'hellosc@qq.com'
         -- git config --list    查看配置信息
     # 创建仓库
     mkdir test1
