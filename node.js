@@ -10,8 +10,44 @@
     2 配置插件
     3 添加新编译环境
 
+3 cnpm [https://npm.taobao.org/]
+    1 使用 npm 淘宝镜像
+    2 安装模块
+        cnpm install -g xxx
+        1 全局安装
+            安装在 \AppData\Roaming\npm\node_modules 目录下
+        2 本地安装
+            安装在当前路径
 
+4 使用 nodemon 自动重启 node
+    nodemon xxx.js
 
+5 模块与包管理工具
+    Commonjs 规范
+
+6 模块
+    1 创建模块
+        mkdir school
+        // student.js | teacher.js
+        function add(student){
+            console.log('Add Student: '+student);
+        }
+        exports.add = add;
+        // klass.js
+        var student = require('./student.js');
+        var teacher = require('./teacher.js');
+        var add = function add(teacher, students) {
+            teacher.add(teacher);
+            students.forEach(function(item, index){
+                student.add(item);
+            });
+        }
+        // index.js
+        var klass = require('./klass');
+        klass.add('Teacher', ['student1', 'student2']);
+
+7 API
+    
 
 
 
