@@ -474,7 +474,21 @@
                     });
                 2 绑定原生事件
                     <my-component @click.native="increment"></my-component>
+            5 .sync 修饰符
+                /*
+                 *  在 1.x 中可以通过 .sync 修饰符将子组件对 prop 值的修改同步到父组件中, 但这样无法查看子组件何时修改了 prop 值, 会增加维护成本
+                 *  在 2.0+ 中移除了 .sync
+                 *  在 2.3.x 中恢复了 .sync, 仅作为编译时的语法糖
+                 */
+                // v2.3.x
+                <my-component :foo.sync="bar"></my-component>               /
+                // 会被扩展为
+                <my-component :foo="bar" @update:foo="val => bar = val"></my-component>               /
+                // 当子组件需要更新 foo 的值时, 会显式地触发一个更新事件
+                this.$emit('update:foo', newValue);
 
+            6 使用自定义事件的表单输入组件
+                
 
 
 
