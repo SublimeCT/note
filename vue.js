@@ -472,7 +472,8 @@
                             }
                         }
                     });
-
+                2 绑定原生事件
+                    <my-component @click.native="increment"></my-component>
 
 
 
