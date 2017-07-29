@@ -488,7 +488,144 @@
                 this.$emit('update:foo', newValue);
 
             6 使用自定义事件的表单输入组件
+                1 在组件中使用 v-model
+                    <input v-model="something">
+                    // v-model 语法糖
+                    <input :value="something" @input="something = $event.target.value">
+                    // v-model 语法糖在组件中使用
+                    <custom-input :value="something" @input="something = arguments[0]"></custom-input>    /
+                2 货币输入自定义控件[保留两位小数]
+                    <div id="example">
+                        <currency-input v-model="price"></currency-input>
+                    </div>
+                    var vm = new Vue({
+                        el: '#example',
+                        data: {
+                            price: 100
+                        },
+                        components: {
+                            'currency-input': {
+                                template: '\
+                                    <span>\
+                                        $\
+                                        <input \
+                                            ref="input"\
+                                            v-bind:value="value"\
+                                            v-on:input="updateValue($event.target.value)" \
+                                            placeholder="保留两位小数"\
+                                        >\
+                                    </span>\
+                                ',
+                                // value prop 是父组件的 v-model 属性
+                                props: ['value'],
+                                methods: {
+                                    updateValue: function(value){
+                                        // 保留两位小数
+                                        var formatedValue = value.trim().slice(0, value.indexOf('.') === -1 ? value.length : value.indexOf('.')+3);
+                                        this.$refs.input.value = formatedValue;
+                                        this.$emit('input', Number(formatedValue));
+                                    }
+                                }
+                            }
+                        }
+                    });
+                3 定制组件的 v-model
+                    /*
+                     *  2.2.0 新增
+                     *  一个组件的 v-model 默认会使用 value 属性和 input 事件
+                     *  但单选框或复选框的 value 属性可能用作其他目的
+                     *  可以通过 model 属性回避这种冲突
+                     *  
+                     */
+
+                    // 这里的 value 属性用于其他用途
+                    <my-checkbox v-model="foo" value="some value"></my-checkbox>             /
+
+                    // 通过 model 属性处理之后
+                    <my-checkbox :checked="foo" @change="val => {foo = val}" value="some value"></my-checkbox>             /
+
+                    new Vue({
+                        el: '#example',
+                        data: {
+                            foo: '',
+                            // 需要显式声明 checked
+                            checked: ''
+                        }
+                        components: {
+                            'my-checkbox': {
+                                template: '...',
+                                // 通过 model 修改 v-model 默认使用的 value 属性和 input 事件
+                                model: {
+                                    prop: 'checked',
+                                    event: 'change'
+                                },
+                                props: {
+                                    checked: Boolean,
+                                    value: String
+                                }
+                            }
+                        }
+                    });
+            7 使用 slot 分发内容
+                // 为了让组件可以混合, 可以使用 内容分发 混合父组件的内容和子组件的模板, 可以使用 <slot> 作为原始内容的插槽
+                1 编译作用域
+                    // 父组件模板的内容在父组件作用域内编译, 子组件模板的内容在子组件作用域内编译 
+                    <child-component>
+                        // 这里的 message 是父组件的数据
+                        {{ message }}
+                    </child-component>  /
+
+                    // 不能在父组件模板内将一个指令绑定到子组件上
+                    <child-component v-show="showChildProperty"></child-component>                          /
+
+                2 单个 slot
+                    // 在子组件渲染时, 当有分发内容时, slot 内将编译宿主元素; 如果没有分发内容, 将显示 slot 中的备用内容
                 
+                3 具名 slot 
+                    // <slot> 可以用 name 属性来配置如何分发内容
+                    <div id="example">
+                        <test>
+                            <h1 slot="header">这里可能是一个页面标题</h1>
+
+                            <p>主要内容的一个段落</p>
+                            <p>另一个主要段落</p>
+
+                            <h2 slot="footer">这里有一些联系信息</h2>
+                        </test>
+                    </div>
+                    
+                    var vm = new Vue({
+                        el: '#example',
+                        data: {
+                            price: 100
+                        },
+                        components: {
+                            'test': {
+                                template: '\
+                                    <section>\
+                                        <header>\
+                                            <slot name="header"></slot>\
+                                        </header>\
+                                        <main>\
+                                            <slot></slot>\
+                                        </main>\
+                                        <footer>\
+                                            <slot name="footer"></slot>\
+                                        </footer>\
+                                    </section>\
+                                ',
+                            }
+                        }
+                    });
+
+                4 作用域插槽
+                    // 用作使用一个可重用模板替换已渲染元素
+
+                    // 使用作用域插槽实现列表组件, 允许组件自定义应该渲染列表的每一项
+                    mark
+                5 动态组件
+                    
+
 
 
 
