@@ -4,14 +4,14 @@
 -----------
 
 ## 使用 vue-resourse 操作 json
-1. 引入
+#### 1. 引入
 ```html
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="js/lib/vue-resource.js"></script>
     <script src="js/cart.js"></script>
 ```
 
-2. 创建 Vue 实例
+#### 2. 创建 Vue 实例
 ```javascript
     var vm = new Vue({
         el: '#app',
@@ -31,7 +31,7 @@
     });
 ```
 
-3. 使用 vue-resource 获取数据
+#### 3. 使用 vue-resource 获取数据
 ``` javascript
         methods: {
             cartView: function(){
@@ -44,6 +44,6 @@
         }
 ```
 
-4. 金额计算
+#### 4. 金额计算
 
 
