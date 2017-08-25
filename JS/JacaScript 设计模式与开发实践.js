@@ -521,6 +521,28 @@
                     // 将函数 currying 化
                     var cost = currying(cost);
                     cost(21)(21);cost(21);console.log(cost());
+                2. 惰性加载
+                    var addEvent = function(dom, type, handler){
+                        if (window.addEventListener) {
+                            addEvent = function(dom, type, handler){
+                                dom.addEventListener(type, handler, false);
+                            }
+                        } else if (window.attachEvent) {
+                            addEvent = function(dom, type, handler){
+                                dom.attachEvent('on'+type, handler);
+                            }
+                        }
+                        addEvent(dom, type, handler);
+                    }
+
+                    console.log(addEvent);
+
+                    var btn = document.getElementById('bind');
+                    addEvent(btn, 'click', function(){
+                        console.log('=====');
+                    });
+
+                    console.log(addEvent);
 
 
 
