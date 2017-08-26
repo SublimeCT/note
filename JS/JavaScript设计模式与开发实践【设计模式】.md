@@ -228,7 +228,7 @@
             if (value.length < length) return errorMsg;
         },
         isMobile: function(value, erorrMsg){
-            if (!/^1[3|5|6|7|8|9][0-9]{9}$/) return errorMsg;
+            if (!/^1[3|5|6|7|8|9][0-9]{9}$/.test(value)) return errorMsg;
         }
     }
     
