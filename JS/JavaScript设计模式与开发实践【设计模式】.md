@@ -228,12 +228,13 @@
             if (value.length < length) return errorMsg;
         },
         isMobile: function(value, erorrMsg){
-            if (!/^1[3|5|6|7|8|9][0-9]{9}$/.test(value)) return errorMsg;
+            if (!/^1[3|5|6|7|8|9][0-9]{9}$/) return errorMsg;
         }
     }
     
     // 环境类
     var Validator = function(){
+        // 保存校验规则
         this.cache = [];
     };
     Validator.prototype.add = function(dom, rule, errorMsg){
@@ -254,6 +255,116 @@
         }
     }
 ```
+
+## 代理模式
+> 为一个对象提供一个代用品或占位符, 以便控制对他的访问
+
+### 虚拟代理实现图片预加载
+
+**单一职责原则**
+> 就一个类(包括对象和函数), 应该仅有一个引起它变化的原因  
+面向对象设计鼓励将行为分布到细粒度的对象中
+
+**图片预加载**
+> 先用一张 loading 图片占位, 然后异步加载图片, 加载完成后再填充到 img 节点里
+
+*普通的图片预加载*
+```javascript
+    // 未使用代理模式
+    var MyImage = (function(){
+        var imgNode = document.createElement('img')
+        document.body.appendChild(imgNode)
+        var img = new Image
+        img.onload = function(){
+            imgNode.src = img.src
+        }
+        return {
+            setSrc: function(src){
+                imgNode.src = 'http://images.cnitblog.com/blog/494657/201311/12200755-7bf95e92e806470297186fb629df366c.png'
+                img.src = src
+            }
+        }
+    })();
+
+    MyImage.setSrc('http://ogtz66v5z.bkt.clouddn.com/images/tech/nodejs.png');
+```
+> 实际上需要的只是给 img 节点设置 src 属性, 预加载图片只是一个锦上添花的功能  
+可以通过代理模式把预加载图片放到代理对象中, 待预加载完成后再把请求重新交给本体 MyImage  
+
+
+> **代理模式** 并没有改变或新增 MyImage 的接口, 而是将两个功能分隔到两个对象中, 它们之间互不影响  
+
+```javascript
+    // 使用代理模式
+    var MyImage = (function(){
+        var imgNode = document.createElement('img')
+        document.body.appendChild(imgNode);
+        return {
+            setSrc: function(src){
+                imgNode.src = src
+            }
+        }
+    })();
+    var ProxyImage = (function(){
+        var img = new Image
+        img.onload = function(){
+            MyImage.setSrc(this.src)
+        }
+        return {
+            setSrc: function(){
+                MyImage.setSrc('http://images.cnitblog.com/blog/494657/201311/12200755-7bf95e92e806470297186fb629df366c.png');
+                img.src = src
+            }
+        }
+    })();
+    ProxyImage.setSrc('http://ogtz66v5z.bkt.clouddn.com/images/tech/nodejs.png')
+```
+*代理和本地接口的一致性*
+> **代理模式的关键是代理对象和本体都对外提供了 setSrc 属性**  
+如果以后不需要预加载, 只需改变请求本体
+
+### 虚拟代理合并 HTTP 请求
+*在 WEB 开发中, 也许最大的开销就是网络请求*  
+*频发的网络请求会带来很大的开销*
+> 可以通过一个代理函数 proxySynchronousFile 来收集一段时间内的请求, 最后一次性发送
+
+**代理模式实现合并 HTTP请求**
+```javascript
+    /**
+     *  网盘中点击 checkbox 同步文件
+     */
+    var synchronousFile = function(id){
+        console.log('开始同步文件');
+    }
+    var proxySynchronousFile = (function(){
+        var cache = [];
+            timer;
+        return function(id){
+            // 将文件id 缓存
+            cache.push(id);
+            if (timer) {
+                return;
+            }
+            timer = setTimtout(function(){
+                synchronousFile(cache.join(','));
+                clearTime(timer);
+                timer = null;
+                // 清空 cache
+                cache.length = 0;
+            }, 2000);
+        }
+    })();
+    var checkbox = document.getElementByTagName('input');
+    for (var i=0,c; c=checkbox[i++];) {
+        c.onclick = function(){
+            if (this.checked === true) {
+                proxySynchronousFile(this.id);
+            }
+        }
+    }
+```
+
+
 
 
 
