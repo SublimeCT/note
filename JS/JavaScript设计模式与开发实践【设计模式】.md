@@ -366,6 +366,79 @@
 **缓存代理**
 > 可以为一些开销比较大的运算结果或AJAX请求提供暂时存储, 如果传递进来的参数跟之前一致, 直接返回缓存
 
+## 迭代器模式
+
+> 提供一种方法顺序访问一个聚合对象中的各个元素, 而又不暴露该对象的内部表示
+
+### 内部迭代器
+> 内部迭代器已经定义好了迭代规则, 完全接受整个迭代过程, 外部只需一次调用即可
+
+```javascript
+    var each = function(arr, callback){
+        for (var i=0,len=arr.length; item=arr[i++];) {
+            callback(arr[i], i);
+        }
+    }
+```
+### 外部迭代器
+> 外部迭代器必须显式地请求迭代下一个元素, 外部迭代器可以控制迭代顺序和过程, 增加了迭代的灵活性
+
+```javascript
+    var Iterator = function(obj){
+        var current = 0;
+        var next = function(){
+            current += 1;
+        }
+        var isDone = function(){
+            return current >= obj.length;
+        }
+        var getCurrentItem = function(){
+            return obj[current];
+        }
+        return {
+            current: current,
+            isDone: isDone,
+            getCurrentItem: getCUrrentItem
+        }
+    }
+```
+
+### 根据不同浏览器获取相应上传对象
+> 按照自定义顺序迭代所有上传对象, 所有获取上传对象的方法都返回对象或 false  
+> 如果再加入 webkit/html5 上传对象, 只需增加对应获取方法
+
+```javascript
+    // 获取 IE 上传控件, 有相应对象就返回, 没有就返回 false
+    var getActiveUploadObject = function(){
+        try{
+            return new ActiveXObject("...");
+        } catch(e) {
+            return false;
+        }
+    }
+    var getFlashUploadObject = function(){
+        // flash 上传
+    }
+    var getFormUploadObject = function(){
+        // 表单上传
+    }
+    
+    var iteratorUploadObject = function(){
+        for (var i=0,fun; fun=arguments[i++]) {
+            var obj = fun();
+            if (obj !== false) {
+                return obj;
+            }
+        }
+    }
+    
+    var obj = iteratorUploadObject(getActiveUploadObject, getFlashUploadObject, getFormUploadObject);
+```
+## 发布-订阅模式
+
+
+
+
 
 
 
