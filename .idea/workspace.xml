@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="73fa9007-5893-48ae-9827-154684b5d415" name="默认的" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JS/JavaScript设计模式与开发实践【设计模式】.md" afterPath="$PROJECT_DIR$/JS/JavaScript设计模式与开发实践【设计模式】.md" />
-    </list>
+    <list default="true" id="73fa9007-5893-48ae-9827-154684b5d415" name="默认的" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -194,12 +192,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1504676697019</updated>
-      <workItem from="1504676698228" duration="2689000" />
+      <workItem from="1504676698228" duration="2756000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2689000" />
+    <option name="totallyTimeSpent" value="2756000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />

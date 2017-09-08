@@ -434,7 +434,39 @@
     
     var obj = iteratorUploadObject(getActiveUploadObject, getFlashUploadObject, getFormUploadObject);
 ```
-## 发布-订阅模式
+
+## 发布-订阅模式(观察者模式)
+
+> 定义对象见的一对多的依赖关系, 当一个对象状态发生改变, 所有依赖于它都会收到通知
+
+```javascript
+    // 将发布-订阅模式提取出来
+    var event = {
+        clientList: [],
+        listen: function(key, fun){
+            if (typeof this.clientList[key] === 'undefined') {
+                this.clientList[key] = [];
+            }
+            this.clientList.push(fun);
+        },
+        tigger: function(){
+            var key = Array.prototype.shift.call(arguments),
+                funs = this.clientList[key];
+            if (typeof funs==='undefined' || funs.length===0) {
+                return false;
+            }
+            for (var i=0,fun; fun=arguments[i++];) {
+                fun.apply(this, arguments);
+            }
+        }
+    }
+    // 为其他对象动态安装发布-订阅模式
+    var installEvent = function(obj) {
+        for (var i in event) {
+            obj[i] = event[i];
+        }
+    }
+    
 
 
 
