@@ -466,7 +466,38 @@
             obj[i] = event[i];
         }
     }
-    
+```
+
+## 命令模式
+
+> 命令模式指的时一个执行特定命令的指令  
+**应用场景**: 需要向某些对象发送请求, 但不知道请求的接收者是谁, 也不知道被请求的操作是什么。  
+此时希望用松耦合的方式设计软件, 使请求的发送者和接收者能够消除彼此见的耦合关系
+
+```javascript
+    var setCommand = function(button, func){
+        button.onclick = function(){
+            command.execute()
+        }
+    }
+    var MenuBar = {
+        refresh: function(){
+            console.log('刷新菜单页面')
+        }
+    }
+    var RefreshMenuBarCommand = function(receiver){
+        return {
+            execute: function(){
+                receiver.refresh();
+            }
+        }
+    }
+    var refreshMenuBarCommand = RefreshMenuBarCommand(MenuBar)
+    setCommand(button1, refreshMenuBarCommand)
+```
+
+## 组合模式
+
 
 
 
