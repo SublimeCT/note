@@ -498,7 +498,30 @@
 
 ## 组合模式
 
+> 组合模式就是用小的对象构建更大的对象, 这些小的对象本身也许是由更小的对象构建而成的
 
+### 更强大的宏命令
+```html
+    <button>超级万能遥控器</button>
+    <h3>打开空调/电视/音响/关门/打开电脑/登陆QQ</h3>
+    <script>
+        // 定义宏命令对象
+        const MacroCommand = function(){
+            return {
+                commandsList: [],
+                add: function(command){
+                    this.commandList.push(command)
+                },
+                execute: function(){
+                    for (let i=0, command; command=this.commandsList[i++];) {
+                        command.execute()
+                    }
+                }
+            }
+        }
+        // more ...
+    </script>
+```
 
 
 
