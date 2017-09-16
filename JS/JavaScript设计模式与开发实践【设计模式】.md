@@ -363,6 +363,222 @@
         }
     }
 ```
+**缓存代理**
+> 可以为一些开销比较大的运算结果或AJAX请求提供暂时存储, 如果传递进来的参数跟之前一致, 直接返回缓存
+
+## 迭代器模式
+
+> 提供一种方法顺序访问一个聚合对象中的各个元素, 而又不暴露该对象的内部表示
+
+### 内部迭代器
+> 内部迭代器已经定义好了迭代规则, 完全接受整个迭代过程, 外部只需一次调用即可
+
+```javascript
+    var each = function(arr, callback){
+        for (var i=0,len=arr.length; item=arr[i++];) {
+            callback(arr[i], i);
+        }
+    }
+```
+### 外部迭代器
+> 外部迭代器必须显式地请求迭代下一个元素, 外部迭代器可以控制迭代顺序和过程, 增加了迭代的灵活性
+
+```javascript
+    var Iterator = function(obj){
+        var current = 0;
+        var next = function(){
+            current += 1;
+        }
+        var isDone = function(){
+            return current >= obj.length;
+        }
+        var getCurrentItem = function(){
+            return obj[current];
+        }
+        return {
+            current: current,
+            isDone: isDone,
+            getCurrentItem: getCUrrentItem
+        }
+    }
+```
+
+### 根据不同浏览器获取相应上传对象
+> 按照自定义顺序迭代所有上传对象, 所有获取上传对象的方法都返回对象或 false  
+> 如果再加入 webkit/html5 上传对象, 只需增加对应获取方法
+
+```javascript
+    // 获取 IE 上传控件, 有相应对象就返回, 没有就返回 false
+    var getActiveUploadObject = function(){
+        try{
+            return new ActiveXObject("...");
+        } catch(e) {
+            return false;
+        }
+    }
+    var getFlashUploadObject = function(){
+        // flash 上传
+    }
+    var getFormUploadObject = function(){
+        // 表单上传
+    }
+    
+    var iteratorUploadObject = function(){
+        for (var i=0,fun; fun=arguments[i++]) {
+            var obj = fun();
+            if (obj !== false) {
+                return obj;
+            }
+        }
+    }
+    
+    var obj = iteratorUploadObject(getActiveUploadObject, getFlashUploadObject, getFormUploadObject);
+```
+
+## 发布-订阅模式(观察者模式)
+
+> 定义对象见的一对多的依赖关系, 当一个对象状态发生改变, 所有依赖于它都会收到通知
+
+```javascript
+    // 将发布-订阅模式提取出来
+    var event = {
+        clientList: [],
+        listen: function(key, fun){
+            if (typeof this.clientList[key] === 'undefined') {
+                this.clientList[key] = [];
+            }
+            this.clientList.push(fun);
+        },
+        tigger: function(){
+            var key = Array.prototype.shift.call(arguments),
+                funs = this.clientList[key];
+            if (typeof funs==='undefined' || funs.length===0) {
+                return false;
+            }
+            for (var i=0,fun; fun=arguments[i++];) {
+                fun.apply(this, arguments);
+            }
+        }
+    }
+    // 为其他对象动态安装发布-订阅模式
+    var installEvent = function(obj) {
+        for (var i in event) {
+            obj[i] = event[i];
+        }
+    }
+```
+
+## 命令模式
+
+> 命令模式指的时一个执行特定命令的指令  
+**应用场景**: 需要向某些对象发送请求, 但不知道请求的接收者是谁, 也不知道被请求的操作是什么。  
+此时希望用松耦合的方式设计软件, 使请求的发送者和接收者能够消除彼此见的耦合关系
+
+```javascript
+    var setCommand = function(button, func){
+        button.onclick = function(){
+            command.execute()
+        }
+    }
+    var MenuBar = {
+        refresh: function(){
+            console.log('刷新菜单页面')
+        }
+    }
+    var RefreshMenuBarCommand = function(receiver){
+        return {
+            execute: function(){
+                receiver.refresh();
+            }
+        }
+    }
+    var refreshMenuBarCommand = RefreshMenuBarCommand(MenuBar)
+    setCommand(button1, refreshMenuBarCommand)
+```
+
+## 组合模式
+
+> 组合模式就是用小的对象构建更大的对象, 这些小的对象本身也许是由更小的对象构建而成的
+
+### 更强大的宏命令
+```html
+    <button id="btn">超级万能遥控器</button>
+    <h3>打开空调/电视/音响/关门/打开电脑/登陆QQ</h3>
+    <script>
+        // 定义宏命令对象工厂函数
+        const MacroCommand = function(){
+            return {
+                commandsList: [],
+                add: function(command){
+                    this.commandList.push(command)
+                },
+                execute: function(){
+                    for (let i=0, command; command=this.commandsList[i++];) {
+                        command.execute()
+                    }
+                }
+            }
+        }
+        // 叶对象命令
+        const openAcCommand = {
+            exevute: function() {
+                console.log('打开空调')  
+            }
+        }
+        /*可以用一个组合对象(宏命令)打开电视和音响*/
+        const openTvCommand = {
+            execute: function() {
+                console.log('打开电视')
+            }
+        }
+        const openSoundCommand = {
+            execute: function() {
+                console.log('打开音响')
+            }
+        }
+        let macroCommand1 = MacroCommand()
+        macroCommand1.add(openTvCommand)
+        macroCommand1.add(openSoundCommand)
+        
+        /*关门/打开电脑/登陆qq*/
+        const closeDoorCommand = {
+            execute: function() {
+                console.log('关门')
+            }
+        }
+        const openPcCommand = {
+            execute: function() {
+                console.log('开电脑')
+            }
+        }
+        const openQQCommand = {
+            execute: function() {
+                console.log('登陆qq')
+            }
+        }
+        
+        let macroCommand2 = MacroCommand()
+        macroCommand2.add(closeDoorCommand)
+        macroCommand2.add(openPcCommand)
+        macroCommand2.add(openQQCommand)
+        
+        /*把所有命令组合成一个超级命令*/
+        let macroCommand = MacroCommand()
+        macroCommand.add(openAcCommand)
+        macroCommand.add(macroCommand1)
+        macroCommand.add(macroCommand2)
+        
+        document.getElementById('btn').onclick = function(){
+            macroCommand.execute()
+        }
+        
+    </script>
+```
+
+
+
+
+
 
 
 
