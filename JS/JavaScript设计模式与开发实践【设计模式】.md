@@ -523,6 +523,9 @@
         const openAcCommand = {
             exevute: function() {
                 console.log('打开空调')  
+            },
+            add: function(){
+                throw new Error('叶对象不能添加子节点')
             }
         }
         /*可以用一个组合对象(宏命令)打开电视和音响*/
@@ -574,6 +577,89 @@
         
     </script>
 ```
+
+## 模板方法模式
+
+```javascript
+    // JavaScript 模拟抽象类
+    var Beverage = function(){}
+    /* 1 */
+    Beverage.prototypr.init = function(){
+        this.test()
+    }
+    /* 2 */
+    Beverage.prototype.test = function(){
+        throw new Error('子类必须重写 test 方法')
+    }
+```
+
+### 钩子方法
+> 在父类中封装了子类的算法框架, 但这些算法框架可能不适用于所有子类  
+
+*饮料类*:  
+- 把水煮沸  
+- 用沸水冲泡饮料  
+- 把饮料倒进杯子  
+- 加调料 
+ 
+这 4 个步骤适用于咖啡和茶, 但有些客人是不加调料的  
+
+> 通过 钩子方法 可以解决这个问题, 放置钩子是隔离变化的一种常见手段
+
+```javascript
+    /* 饮料类 */
+    var Beverage = function(){}
+    Berverage.prototype.boilWater = function(){
+        console.log('煮沸')
+    }
+    Berverage.prototype.brew = function(){
+        throw new Error('子类必须重写 brew 方法')
+    }
+    Berverage.prototype.pourInCup = function(){
+        throw new Error('子类必须重写 pourInCup 方法')
+    }
+    Berverage.prototype.addCondiments = function(){
+        throw new Error('子类必须重写 addCondiments 方法')
+    }
+    Berverage.prototype.customerWantsCondiments = function(){
+        // 默认需要调料
+        return true
+    }
+    Berverage.prototype.init = function() {
+        this.boilWater()
+        this.brew()
+        this.pourInCup()
+        // 判断是否需要调料
+        if (this.customerWantsCondiments()) {
+            this.addCondiments()
+        }
+    }
+    
+    /* 咖啡类 */
+    var CoffeeWithHook = function(){}
+    CoffeeWithHook.prototype = new Beverage
+    CoffeeWithHook.prototype.brew = function(){
+        console.log('沸水冲泡咖啡')
+    }
+    CoffeeWithHook.prototype.pourInCup = function(){
+        console.log('咖啡倒进杯子')
+    }
+    CoffeeWithHook.prototype.addCondiments = function(){
+        console.log('加糖和牛奶')
+    }
+    CoffeeWithHook.prototype.customerWantsCondiments = function() {
+        return false
+    }
+    (new CoffeeWithHook()).init()
+```
+
+### 非继承实现
+```javascript
+    var Beverage = function(param){
+        
+    }
+```
+
 
 
 
