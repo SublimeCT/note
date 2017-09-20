@@ -634,7 +634,6 @@
             this.addCondiments()
         }
     }
-    
     /* 咖啡类 */
     var CoffeeWithHook = function(){}
     CoffeeWithHook.prototype = new Beverage
@@ -656,9 +655,46 @@
 ### 非继承实现
 ```javascript
     var Beverage = function(param){
-        
+        var boilWater = function(){
+            console.log('把水煮沸')
+        }
+        var brew = param.brew || function() {
+            throw new Error('必须传递brew方法')
+        }
+        // ...
+        var F = function(){}
+        F.prototype.init = function() {
+            boilWater()
+            brew()
+            // ...
+        }
+        return F
     }
+    var Coffee = Beverage({
+        brew: function(){
+            console.log('用沸水冲泡咖啡')
+        }
+        // ...
+    })
+    (new Coffee()).init()
 ```
+
+## 享元模式
+
+> 享元模式(flyweight)是一种用于性能优化的模式  
+享元模式的核心是运用共享技术支持大量细粒度的对象  
+享元模式能很好的解决存在大量对象带来的性能问题
+
+**内部状态与外部状态**
+- 内部状态存储于对象内部
+- 内部状态可以被一些对象共享
+- 内部状态独立于具体的场景, 一般不会改变
+- 外部状态取决于具体的场景, 根据场景变化, 外部状态不能被共享
+
+
+
+
+
 
 
 
