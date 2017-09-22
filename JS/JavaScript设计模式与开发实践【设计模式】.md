@@ -698,6 +698,50 @@
 
 **用 AOP 实现职责链**
 
+```javascript
+    Function.prototype.after = function(fun) {
+        var _this = this;
+        return function() {
+            var ret = _this.apply(this, arguments);
+            if (ret === 'next') {
+                return fun.apply.(this, arguments);
+            }
+            return ret;
+        }
+    }
+    var order = order500yuan.after(order200yuan).after(orderNormal);
+    order(1, true, 500);
+    order(2, true, 500);
+    order(1, false, 500);
+```
+
+**职责链获取文件上传对象**
+
+```javascript
+    var getActiveUploadObj = function(){
+        try {
+            return new ActiveXObject('...');
+        } catch(e) {
+            return 'next';
+        }
+    }
+    var getFlashUploadObj = function(){
+        if (supportFlash()) {
+            var str = '<object type="application/x-shockwave-flash"></object>'
+            return $(str).appendTo($('body'));
+        }
+        return 'next';
+    }
+    // ...
+    var getUploadObj = getActiveUploadObj.after(getActiveUploadObj).after(getFormUploadObj);
+    console.log(getUploadObj());
+```
+
+## 中介者模式
+
+> 面向对象设计鼓励将行为分布到各个对象中, 把对象划分成更小的粒度, 有助于增强复用性  
+但由于细粒度对象间的联系激增, 中介者模式的作用就是接触对象之间的紧耦合关系
+
 
 
 
