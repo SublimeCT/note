@@ -746,6 +746,56 @@
 
 ## 装饰者模式
 
+> 装饰者模式能够在不改变自身对象的基础上, 为对象动态添加职责
+
+*demo 1*
+```javascript
+    window.onload = function(){
+        alert(1)
+    }
+    // 如果函数装饰连越来越长, 产生的中间变量会越来越多
+    var _onload = window.onload || function(){}
+    window.onload = function(){
+        _onload()
+        // ...
+    }
+```
+
+...
+
+## 状态模式
+
+> 状态模式的关键是区分事物内部的状态, 事物内部状态的改变往往会带来事物的行为的改变
+
+*电灯 demo*
+
+```javascript
+    var Light = function(){
+        this.state = 'off'
+        this.button = unll
+    }
+    Light.prototype.init = function(){
+        var button = document.createElement('button')
+            self = this
+        button.innerHTML = '开关'    
+        this.button = ducument.body.appendChild(button)
+        this.button.onclick = function(){
+            self.buttonWasPressed()
+        }
+    }
+    Light.prototype.buttonWasPressed = function(){
+        if (this.state == 'off') {
+            console.log('开灯')
+            this.state = 'on'
+        } else if (this.state == 'on') {
+            console.log('关灯')
+            this.state = 'off'
+        }
+    }
+    var light = new Light()
+    light.init()
+```
+
 
 
 
