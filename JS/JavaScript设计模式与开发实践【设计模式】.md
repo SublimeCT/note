@@ -748,7 +748,7 @@
 
 > 装饰者模式能够在不改变自身对象的基础上, 为对象动态添加职责
 
-*demo 1*
+***demo 1***
 ```javascript
     window.onload = function(){
         alert(1)
@@ -767,7 +767,7 @@
 
 > 状态模式的关键是区分事物内部的状态, 事物内部状态的改变往往会带来事物的行为的改变
 
-*电灯 demo*
+***电灯 demo***
 
 ```javascript
     var Light = function(){
@@ -795,6 +795,59 @@
     var light = new Light()
     light.init()
 ```
+
+> 状态模式的关键是把事物的各种状态都封装成类, 跟此状态有关的行为都会被封装到类的内部
+
+***用状态模式重构电灯 demo***
+
+```javascript
+    var OffLightState = function(light){
+        this.light = light
+    }
+    OffLightState.prototype.buttonWasPressed = function(){
+        console.log('弱光')
+        this.light.setState(this.ligth.weakLightState)              // 切换到 weakLightState
+    }
+    var WeakLightState = function(light){
+        this.light = light
+    }
+    WeakLightState.prototype.buttonWasPressed = function(){
+        console.log('强光')
+        this.light.setState(this.ligth.strongLightState)
+    }
+    var StrongLightState = function(light){
+        this.light = light
+    }
+    StrongLightState.prototype.buttonWasPressed = function(){
+        console.log('关灯')
+        this.light.setState(this.ligth.offLightState)
+    }
+    var Light = function(){
+        this.offLightState = new OffLightState()
+        this.weakLightState = new WeakLightState()
+        this.strongLightState = new StrongLightState()
+        this.button = null
+    }
+    Light.prototype.init = function(){
+        var button = document.createElement('button')
+            self = this
+        button.innerHTML = '开关'    
+        
+        // 设置当前状态
+        this.currentState = this.offLightState
+        
+        this.button = ducument.body.appendChild(button)
+        this.button.onclick = function(){
+            self.buttonWasPressed()
+        }
+    }
+    Light.prototype.setState = function(newState){
+        this.currentState = newState
+    }
+    var light = new Light()
+    light.init()
+```
+
 
 
 
