@@ -761,7 +761,6 @@
     }
 ```
 
-...
 
 ## 状态模式
 
@@ -846,6 +845,15 @@
     }
     var light = new Light()
     light.init()
+```
+
+> 使用抽象类规范状态类
+
+```javascript
+    var State = function(){}
+    State.prototype.buttonWasPressed = function(){
+        throw new Error('必须重写 buttonWasPressed')
+    }
 ```
 
 
