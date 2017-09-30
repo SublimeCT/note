@@ -856,6 +856,11 @@
     }
 ```
 
+## JavaScript 版本状态机
+
+```javascript
+    
+```
 
 
 
