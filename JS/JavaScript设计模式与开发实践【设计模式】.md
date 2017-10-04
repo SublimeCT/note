@@ -856,49 +856,64 @@
     }
 ```
 
-## JavaScript 版本状态机
+## JavaScript 版本状态模式
+
+> 通过 Function.prototype.call 直接把请求委托给某个字面量对象来执行
 
 ```javascript
-    
+    var Light = function(){
+        this.currState = FSM.off
+        this.button = null
+    }
+    Light.prototype.init = function(){
+        // 创建 button ...
+        var _this = this
+        button.onclick = function(){
+            _this.currState.buttonWasPressed.call(self)
+        }
+    }
+    var FSM = {
+        off: {
+            buttonWasPressed: function(){
+                console.log('关灯')
+                this.button.innerHTML = '开灯'
+                this.currState = FSM.on
+            }
+        },
+        on: {
+            buttonWasPressed: function(){
+                console.log('开灯')
+                this.button.innerHTML = '关灯'
+                this.currState = FSM.off
+            }
+        }
+    }
+    var light = new Light()
+    light.init()
 ```
 
+## 适配器模式
 
+> 适配器模式的作用是解决连个软件实体间接口不兼容的问题, 适配器模式可以使这两个软件实体兼容
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```javascript
+    var googleMap = {
+        show: function(){
+            console.log('开始渲染谷歌地图')
+        }
+    }
+    var baiduMap = {
+        // 百度地图的 show 接口改为了 display 接口
+        display: function(){
+            console.log('开始渲染百度地图')
+        }
+    }
+    var baiduMapAdapter = {
+        show: function(){
+            baiduMap.display()
+        }
+    }
+    // 换为适配器对象
+    renderMap(baiduMapAdapter)
+    renderMap(googleMap)
+```
