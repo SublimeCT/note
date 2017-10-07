@@ -550,8 +550,55 @@ loadImageAsync(url).then(
 
 * [两个有用的附加方法](http://es6.ruanyifeng.com/#docs/promise#两个有用的附加方法)
 
+[*Iterator / for...of*](http://es6.ruanyifeng.com/#docs/iterator)
+---
+
+> JavaScript 表示集合的数据结构有 4 中, Array / Object / Set / Map  
+在组合这些数据结构时就需要统一的接口来处理不同的数据结构  
+
+1. 内部创建指针对象, 指向数据结构的第一个元素
+2. 外部通过不断调用 next 方法, 使内部指针移动, 并返回当前元素信息 value / done
+
+> 一种数据结构只要部署了 Iterator 接口, 该接口在数据结构的 Symbol.iterator 属性上, 这种数据结构就是可遍历的
+
+
 *async 函数*
 ---
+
+> async 是 [Generator](http://es6.ruanyifeng.com/#docs/generator) 函数的语法糖
+
+```javascript
+// 读取两个文件 demo
+const fs = require('fs')
+const readFile = (fileName) => {
+    return new Promise(function(resole, reject) {
+        fs.readFile(fileName, function(error, data) {
+            if (error) return reject(error)    
+            resole(data)
+        })
+    })
+}
+// generator 写法
+const gen = function* (){
+    const file1 = yield readFile('file1')
+    const file2 = yield readFile('file2')
+    console.log(file1.toString())
+    console.log(file2.toString())
+}
+// async 写法
+const asyncFile = async function() {
+    const file1 = await readFile('file1')
+    const file2 = await readFile('file2')
+    console.log(file1.toString())
+    console.log(file2.toString())
+}
+```
+
+> async 对 generator 进行改进:  
+1. 内置执行器  
+2. 更好的语义
+
+
 
 
 
