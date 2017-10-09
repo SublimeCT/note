@@ -1,6 +1,6 @@
 # ECMAScript 6 笔记
 
-by 开源书籍 [ECMAScript6 入门 [阮一峰]](http://es6.ruanyifeng.com)
+感谢开源书籍 [ECMAScript6 入门 [阮一峰]](http://es6.ruanyifeng.com)
 
 [![进入](http://es6.ruanyifeng.com/images/cover-3rd.jpg)](http://es6.ruanyifeng.com)
 
@@ -510,13 +510,15 @@ console.log(map.get(key2))      // bbb
 *[Reflect](http://es6.ruanyifeng.com/#docs/reflect)*
 ---
 
-*[Promise](http://es6.ruanyifeng.com/#docs/promise)
+*[Promise](http://es6.ruanyifeng.com/#docs/promise)*
 ---
 
 > 状态:  
 1. pending      进行中
 2. fulfilled    已成功
 3. rejected     已失败
+
+* 基本用法
 
 ```javascript
 const loadImageAsync = (url) => {
@@ -545,6 +547,41 @@ loadImageAsync(url).then(
         // 处理 promise函数 / then 中的所有错误
         console.log('error')
     }
+)
+```
+
+* Promise.all
+
+> 参数: array[Promise]  
+包装成一个新的 Promise 实例
+只有所有 Promise 都执行成功才会执行 resole, 否则执行 reject
+resole 中的参数为所有 Promise 的返回值的集合
+
+```javascript
+Promise.all(p1, p2).then(
+    ([p1_data, p2_data]) => {},
+    e => console.error(e)
+)
+```
+
+* Promise.race()
+
+> 参数: array[Promise]  
+当 Promise 集合中有一个状态改变, 就触发相应的回调函数
+
+```javascript
+const getJson = new Promsie.race([
+    fetch('https://google.com/info'),
+    new Promise(() => {
+        setTimeout(() => {
+            throw new Error('request timeout')
+        }, 5000)
+    })
+])
+getJson.then(
+    data => console.log(data)
+).catch(
+    error => console.error(error)
 )
 ```
 
@@ -597,6 +634,34 @@ const asyncFile = async function() {
 > async 对 generator 进行改进:  
 1. 内置执行器  
 2. 更好的语义
+3. 更广泛的适用性
+4. 返回值是 `Promise`
+
+* 返回 Promise 对象
+
+```javascript
+async function fun (){
+    /**
+     * await 接收 Promise
+     * await 返回 Promise 执行完之后的返回值
+     * 然后 async 函数继续执行
+     */
+    return await new Promise((resole) => {
+        setTimeout(() => {
+            resole('test')
+            }, 1000)
+    }).then((data) => {
+        return data
+    })
+    return 'test'               // 将作为 resole 的参数
+    return await 'to Promise'   // await 后面如果不是 Promise, 将被转为立即执行 resole 的 Promise
+    throw new Error('test')     // 将作为 reject 的参数
+}
+fun().then(
+    (data) => console.log(data),
+    (error) => console.error(error)
+)
+```
 
 
 
