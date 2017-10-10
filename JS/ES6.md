@@ -663,8 +663,87 @@ fun().then(
 )
 ```
 
+* 按顺序处理 Promise 对象
+
+```javascript
+/**
+ *  按顺序处理一组异步操作
+ */
+
+```
+
+*Class*
+---
+
+```javascript
+new Test()      // 报错, 不存在变量提升
+class Test {
+    constructor () {
+        this.name = name
+    }
+    // 所有方法都定义到 prototype 上
+    test () {
+        console.log('test')
+    }
+}
+// 使用表达式形式定义 class, Me 只在 class 内部使用
+const MyClass = class Me {}
+// 为 class 添加方法
+Obejct.assign(Test.prototype, {
+    fun1 () {},
+    fun2 () {}
+})
+let test = new Test
+```
+
+* 私有方法 / 属性
+
+```javascript
+const param = Symbol('param')
+const fun = Symbol('fun')
+class Test {
+    constructor (param) {
+        this[param] = param
+    }
+    [fun] () {
+        console.log('fun')
+    }
+}
+```
+
+* getter / setter
 
 
+* 静态方法
 
+> 静态方法不能在实例上调用, 只能被 class 调用
+
+```javascript
+class Test {
+    static fun () {
+
+    }
+}
+```
+
+* 实例属性
+
+*class 的继承*
+
+```javascript
+class A {
+    constructor () {
+        this.name = 'sven'
+    }
+}
+class B {
+    constructor () {
+        console.log(super)
+        super()
+        this.age = 21
+    }
+}
+let b = new B
+```
 
 
