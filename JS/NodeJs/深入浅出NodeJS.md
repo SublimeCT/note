@@ -43,6 +43,9 @@ const xxx = require('xxx')
 
 - 核心模块
     `Node` 核心模块直接编译为二进制执行文件, `Node` 进程启动时部分核心模块就直接加载进内存
+    分为 `C/C++` 和 `JavaScript` 编写的二进制文件
+    存放在 `Node` 项目的 `/src` 目录下, `JavaScript` 文件存放在 `/lib` 目录下
+
 - 文件模块
     运行时动态加载
 
@@ -103,15 +106,74 @@ Module._extensions['.json'] = function (module, filename) {
 }
 ```
 
-## js 模块的编译
+### js 模块的编译
+
+> 每个模块通过 `vm` 模块的 `runInThisContext` 方式进行作用域隔离
 
 ```javascript
-(function () {
-    
+(function (exports, require, module, __filename, __dirname) {
+    // ...
 })();
 ```
 
+### module.exports
 
+> `exports` 是通过形参的方式传入的, 要达到 `require` 引入的效果， 赋值给 `module.exports`
+
+### C/C++ 模块的编译
+
+> `Node` 调用 `process.dlopen` 的方式执行, 实际上 `.node` 模块只需要加载和执行 
+
+...
+
+### 前后端共用模块
+
+- 模块侧重点
+    - 前端 JS 需要经历从同一个服务器分发到多个客户端执行, 且为了用户体验模块引入采用异步形式， 瓶颈在于带宽
+    - 后端则是相同代码需要执行多次, 几乎所有模块引入采用同步， 先 `require` 再使用， 瓶颈在于 `CPU` 和内存
+
+### AMD 规范
+
+> `CMD` 是 `Asynchronous Module Definition 异步模块定义`, 是 `CommonJS` 模块规范的延伸
+
+```javascript
+// AMD 只用一个接口
+define([id, dependedcies,] factory)
+// `CMD` 的 `id` 和依赖是可选的
+define(function () {
+    var exports = {}
+    exports.sayHello = function () {
+        alert('hello NodeJS')
+    }
+    return exports
+})
+```
+
+### CMD 规范
+
+```javascript
+define(['dep1', 'dep2'], function (dep1, dep2) {
+    return function () {}
+})
+```
+
+## 三、异步 IO
+
+### 资源分配
+
+假设业务场景中有一组互不相关的任务需要完成
+
+- 单线程异步  
+    * 优点  
+        远离死锁和状态同步, 使 IO 不再阻塞后续代码执行, 通过 `Node` 提供的类似 `HTML5` 的 `Web Workers` 子进程高效利用 `CPU` 和 `IO`  
+
+- 多线程并行完成
+    * 优点  
+        在多核 `CPU` 上能有效提升 `CPU` 利用率  
+    * 缺点  
+        创建线程和执行期间上下文切换开销较大, 经常面临死锁和状态同步问题  
+
+## 四、异步编程
 
 
 
