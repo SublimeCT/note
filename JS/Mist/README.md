@@ -1,4 +1,4 @@
-# Mist for windows
+# Mist
 
 ## 链接
 
@@ -16,6 +16,8 @@
 - gulp
 
 ## 运行环境搭建
+
+### windows
 
 - [chocolatey](https://chocolatey.org/install#non-administrative-install)
 
@@ -35,7 +37,7 @@
 
 - run
 
-> 使用 `meteor` 需要(配置)[https://stackoverflow.com/questions/37185894/meteor-is-stuck-at-downloading-meteor-tool1-3-2-4] `hosts`  
+> 使用 `meteor` 需要(配置)[https://stackoverflow.com/questions/37185894/meteor-is-stuck-at-downloading-meteor-tool1-3-2-4] `hosts` 
 
 `
 54.192.225.217 warehouse.meteor.com
