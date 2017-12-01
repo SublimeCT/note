@@ -56,6 +56,13 @@ meteor --no-release-check
 yarn dev:electron
 ```
 
+## 禁用 swarm
+
+`main.js`
+```javascript
+// return swarmNode.init();
+```
+
 ## 目录结构
 
 ## meteor
