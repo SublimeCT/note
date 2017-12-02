@@ -65,6 +65,18 @@ yarn dev:electron
 
 ## 目录结构
 
+## 开发
+```shell
+git clone git@github.com:ethereum/meteor-dapp-wallet.git
+cd meteor-dapp-wallet
+cd ../mist
+yarn dev:electron --mode wallet
+meteor -p 3050
+```
+
+## 调试 Mist
+`win+alt+i`
+
 ## meteor
 
 > [Meteor 工作原理及优势和不足](http://www.broadview.com.cn/article/44)
