@@ -3,7 +3,7 @@
 ## 链接
 
 - [Mist Github 地址](https://github.com/ethereum/mist)
-- [Meteor 入门文档中文翻译](http://zh.discovermeteor.com/chapters/getting-started/)
+- [Meteor 非官方入门文档中文版](http://zh.discovermeteor.com/chapters/getting-started/)
 - [Mist WiKi](https://github.com/ethereum/mist/wiki)
 - [ETHFANS](http://ethfans.org/wikis/Mist-Mirror)
 - [electron 中文文档](https://wizardforcel.gitbooks.io/electron-doc/content/tutorial/quick-start.html)
@@ -56,7 +56,7 @@ meteor --no-release-check
 yarn dev:electron
 ```
 
-## 禁用 swarm
+## 禁用 swarπm
 
 `main.js`
 ```javascript
@@ -67,11 +67,12 @@ yarn dev:electron
 
 ## 开发
 ```shell
+./main console
 git clone git@github.com:ethereum/meteor-dapp-wallet.git
 cd meteor-dapp-wallet
+meteor -p 3050
 cd ../mist
 yarn dev:electron --mode wallet
-meteor -p 3050
 ```
 
 ## 调试 Mist
