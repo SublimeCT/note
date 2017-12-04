@@ -14,21 +14,68 @@
 ### 用户信息
 > 初始化完 git 仓库后第一件事就是设置用户信息, 这些信息会写到每一次的提交中
 
-```shell
+```bash
 git config [--global] user.name "sven"
 git config [--global] user.email "helllosc@qq.com"
 ```
 
 ### 检查配置信息
-```shell
+```bash
 git config --list
 git config user.name
 ```
 
 ## help
-```shell
+```bash
 git help
 ```
 
-## 初始化
+## 基础命令
 
+### 初始化
+
+```bash
+# 从当前目录创建项目
+# 将创建 .git 目录
+git init
+echo 'test' > test
+# 将文件提交到 暂存区
+git add test
+# 将 暂存区 中的文件提交到本地仓库
+git commit -m "test"
+```
+
+### 忽略文件
+```bash
+# 使用 shell 的 glob 模式匹配
+# 忽略 .o 和 .a 结尾的文件
+*.[oa]
+```
+
+### 查看修改
+```bash
+# 对比暂存区和工作区文件差异(尚未暂存的改动)
+git diff
+# 已暂存的将要提交的内容(在暂存区中尚未提交的改动)
+git diff --staged
+```
+
+### 移除文件
+> 从暂存区移除该文件并**不再跟踪该文件**
+
+```bash
+# 从暂存区移除文件
+git rm file_a --cache
+# 从暂存区和工作区移除文件(强制删除)
+git rm *.log -f
+```
+
+### 移动文件
+```bash
+# 重命名文件
+git mv file_a file_A
+# 相当于以下命令
+mv file_a file_A
+git rm file_a
+git add file_A
+```

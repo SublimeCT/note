@@ -8,7 +8,7 @@
 
 ## 文件操作
 
-### find 查找文件
+### [find](http://man.linuxde.net/find) 查找文件
 - 文件名
     - `find / -name httpd.conf`  
         在根目录下查找 `httpd.conf`
@@ -39,7 +39,7 @@
     - `find . -name 'test.md' -exec cat {} \;`  
         查找后打印该文件
 
-### unzip 文件解压
+### [unzip](http://man.linuxde.net/unzip) / [zip](http://man.linuxde.net/zip) 文件解压
 - `unzip test.zip -d my_dir/`  
     在指定目录解压文件
 - `unzip -v test.zip`  
@@ -48,8 +48,10 @@
     如果存在同名文件则不覆盖
 - `unzip -o test.zip -d my_dir`  
     如果存在同名文件则覆盖
+- `zip xxx.tar.gz *`  
+    压缩当前目录到指定文件
 
-### ls 列出子目录和文件
+### [ls](http://man.linuxde.net/find) 列出子目录和文件
 - `ls -la`  
     单列输出所有子目录和文件  
 - `ls -lt`  
@@ -57,10 +59,33 @@
 - `ls -R`  
     递归显示所有文件
 
+## [tar](http://man.linuxde.net/tar) 打包文件或目录
+***打包与压缩***
+> 包是指将一大堆文件或目录变成一个总的文件, 压缩则是将一个大的文件通过一些压缩算法变成一个小文件  
 
+***Linux 中的压缩***
+> `Linux` 中很多压缩程序只能针对一个文件进行压缩, 压缩多个文件需要先用 `tar` 命令将所有文件打包, 然后再用 `gzip` `bzip2` 压缩程序进行压缩
 
+### 常用参数
+命令 | 描述
+---|---
+x | 从备份文件中还原文件**解压**  
+c | 建立新的备份文件**打包**  
+C | 在指定**目录**解压缩
+v | 显示指令 `执行过程`  
+f | `指定` 备份文件  
+z | 使用 `gzip` 处理备份文件
+j | 使用 `bzip2` 处理备份文件
 
+### 打包/压缩
+- `tar -cvf log.tar.gz logs/`  
+    仅打包, 不压缩
+- `tar -zcvf`  
+    打包且使用 `gzip` 压缩
 
+### 解压
+- `tar -zxvf xxx.tar.gz -C test`  
+    将压缩文件解压到制定目录 
 
 
 
