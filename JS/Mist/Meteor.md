@@ -1,6 +1,10 @@
 # Meteor Note For v1.6
 
-***[官方文档](https://www.meteor.com/tutorials/blaze) (Blaze 版本)项目笔记***
+## 资源
+- [官网](https://docs.meteor.com/#learning-more)
+- [todo-list blaze](https://www.meteor.com/tutorials/blaze)
+- [Meteor 软件包](https://docs.meteor.com/#learning-more)
+- [awesome-meteor 软件包列表](https://github.com/Urigo/awesome-meteor)
 
 ## Blaze
 > 官网项目中的视图层基于 `Blaze` [官方文档](http://blazejs.org/)
@@ -20,8 +24,5 @@ Test = new Mongo.collection('Test')
 Test = new Mongo.collection(null)
 Test2 = new Mongo.collection('Test', {connection: null})
 ```
-
-
-
 
 
