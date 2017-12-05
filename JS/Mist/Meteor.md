@@ -2,9 +2,13 @@
 
 ## 资源
 - [官网](https://docs.meteor.com/#learning-more)
+- [Mongo 文档](https://docs.mongodb.com/)
+- [Mongo API](https://mongodb.github.io/node-mongodb-native/2.0/api/)
+- [Mongo 中文文档](http://www.mongoing.com/docs/)
 - [todo-list blaze](https://www.meteor.com/tutorials/blaze)
 - [Meteor 软件包](https://docs.meteor.com/#learning-more)
 - [awesome-meteor 软件包列表](https://github.com/Urigo/awesome-meteor)
+- [awesome-meteor github 笔记](https://leohxj.gitbooks.io/learning-node/content/meteor/meteor-file-structure.html)
 
 ## Blaze
 > 官网项目中的视图层基于 `Blaze` [官方文档](http://blazejs.org/)
