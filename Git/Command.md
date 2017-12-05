@@ -79,3 +79,24 @@ mv file_a file_A
 git rm file_a
 git add file_A
 ```
+
+### 查看提交历史
+
+```bash
+# 显示最近两次提交记录并列出修改内容
+git log -p -2
+# 显示最后一次提交记录的简略信息
+git log --stat -1
+# 使用 ASCII 图形表示分支合并历史
+git log --graph
+```
+
+### 撤销操作
+
+```bash
+# 修改上次的提交信息
+git commit -m "first"
+git commit --amend
+git commit -m "next"
+```
+

@@ -87,6 +87,10 @@ j | 使用 `bzip2` 处理备份文件
 - `tar -zxvf xxx.tar.gz -C test`  
     将压缩文件解压到制定目录 
 
+## [rm](http://man.linuxde.net/tar) 删除文件
+
+- `rm -rf xxx`  
+    递归删除指定目录
 
 
 
