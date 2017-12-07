@@ -12,7 +12,10 @@ NODE_MODULE_VERSION 54. Please try re-compiling or re-installing
 the module (for instance, using `npm rebuild` or`npm install`).
 `
 
+设置 `web3` 版本 `package.json`
+```json
+"web3": "^0.18.4"
+```
 ```bash
-
-
+npm i --registry=https://registry.npm.taobao.org
 ```
