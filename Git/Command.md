@@ -34,47 +34,57 @@ git help
 
 ### 初始化
 
+从当前目录创建项目, 将创建 `.git` 目录  
 ```bash
-# 从当前目录创建项目
-# 将创建 .git 目录
 git init
+```
+将文件提交到 `暂存区`  
+```bash
 echo 'test' > test
-# 将文件提交到 暂存区
 git add test
-# 将 暂存区 中的文件提交到本地仓库
+```
+将 `暂存区` 中的文件提交到本地仓库
+```bash
 git commit -m "test"
 ```
 
 ### 忽略文件
+
+使用 `shell` 的 `glob` 模式匹配
 ```bash
-# 使用 shell 的 glob 模式匹配
 # 忽略 .o 和 .a 结尾的文件
 *.[oa]
 ```
 
 ### 查看修改
+对比暂存区和工作区文件差异(尚未暂存的改动)
 ```bash
-# 对比暂存区和工作区文件差异(尚未暂存的改动)
 git diff
-# 已暂存的将要提交的内容(在暂存区中尚未提交的改动)
+```
+已暂存的将要提交的内容(在暂存区中尚未提交的改动)
+```bash
 git diff --staged
 ```
 
 ### 移除文件
 > 从暂存区移除该文件并**不再跟踪该文件**
 
+从暂存区移除文件
 ```bash
-# 从暂存区移除文件
 git rm file_a --cache
-# 从暂存区和工作区移除文件(强制删除)
+```
+从暂存区和工作区移除文件(强制删除)
+```bash
 git rm *.log -f
 ```
 
 ### 移动文件
+重命名文件
 ```bash
-# 重命名文件
 git mv file_a file_A
-# 相当于以下命令
+```
+相当于以下命令
+```bash
 mv file_a file_A
 git rm file_a
 git add file_A
@@ -82,21 +92,86 @@ git add file_A
 
 ### 查看提交历史
 
+显示最近两次提交记录并列出修改内容
 ```bash
-# 显示最近两次提交记录并列出修改内容
 git log -p -2
-# 显示最后一次提交记录的简略信息
+```
+显示最后一次提交记录的简略信息
+```bash
 git log --stat -1
-# 使用 ASCII 图形表示分支合并历史
+```
+使用 `ASCII` 图形表示分支合并历史
+```bash
 git log --graph
+```
+每条记录只显示一行
+```bash
+git log --pretty-oneline
 ```
 
 ### 撤销操作
 
+修改上次的提交信息
 ```bash
-# 修改上次的提交信息
 git commit -m "first"
 git commit --amend
 git commit -m "next"
 ```
 
+撤销 add
+```bash
+git reset HEAD test_file
+```
+
+恢复到上次提交时的状态
+```bash
+git checkout -- xxx.md
+```
+
+### 远程仓库
+
+查看
+```bash
+git remote -v
+```
+
+添加
+```bash
+git remote add origin https://github.com/test/test
+```
+
+### 标签
+- 轻量标签
+    对某个特定提交的引用
+- 附注标签
+    存储在 git 数据库中的对象, 包含用户名, email, 时间和标签信息
+
+添加附注标签
+```bash
+git tag -a v0.1.0 -m 'test'
+git tag -a v0.3.0  8a90j83h
+```
+
+添加轻量标签
+```bash
+git tag v0.1.2
+```
+
+查看标签信息
+```bash
+git tag
+git show v0.1.0
+```
+
+推送标签, 默认 `git push` 不会提交 `tag`
+```bash
+git push origin v0.2.2
+git push origin --tags
+```
+
+### git别名
+
+查看最后一次提交内容
+```bash
+git config --global alias.last 'log -p -1'
+```
