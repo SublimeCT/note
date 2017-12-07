@@ -5,7 +5,9 @@
 ```bash
 sudo npm i -g cordova --registry=https://registry.npm.taobao.org
 ```
-如果报错则删除全局目录下的 `cordova` 模块的 `node_modules` 目录
+报错处理:  
+    - 删除全局目录下的 `cordova` 模块的 `node_modules` 目录
+    - 安装失败时进入 cordova 目录 sudo rm -rf nodeo_modules
 ```bash
 sudo rm -rf /usr/local/nodejs/lib/node_modules/cordova/node_modules/
 ```
@@ -22,6 +24,24 @@ cordova platform add browser
 cordova run browser
 ```
 
+## 打包
+
+
+### 使用 webpack 打包应用程序
+
+打包时忽略原生 `node` 模块
+```json
+# webpack.cordova.config.js
+node: {
+    net: 'empty'
+}
+```
+
+创建 cordova 项目目录并将打包后的 www 目录复制进来
+```bash
+cordova create testCordova
+```
+
 ## Android 环境
 
 安装 add-apt-repository
@@ -36,5 +56,3 @@ sudo apt-get update
 ```bash
 sudo add-apt-repository ppa:webupd8team/java
 ```
-
-
