@@ -106,7 +106,7 @@ git log --graph
 ```
 每条记录只显示一行
 ```bash
-git log --pretty-oneline
+git log --pretty=oneline
 ```
 
 ### 撤销操作
