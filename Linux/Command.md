@@ -59,7 +59,7 @@
 - `ls -R`  
     递归显示所有文件
 
-## [tar](http://man.linuxde.net/tar) 打包文件或目录
+### [tar](http://man.linuxde.net/tar) 打包文件或目录
 ***打包与压缩***
 > 包是指将一大堆文件或目录变成一个总的文件, 压缩则是将一个大的文件通过一些压缩算法变成一个小文件  
 
@@ -87,12 +87,12 @@ j | 使用 `bzip2` 处理备份文件
 - `tar -zxvf xxx.tar.gz -C test`  
     将压缩文件解压到制定目录 
 
-## [rm](http://man.linuxde.net/tar) 删除文件
+### [rm](http://man.linuxde.net/tar) 删除文件
 
 - `rm -rf xxx`  
     递归删除指定目录
 
-## [ln](http://man.linuxde.net/tar) 创建文件连接
+### [ln](http://man.linuxde.net/tar) 创建文件连接
 
 - 硬连接
     `linux` 下的文件是通过索引节点 `Inode` 来识别文件, 硬链接可以认为是一个指向文件索引节点的指针, 系统并不为它重新分配 `inode`  
@@ -111,4 +111,15 @@ j | 使用 `bzip2` 处理备份文件
 
 - `ln -s a b`  
     软链接
+
+### [nl](http://man.linuxde.net/tar) 输出文件内容并显示行号
+
+- `nl -b a file`  
+    空行也标注行号
+
+### [head](http://man.linuxde.net/tar) 输出 10 行文件内容 / tail 末尾 10 行
+
+### [chmod](http://man.linuxde.net/tar) 为所有用户分配文件权限
+
+
 
