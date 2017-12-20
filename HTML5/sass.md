@@ -35,3 +35,87 @@ sass --watch input.scss:output.css
 sass --watch app/abc:app/def
 ```
 
+## 功能扩展
+
+### 嵌套
+```scss
+#main {
+    color: #00ff00;
+    // 父选择器
+    &:hover {
+        background-color: #ff0000;
+    }
+    // 属性嵌套
+    font 20px/24px {
+        size: 20px;
+        weight: bold;
+    }
+}
+```
+
+### 变量
+```scss
+#main {
+    $color: #EEE;
+    // 声明为全局变量
+    $width: 600px !global;
+}
+#box {
+    width: $width;
+}
+```
+
+### 数据类型
+- 数字
+- 字符串
+    - 有引号字符串
+        ```scss
+        @mixin firefox-message($selector) {
+            // 使用插值 #{} 时有引号字符串将被编译为无引号字符串
+            body.firefox #{$selector}:before {
+                content: "Hi, Firefox users!";
+            }
+        }
+        @include firefox-message(".header");
+        ```
+    - 无引号字符串
+- 颜色
+- 布尔
+- null
+- 数组
+> 数组本身没有太多功能, 但 [Sass list functions](http://sass-lang.com/documentation/Sass/Script/Functions.html#list-functions) 赋予了数组更多新功能 
+- map
+
+### 运算
+```scss
+p {
+    font: 10px/8px;             // Plain CSS, no division
+    $width: 1000px;
+    width: $width/2;            // Uses a variable, does division
+    // 使用插值语句包裹避免运算
+    $font-size: 12px;
+    $line-height: 30px;
+    font: #{$font-size}/#{$line-height};
+    p:before {
+        // 连接字符串, 带引号字符串在 + 左侧, 运算结果有引号, 反之无引号
+        content: "Foo " + Bar;
+        font-family: sans- + "serif";
+        // 在字符串中插值语句可以添加动态的值
+        content: "I ate #{5 + 10} pies!";
+    }
+}
+```
+编译为
+```css
+p {
+    font: 10px/8px;
+    width: 500px;
+    font: 12px/30px;
+    p:before {
+        content: "Foo Bar";
+        font-family: sans-serif;
+        content: "I ate 15 pies!";
+    }
+}
+```
+
