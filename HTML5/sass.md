@@ -119,3 +119,102 @@ p {
 }
 ```
 
+### 插值语句
+```css
+$name: box;
+$attr: border;
+p.#{$name} {
+    #{$attr}-color: blue;
+}
+```
+
+### 变量定义
+定义变量时使用 `!default`, 只在变量 `未定义` 或 `null` 或 `空值` 时使用该值, 变量已存在时使用已定义的值
+```css
+$content: "First content";
+$content: "Second content?" !default;
+$new_content: "First time reference" !default;
+
+#main {
+  content: $content;
+  new-content: $new_content;
+}
+```
+
+### @import
+将 sass / SCSS 文件导入  
+```css
+@import "foo.scss" "other.scss";
+```
+
+作为 css 原生的 `@import`
+- `@import` 的文件扩展名为 `.css`
+- `http://` 开头
+- `url()` 开头
+- 包含 `media queryies`
+
+### @media
+
+sass 中的 `@media` 允许在 `css规则` 中嵌套
+
+```css
+.sidebar {
+    width: 300px;
+    @media screen and (orientation: landscape) {
+        width: 500px;
+    }
+}
+```
+
+编译为
+
+```css
+.sidebar {
+    width: 300px;
+}
+@media screen and (orientation: landscape) {
+    .sidebar {
+        width: 500px;
+    }
+}
+```
+
+### @extend
+
+`@extend` 的作用时将重复使用的样式 `.error` 延伸(`extend`)给需要包含这个样式的特殊样式 `.seriousError`
+
+```css
+.error {
+    border: 1px #f00;
+    background-color: #fdd;
+}
+.error.intrusion {
+    background-image: url("/image/hacked.png");
+}
+a .error {
+    color: red;
+}
+.seriousError {
+    @extend .error;
+    border-width: 3px;
+}
+```
+
+`.seriousError` 将继承 `.error` 的所有样式, 包括 **包含 `.error` 的样式**, 编译为
+
+```css
+.error, .seriousError {
+    border: 1px #f00;
+    background-color: #fdd;
+}
+.error.intrusion, .seriousError.intrusion {
+    background-image: url("/image/hacked.png");
+}
+a .seriousError {
+    color: red;
+}
+.seriousError {
+    border-width: 3px;
+}
+```
+
