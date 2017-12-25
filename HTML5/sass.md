@@ -218,3 +218,94 @@ a .seriousError {
 }
 ```
 
+## 控制指令
+`SassScript` 提供了一些基础指令, 主要与 `mixin` 配合使用, 尤其是在 `Compass` 中
+
+### `@if`
+```css
+p {
+    @if $type == ocean {
+        color: blue;
+    } @else if $type == mataor {
+        color: red;
+    } @else if $type == monster {
+        color: green;
+    } @else {
+        color: black;
+    }
+}
+```
+
+### `@for`
+`from [int] through [int]` 包含 1-3, `from [int] to [int]` 为 1-2
+```css
+@for $i from 1 through 3 {
+    .item-#{$i} {
+        width: 3em * $i;
+    }
+}
+```
+
+### `@each`
+
+```css
+@each $name in header, section, footer {
+    .#{$name}-box: {
+        width: 100%;
+    }
+}
+```
+
+### `@while`
+
+### mixin
+`mixin` 用于定义可重用样式, 且可以通过传参灵活控制样式, 避免了使用无语义的 `class`
+
+```css
+@mixin large-text($size: 30px) {
+    font {
+        size: $size;
+        weight: bold;
+    }
+    color: #F60;
+}
+```
+引用 `mixin`
+```css
+header {
+    @include large-text();
+}
+```
+
+向 `mixin` 中导入内容
+
+```css
+@mixin large-text {
+    font {
+        $content
+    }
+}
+@include large-text {
+    size: 30px;
+}
+```
+
+### 函数指令
+
+```css
+$width: 1024px;
+@function grid-width ($n) {
+    @return $n * $width;
+}
+.box {
+    width: grid-width(3);
+}
+```
+
+
+
+
+
+
+
+
