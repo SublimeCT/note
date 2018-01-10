@@ -1,7 +1,9 @@
 # Webpack 笔记
 
-> 慕课网 webpack深入与实战 [视频链接](http://www.imooc.com/learn/802)  
-webpack [中文文档](https://doc.webpack-china.org/concepts/)
+## links
+- [慕课网 webpack深入与实战](http://www.imooc.com/learn/802)  
+- [webpack 中文文档](https://doc.webpack-china.org/concepts/)
+- [入门](https://www.jianshu.com/p/42e11515c10f)
 
 ## 安装
 
@@ -9,6 +11,9 @@ webpack [中文文档](https://doc.webpack-china.org/concepts/)
 sudo cnpm i -g webpack
 sudo ln -s /usr/local/nodejs/bin/webpack /usr/local/bin
 ```
+
+## 工作方式
+把项目当作一个整体, 通过指定的入口文件将所有依赖文件使用 `loader` 处理, 最后打包成浏览器可识别的 `js` 文件
 
 ## 命令行中使用
 
