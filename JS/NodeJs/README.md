@@ -73,3 +73,85 @@ e.emit('data', 'hello')
 ```
 
 ### `removeAllListener(eventName)` / `removeListener(eventName, listener)`
+
+## [path](http://nodejs.cn/api/path.html)
+
+### `basename` / `dirname` / `extname`
+`path` 模块的默认操作会根据运行环境的不同而变化
+`Windows`
+```javascript
+path.basename('C:\\temp\\myfile.html')
+// myfile.html
+```
+`POSIX`
+```javascript
+path.basename('C:\\temp\\myfile.html')
+// C:\\temp\\myfile.html
+```
+指定操作系统
+```javascript
+path.win32.basename('C:\\temp\\myfile.html')
+path.posix.basename('C:\\temp\\myfile.html')
+```
+`ext` 参数
+```javascript
+path.basename('./index.tar.gz', 'tar.gz')
+// index
+```
+
+### `delimiter`
+平台路径分隔符
+- `Windows` 为 `;`
+- `POSIX` 为 `:`
+```javascript
+process.env.PATH.split(path.delimiter)
+```
+
+### `format` / `parse`
+将 `path` 解析为对象 / 字符串
+```javascript
+const obj = path.parse('/home/user/dir/file.txt')
+// { 
+//     root: '/',
+//     dir: '/home/user/dir',
+//     base: 'file.txt',
+//     ext: '.txt',
+//     name: 'file'
+// }
+path.format(obj)
+// /home/user/dir/file.txt
+```
+
+### `isAbsolute`
+判断路径是否为绝对路径
+
+### `join`
+如果连接后的字符串为空则返回 `.` 表示当前工作目录
+
+### `relative`
+返回从 `from` 到 `to` 的相对路径
+```javascript
+path.relative('/data/orandea/test/aaa', '/data/orandea/impl/bbb')
+// ../../test/bbb
+```
+
+### `resolve([...paths])`
+将路径集合解析为一个绝对路径
+当前路径为 `/Users/test/test/node`
+```javascript
+path.resolve('a', 'b/c', '../cc')
+// '/Users/test/test/node/a/b/cc'
+```
+不传参数则返回当前路径
+```javascript
+path.resolve()
+// '/Users/test/test/node'
+```
+
+### `sep`
+提供了特定平台的片段分隔符
+```javascript
+'/test/dir/file.md'.split(path.sep)
+// [ '', 'test', 'dir', 'file.md' ]
+```
+
