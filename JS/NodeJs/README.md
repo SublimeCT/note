@@ -155,3 +155,9 @@ path.resolve()
 // [ '', 'test', 'dir', 'file.md' ]
 ```
 
+## [js](http://nodejs.cn/api/fs.html)
+- 异步
+    - 最后一个参数是回调函数
+    - 不能保证执行顺序
+- 同步
+    - 只能用 `try...catch` 捕获异常
