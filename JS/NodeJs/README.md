@@ -171,4 +171,49 @@ path.resolve()
 
 - parse / stringify
 
+## [http](http://nodejs.cn/api/querystring.html)
+### createServer
+返回 `http.Server` 实例, 参数作为 `http.Server` 的 `request` 事件回调
+
+```javascript
+http.createServer()
+    .on('request', (req, res) => {
+        // ...
+    })
+    .listen(8000)
+```
+
+### http.Server
+[http.Server](http://nodejs.cn/api/http.html#http_class_http_server) 继承自 [`net.Server`](http://nodejs.cn/api/net.html#net_class_net_server)
+
+- 'request' 事件
+接收到请求时触发   
+回调函数参数:  
+    - http.IncomingMessage
+        - headers
+        - method 
+        - url
+    - http.ServerResponse
+        - end([data][, encoding][, callback])
+        - setHeader  
+            设置 `cookie`
+```javascript
+http.createServer()
+    .on('request', (req, res) => {
+        res.setHeader('Set-Cookie', ['name=测试', 'age=22'])
+        res.end()
+    })
+    .listen(8000)
+```
+        - statusCode
+        - statusCodeMessage
+        - getHeader
+        - getHeaders
+        - getHeaderNames
+        - hasHeader
+        - removeHeader
+        - write(chunk[, encoding][, callback])  
+            发送一块响应主体, 可多次调用
+        - writeHead(statusCode[, statusMessage][, headers])  
+            只能调用一次, `headers` 参数优先级高于 `setHeader`
 

@@ -87,12 +87,12 @@ j | 使用 `bzip2` 处理备份文件
 - `tar -zxvf xxx.tar.gz -C test`  
     将压缩文件解压到制定目录 
 
-### [rm](http://man.linuxde.net/tar) 删除文件
+### [rm](http://man.linuxde.net/rm) 删除文件
 
 - `rm -rf xxx`  
     递归删除指定目录
 
-### [ln](http://man.linuxde.net/tar) 创建文件连接
+### [ln](http://man.linuxde.net/ln) 创建文件连接
 
 - 硬连接
     `linux` 下的文件是通过索引节点 `Inode` 来识别文件, 硬链接可以认为是一个指向文件索引节点的指针, 系统并不为它重新分配 `inode`  
@@ -107,19 +107,19 @@ j | 使用 `bzip2` 处理备份文件
     4. 硬链接原文件和连接文件的 `inode` 不同, 软连接相同
 
 - `ln a b`  
-    建立硬链接
+    建立硬链接, `a` 源文件, `b` 目标文件
 
 - `ln -s a b`  
     软链接
 
-### [nl](http://man.linuxde.net/tar) 输出文件内容并显示行号
+### [nl](http://man.linuxde.net/nl) 输出文件内容并显示行号
 
 - `nl -b a file`  
     空行也标注行号
 
-### [head](http://man.linuxde.net/tar) 输出 10 行文件内容 / tail 末尾 10 行
+### [head](http://man.linuxde.net/head) 输出 10 行文件内容 / tail 末尾 10 行
 
-### [chmod](http://man.linuxde.net/tar) 为所有用户分配文件权限
+### [chmod](http://man.linuxde.net/chmod) 为所有用户分配文件权限
 
 
 
