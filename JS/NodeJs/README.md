@@ -155,9 +155,20 @@ path.resolve()
 // [ '', 'test', 'dir', 'file.md' ]
 ```
 
-## [js](http://nodejs.cn/api/fs.html)
+## [fs](http://nodejs.cn/api/fs.html)
 - 异步
     - 最后一个参数是回调函数
     - 不能保证执行顺序
 - 同步
     - 只能用 `try...catch` 捕获异常
+### 常用 API
+- readFile / readFileSync
+- readdir / readdirSync
+- readStat / readStatSync
+
+## [querystring](http://nodejs.cn/api/querystring.html)
+该模块只有 `4` 个 `API`, 用于解析 / 格式化 `URL` 中的 `querystring`
+
+- parse / stringify
+
+
