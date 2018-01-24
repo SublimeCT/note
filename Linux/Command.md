@@ -119,6 +119,10 @@ j | 使用 `bzip2` 处理备份文件
 
 ### [head](http://man.linuxde.net/head) 输出 10 行文件内容 / tail 末尾 10 行
 
+### [tail](http://linux.51yip.com/search/tail)
+- `tail -n 50 -f /usr/local/var/log/nginx/error.log`  
+    输出文件末尾 50 行, 当文件变化时刷新输出内容
+
 ### [chmod](http://man.linuxde.net/chmod) 为所有用户分配文件权限
 
 

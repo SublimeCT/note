@@ -162,9 +162,19 @@ path.resolve()
 - 同步
     - 只能用 `try...catch` 捕获异常
 ### 常用 API
+- read / write  
+    - read(fd, buffer, offset, length, position, callback)  
 - readFile / readFileSync
 - readdir / readdirSync
 - readStat / readStatSync
+- open  
+    通过制定模式打开文件, 返回[文件描述符](http://blog.csdn.net/u013078669/article/details/51172429)
+### [各读写方式的区别](https://www.cnblogs.com/pp-cat/p/6504655.html)
+- `readFile` / `writeFile` 是将要读取/写入的内容读入缓存区, 然后一次性读取/写入到文件中
+- `read` / `write`  
+    从 **`文件描述符`** 指定的文件中读取数据 
+    - `read` 是不断将文件中的一小块内容读入缓存区, 最后从缓存区读取文件内容  
+    - `write` 是不断将需要写入的内容写入固定长度的缓存区, 缓存区内容写满后将内容写入文件  
 
 ## [querystring](http://nodejs.cn/api/querystring.html)
 该模块只有 `4` 个 `API`, 用于解析 / 格式化 `URL` 中的 `querystring`
@@ -217,3 +227,19 @@ http.createServer()
         - writeHead(statusCode[, statusMessage][, headers])  
             只能调用一次, `headers` 参数优先级高于 `setHeader`
 
+## [util](http://nodejs.cn/api/util.html#util_util_promisify_original)
+
+### util.promisify
+将 `NodeJs` 风格的回调转换为 `Promise`, 在 `8.0.0` 中新增
+
+```javascript
+const util = require('util');
+const fs = require('fs');
+
+const stat = util.promisify(fs.stat);
+stat('.').then((stats) => {
+    // Do something with `stats`
+}).catch((error) => {
+    // Handle the error.
+});
+```
