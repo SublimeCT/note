@@ -164,7 +164,7 @@ server {
 	root		/home/sven/projects/koa-demo/static;
 	index		index.html index.htm;
 
-	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico)$ { 
+	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico|html|htm)$ { 
 		root    /home/sven/projects/koa-demo/static;
 		# expires 3d;
 	}
