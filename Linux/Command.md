@@ -51,13 +51,17 @@
 - `zip xxx.tar.gz *`  
     压缩当前目录到指定文件
 
-### [ls](http://man.linuxde.net/find) 列出子目录和文件
+### [ls](http://man.linuxde.net/ls) 列出子目录和文件
 - `ls -la`  
     单列输出所有子目录和文件  
 - `ls -lt`  
     按文件或目录修改时间排序
 - `ls -R`  
     递归显示所有文件
+
+### [mkdir](http://man.linuxde.net/mkdir) 创建目录
+- `mkdir -p`
+    创建有嵌套关系的目录  
 
 ### [tar](http://man.linuxde.net/tar) 打包文件或目录
 ***打包与压缩***
@@ -125,7 +129,7 @@ j | 使用 `bzip2` 处理备份文件
 
 ### [chmod](http://man.linuxde.net/chmod) 为所有用户分配文件权限
 
-### [文件权限](http://blog.csdn.net/koastal/article/details/52447735)
+### [*文件权限*](http://blog.csdn.net/koastal/article/details/52447735)
 - 文件
     - `r` 可读
     - `w` 可写
@@ -135,3 +139,9 @@ j | 使用 `bzip2` 处理备份文件
     - `w` 可以更改这个目录下的列表结构  
         可在该目录下创建新文件或目录 / **删除**已存在的文件或目录 / 重命名及改变文件或目录位置
     - `x` 可以进入该目录
+
+## 用户管理
+
+## [useradd](https://github.com/SublimeCT/note/blob/master/Linux/Command.md#useradd)
+
+

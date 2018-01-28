@@ -102,10 +102,11 @@ http {
     fastcgi_connect_timeout 300;
     fastcgi_send_timeout 300;
     fastcgi_read_timeout 300;
+
+    # 引入所有虚拟主机配置
+    include /usr/local/nginx/cong/conf.d/*.conf;
 }
 
-# 引入所有虚拟主机配置
-include /usr/local/nginx/cong/conf.d/*.conf;
 ```
 
 ### `conf.d/test-php.conf`
@@ -114,7 +115,7 @@ server {
     listen       80; # 端口,一般http的是80
     server_name  test-php.com; # 一般是域名,本机就是localhost
     index index.php index.html;  # 默认可以访问的页面,按照写入的先后顺序去寻找
-    root  /home/sven/project/php/test; # 项目根目录
+    root  /home/sven/projects/php/test; # 项目根目录
 
     # 防止访问版本控制内容
     location ~ .*.(svn|git|cvs) {
@@ -149,7 +150,32 @@ server {
     fastcgi_intercept_errors on;
     # 日志保存目录,一般按照项目单独保存, 开发环境可以关闭
     # access_log logs/test-php.log access; 
-    access_log on;
+    # access_log on;
 }
 ```
 
+### 设置 Nodejs 反向代理
+
+代理本地 `8001` 端口及 `静态资源目录`
+```profile
+server {
+	listen 		80;
+	server_name 	test-node.com;
+	root		/home/sven/projects/koa-demo/static;
+	index		index.html index.htm;
+
+	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico)$ { 
+		root    /home/sven/projects/koa-demo/static;
+		# expires 3d;
+	}
+
+	location / {
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header Host  $http_host;
+		proxy_set_header X-Nginx-Proxy true;
+		proxy_set_header Connection "";
+		proxy_pass      http://127.0.0.1:8001;
+	}
+}
+```
