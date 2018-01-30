@@ -180,9 +180,33 @@ git config --global alias.last 'log -p -1'
 
 ### 创建分支
 
+## 其他
+### `git commit` (Angular)格式[规范](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
+`
+<type>(scope): <subject>
 
+<body>
 
+<footer>
+`
 
+- `type`
+    - `fix` 修复 bug
+    - `feat` (feature) 新功能
+    - `docs` 文档
+    - `style` 样式修改
+    - `refactor` 重构
+    - `test` 增加测试
+    - `chore` 构建过程或辅助工具的变动
+
+- `scope`  
+    用于说明影响范围
+
+- `subject`
+    简短描述
+
+- `body`
+    详细描述
 
 
 

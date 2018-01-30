@@ -141,7 +141,25 @@ j | 使用 `bzip2` 处理备份文件
     - `x` 可以进入该目录
 
 ## 用户管理
+### [useradd](https://github.com/SublimeCT/note/blob/master/Linux/Command.md#useradd)
 
-## [useradd](https://github.com/SublimeCT/note/blob/master/Linux/Command.md#useradd)
+## 包管理工具
+> 起初 `GNU/Linux` 系统中只有 `.tar.gz`, 用户必须自己编译他们想使用的每一个程序  
+在 `Debian` 出现之後, 人们认为有必要在系统中添加一种机制用来管理安装在计算机上的软件包, 人们将这套系统称为 `dpkg`,s 至此着名的 `package` 首次在GNU/Linux上出现  
+不久之後红帽子 也开始着手建立自己的包管理系统‘rpm’  
+`GNU/Linux` 的创造者们很快又陷入了新的窘境, 他们希望通过一种快捷、实用而且高效的方式来安装软件包, 这些软件包可以自动处理相互之间的 依赖关系  并且在升级过程中维护他们的配置文件, Debian又一次充当了开路先锋的角色, 她首创了APT（Advanced Packaging Tool）  
+这一工具後来被Conectiva移植到红帽子系统中用于对rpm包的管理。在其他一些发行版中我们也能看到她的身影。
+s
+### apt-get
+[`apt-get`](http://man.linuxde.net/apt-get) 是 `Debian` 发行版中的 `APT` 包管理工具
+- 源  
+    在 `/etc/apt/sources.list` 中保存了 `apt` 的源
+- 常用命令
+    - `apt-get update`
+    - `apt-get upgrade` 更新已安装的软件
+    - `apt-get install packagename`
+    - `apt-get [purge/remove] packagename` 保留 / 删除配置文件
+    - `apt-get autoclean` 清空已删除的软件备份文件
+    - `apt-get clean` 把已安装的软件的备份文件也删除
 
 
