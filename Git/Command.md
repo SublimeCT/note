@@ -182,13 +182,13 @@ git config --global alias.last 'log -p -1'
 
 ## 其他
 ### `git commit` (Angular)格式[规范](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
-`
+```html
 <type>(scope): <subject>
 
 <body>
 
 <footer>
-`
+```
 
 - `type`
     - `fix` 修复 bug
@@ -208,6 +208,16 @@ git config --global alias.last 'log -p -1'
 - `body`
     详细描述
 
+- `footer`
+    - 不兼容的变动  
+        以 `BREAKING CHANGE:` 开头, 后面是对变动的描述 / 变动理由 / 迁移方法
+    - 关闭 Issue
+        Closes #1002, #837, #1233
+
+#### 特殊情况
+- `revert`  
+如果当前的 `commit` 用于撤销当前的 `commit`, 则必须以 `revert:` 开头  
+`<body>` 部分固定为 `This revert commit <hash>`, `<hash>` 为被撤销的 `commit` 的 SHA 标识符
 
 
 

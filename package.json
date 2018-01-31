@@ -1,0 +1,31 @@
+{
+  "name": "personal-notes",
+  "version": "1.0.0",
+  "description": "This is my notes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SublimeCT/note.git"
+  },
+  "keywords": [
+    "note",
+    "personal"
+  ],
+  "author": "sven",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SublimeCT/note/issues"
+  },
+  "homepage": "https://github.com/SublimeCT/note#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
