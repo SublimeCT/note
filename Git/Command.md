@@ -71,11 +71,21 @@ git diff --staged
 
 从暂存区移除文件
 ```bash
-git rm file_a --cache
+git rm --cache file_a
+```
+在暂存区和工作区都删除, `-r` 用于删除目录
+```bash
+git rm -r dir_a
 ```
 从暂存区和工作区移除文件(强制删除)
 ```bash
 git rm *.log -f
+```
+删除远程仓库文件并**保留本地文件**
+```bash
+git rm --cache -r dir_a
+git commit "..."
+git push
 ```
 
 ### 移动文件

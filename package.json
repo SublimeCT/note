@@ -20,6 +20,9 @@
     "url": "https://github.com/SublimeCT/note/issues"
   },
   "homepage": "https://github.com/SublimeCT/note#readme",
+  "dependencies": {
+    "commitizen": "^2.9.6"
+  },
   "devDependencies": {
     "cz-conventional-changelog": "^2.1.0"
   },
