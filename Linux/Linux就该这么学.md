@@ -94,6 +94,63 @@ mysqls
 标准输出重定向 (STDOUT，文件描述符为1) 默认输出到屏幕  
 错误输出重定向 (STDERR，文件描述符为2) 默认输出到屏幕  
 
+将标准输出重定向到文件中(清空原内容)
+```bash
+man nginx > nginx_file
+```
+
+将标准输出重定向到文件中(追加)
+```bash
+man nginx >> nginx_file
+```
+
+将标准输出重定向到文件中(追加)
+```bash
+echo 'test' > file_a
+echo 'test >>' >> file_a
+```
+
+将错误输出重定向到文件中
+```bash
+# 没有错误时正常显示标准输出, 且不会重定向
+ls -l 2> file_a
+# 将错误输出重定向到文件中(追加)
+ls -l not_found_file 2>> file_a
+```
+
+### 管道命名符
+把前一个命令的标准输出作为后面的命令的标准输入
+
+获取所有被限制登录的用户数量
+```bash
+grep "sbin/nologin" /etc/passwd | wc -l
+```
+
+### 通配符
+```bash
+# 规则与正则相同
+ll /dev/sda*
+ll /dev/sda[235]
+ll /dev/sda?
+```
+
+### 定义/输出变量
+```bash
+PRICE=7
+echo ">> $PRICE" # >> 7
+# $$ 输出当前进程ID
+echo ">> $$PRICE" # >> 37677
+echo ">> \$PRICE" # $PRICE
+echo '>> $PRICE' # >> $PRICE
+# 输出命令的输出
+echo `uname -a` # Linux book 4.9.0-deepin13-amd64 #1 SMP PREEMPT Deepin 4.9.57-1 (2017-10-19) x86_64 GNU/Linux
+```
+
+### 环境变量
+环境变量是用来定义系统运行环境的一系列参数, `Linux` 中的环境变量一般为大写
+> 执行一条命令 ->  
+1. 判断是否使用相对/绝对路径输入命令
+
 ## [五](http://www.linuxprobe.com/chapter-05.html)
 ### UID 用户身份ID
 > 管理员UID为0：系统的管理员用户  
