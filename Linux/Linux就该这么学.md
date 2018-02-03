@@ -150,6 +150,9 @@ echo `uname -a` # Linux book 4.9.0-deepin13-amd64 #1 SMP PREEMPT Deepin 4.9.57-1
 环境变量是用来定义系统运行环境的一系列参数, `Linux` 中的环境变量一般为大写
 > 执行一条命令 ->  
 1. 判断是否使用相对/绝对路径输入命令
+2. 别名
+3. 解释器内部命令
+4. 外部命令 -> 系统在 PATH 定义的路径中查找命令
 
 ## [五](http://www.linuxprobe.com/chapter-05.html)
 ### UID 用户身份ID
