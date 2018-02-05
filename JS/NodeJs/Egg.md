@@ -193,4 +193,65 @@ Agent | `run/agent_config.json` | `run/agent_config_meta.json`
 
 ## Subscript
 
+## Middleware
+### 位置
+位于 `app/middleware`
+
+### 编写
+middleware 文件 export 一个 `function`, 参数包含 `app.config[${middlewareName}]` 和 `app`
+```javascript
+module.exports = (options, app) => {
+    return async (ctx, next) => {
+        return await options.prefix + (new Date()).toLocaleString()
+    }
+}
+```
+
+### 手动挂载
+必须手动挂载中间件才能生效
+
+```javascript
+module.exports = {
+    middleware: ['getDate'],
+    getDate: {
+        prefix: 'Now: '
+    }
+}
+```
+
+### 通用配置
+- enable
+- match  
+    参数为 `String` / `Regexp` 时匹配 URL, 为 `Function` 时直接执行
+- ignore  
+    与 `match` 相反
+
+### 使用 Koa 中间件
+```javascript
+// config/config.default.js
+module.exports = {
+    middle: ['webpack', 'koa-compress'],
+    bodyParser: {
+        enable: false
+    },
+    webpack: {
+        test: 'test'
+    },
+    myMiddleware: {
+        match: ctx => {
+            return /iphone|ipad|ipod/.test(ctx.get('user-agent'))
+        }
+    }
+}
+// app/middleware/koa-compress.js
+module.exports = require('koa-compress')
+// app/middleware/webpack.js
+const webpackMiddleware = require('some-koa-middleware')
+module.exports = options => {
+    return webpackMiddleware(options.test)
+}
+```
+
+
+
 
