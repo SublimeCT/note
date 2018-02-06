@@ -132,6 +132,8 @@ module.exports = {
 ## Request / Response
 
 ## Controller
+负责解析 & 处理请求参数, (通过 Service)返回相应结果
+
 ### 属性
 - ctx
 - app
@@ -139,7 +141,42 @@ module.exports = {
 - service
 - logger
 
+### [内置表单验证](https://eggjs.org/zh-cn/basics/router.html#%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C)
+~~基于 [egg-validate](https://github.com/eggjs/egg-validate) 插件~~, [验证规则](https://github.com/node-modules/parameter#rule)
+
+### [获取上传文件](https://eggjs.org/zh-cn/basics/controller.html#%E8%8E%B7%E5%8F%96%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6)
+
+### cookie
+`ctx.cookie.get('xxx')`  
+`ctx.cookie.set('xxx', null[, options])`
+
+### session
+配置
+```javascript
+module.exports = {
+    key: 'EGG_SESS', // 承载 Session 的 Cookie 键值对名字
+    maxAge: 86400000, // Session 的最大有效时间
+}
+```
+
+### jsonp
+内置 `jsonp` 中间件, 客户端请求参数中必须加入 `_callback=xxx`  
+[白名单设置](https://eggjs.org/zh-cn/basics/controller.html#referrer-%E6%A0%A1%E9%AA%8C)  
+```javascript
+// app/router.js
+module.exports = app => {
+    const jsonp = app.jsonp()
+    app.router.get('/api/posts/:id', jsonp, app.controller.posts.show)
+}
+```
+
 ## Service
+### 属性
+- app
+- ctx
+- service
+- config
+- logger
 
 ## Helper
 
@@ -252,6 +289,56 @@ module.exports = options => {
 }
 ```
 
+## Router
+### 定义
+`router.verb(['router-name',]'path-match', [middleware1, ... middlewareN, ]app.application.action)`
+- `verb` HTTP method
+- `router-name` 路由别名
+- `path-match` URL
+- `middleware` 所有中间件
+- `controller`  
+格式为 `${directoryName}.${fileName}.${functionName}`
 
+```javascript
+// app/router.js
+module.exports = app => {
+    const {router, controller} = app
+    router.get('/search', app.controller.search.index)
+    router.get('/search/:id', app.controller.search.details)
+    router.get(/^\/package\/([\w-.]+\/[\w-.]+)$/, app.controller.package.details)
+    router.redirect('/', '/xxx', 302)
+}
+// app/controller/search.js
+exports.index = async ctx => {
+    ctx.body = `search-page: ${ctx.query.page}` // curl http://127.0.0.1:7001/search?page=2
+}
+exports.details = async ctx => {
+    ctx.body = `id: ${ctx.params.id}` // curl http://127.0.0.1:7001/search/91890328
+}
+// app/controller/package.js
+exports.details = async ctx => {
+    ctx.body = `package: ${ctx.params[0]}` // curl http://127.0.0.1:7001/package/91890328
+}
+```
+
+## 插件
+### 使用
+通常使用 npm 模块方式复用
+```bash
+npm i egg-mysql --save
+```
+### 配置
+推荐通过 `plugin.${env}.js` 声明
+```javascript
+// config/plugin.js
+exports.mysql = {
+    enable: true,
+    package: 'egg-mysql', // npm 模块名称
+    package: path.join(__dirname, '../lib/plugin/egg-mysql'), // 插件绝对路径, 与 package 互斥
+    env: ['prod'] // 指定运行环境 
+}
+// controller
+app.mysql.query(sql)
+```
 
 
