@@ -38,7 +38,7 @@ Koa 内置 [static](https://github.com/eggjs/egg-static) 插件, 将 `/public/*`
 
 ## 约定
 ### 目录结构
-`
+```bash
 egg-project
 ├── package.json
 ├── app.js (可选) 用于初始化
@@ -76,7 +76,7 @@ egg-project
     |   └── response_time.test.js
     └── controller
         └── home.test.js
-`
+```
 
 ### /app.js
 框架入口文件, 通常用于添加生命周期钩子
