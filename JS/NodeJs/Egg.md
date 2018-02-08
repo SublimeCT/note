@@ -128,8 +128,12 @@ module.exports = {
 - request/response
 
 ## Context
+### 扩展
+框架将 `app/extends/context.js` 中的对象和 `Koa.Context.prototype` 合并后的对象作为 `ctx`
 
 ## Request / Response
+框架将 `app/extends/request.js` 中的对象和 `Koa.Request.prototype` 合并后的对象作为 `ctx.request`
+
 
 ## Controller
 负责解析 & 处理请求参数, (通过 Service)返回相应结果
@@ -179,6 +183,7 @@ module.exports = app => {
 - logger
 
 ## Helper
+框架将 `app/extends/helper.js` 中的对象和 `Koa.Helper.prototype` 合并后的对象作为 `helper`
 
 ## Config
 ### 加载
@@ -340,5 +345,14 @@ exports.mysql = {
 // controller
 app.mysql.query(sql)
 ```
+
+## 定时任务
+[文档](https://eggjs.org/zh-cn/basics/schedule.html)
+
+## 框架核心对象扩展
+Application / Context / Request / Response / Helper 在 `app/extend/${objectName}[.${envName}].js` 文件中根据运行环境进行扩展
+
+## egg-bin
+
 
 
