@@ -187,8 +187,14 @@ git config --global alias.last 'log -p -1'
 ```
 
 ## 分支
+> git 保存的不是文件的变化或差异, 而是不同时刻的文件快照
+
+- commit 对象
+![commit 对象](https://git-scm.com/book/en/v2/images/commit-and-tree.png)
+
 
 ### 创建分支
+
 
 ## 其他
 ### `git commit` (Angular)格式[规范](http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)
