@@ -2,6 +2,7 @@
 
 ## Links
 - [官网](https://eggjs.org/zh-cn/intro/index.html)
+- [官网资源列表](https://github.com/eggjs/awesome-egg)
 - [Koa2 Wiki](https://github.com/koajs/koa/wiki)
 - [Koa2 中文文档](https://koa.bootcss.com/)
 

@@ -3,8 +3,10 @@
 ## links
 - marks
     - [中文文档](http://www.mongoing.com/docs)
+    - [NodeJS Driver](http://mongodb.github.io/node-mongodb-native/2.2/)
+    - [mongoose](https://github.com/Automattic/mongoose)
 - posts
-    - [json与bson的区别](http://blog.csdn.net/xiaojin21cen/article/details/60953980)
+    - [mongo学习笔记0](https://github.com/qianjiahao/MongoDB)
     - [mongo学习笔记1](https://segmentfault.com/a/1190000011063248)
     - [mongo学习笔记2](http://blog.csdn.net/xqzhang8/article/details/72588278)
 
