@@ -26,5 +26,11 @@ index | index
 table joins | 无
 primary key | primary key
 
-## [基本命令](https://github.com/SublimeCT/note/blob/master/MongoDB/docs/base-command.md)
+## [mongo shell](https://github.com/SublimeCT/note/blob/master/MongoDB/docs/base-command.md)
+
+## 数据库
+
+## 文档
+文档的存储格式是 `BSON`, 是一种类似 `JSON` 的二进制形式的存储格式, 简称 `Binary JSON`
+
 
