@@ -43,6 +43,7 @@ noteTest3  0.000GB
 ```
 
 ## 文档
+### [SQL => MongoDB Shell 完整映射表](http://www.mongoing.com/docs/reference/sql-comparison.html#sql-to-mongodb-mapping-chart)
 ### [insert](http://www.mongoing.com/docs/tutorial/insert-documents.html)
 - `db.dbName.insertOne(doc)`
 - `db.dbName.insertMany(docArray)`
@@ -62,15 +63,6 @@ WriteResult({ "nInserted" : 1 })
 { "userId" : "lkajkljfdjs" }
 > db.user.insert(testDoc)
 WriteResult({ "nInserted" : 1 })
-```
-
-### update
-> 使用 `save` 并指定 `_id` 时为更新改条数据  
-不指定 `_id` 时与 `insert` 相同
-
-```bash
-> db.user.save({_id: ObjectId('5a7c17bb534c9917fa65b055'), userId: 'test'})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 
 ### [select](http://www.mongoing.com/docs/tutorial/query-documents.html)
@@ -139,7 +131,15 @@ db.user.find({ results: { $elemMatch: { $gte: 80, $lt: 85 } } })
 - [ProjectionOperators](http://www.mongoing.com/docs/reference/operator/query.html#projection-operators)
 
 ### udpate [📚](http://www.mongoing.com/docs/reference/method/db.collection.update.html)
-- update(http://www.mongoing.com/docs/reference/method/db.collection.update.html#db-collection-update)
+- save
+> 使用 `save` 并指定 `_id` 时为更新改条数据  
+不指定 `_id` 时与 `insert` 相同
+
+```bash
+> db.user.save({_id: ObjectId('5a7c17bb534c9917fa65b055'), userId: 'test'})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+```
+- update [📚](http://www.mongoing.com/docs/reference/method/db.collection.update.html#db-collection-update)  
 `db.dbName.udpate(query, update, options)`
     - update 参数 [📃](https://docs.mongodb.com/manual/reference/operator/update/)
         - $set
@@ -179,9 +179,80 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 - updateMany
 - replaceOne
 
+### delete [📚](http://www.mongoing.com/docs/tutorial/remove-documents.html)
+> 官方推荐使用更具语义化的 `removeOne` / `removeMany` 方法
 
+- remove  
+删除 collection 中的所有记录
+```bash
+> db.testCollection.remove({})
+```
 
+仅删除一条记录
+```bash
+> db.testUser.find()
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce82"), "testField" : 5 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce83"), "testField" : 6 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce84"), "testField" : 7 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce85"), "testField" : 8 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce86"), "testField" : 9 }
+> db.testUser.remove({testField: {$gt: 7}})
+WriteResult({ "nRemoved" : 2 })
+> db.testUser.find()
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce82"), "testField" : 5 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce83"), "testField" : 6 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce84"), "testField" : 7 }
+> db.testUser.remove({testField: {$gt: 5}}, {justOne: 1})
+WriteResult({ "nRemoved" : 1 })
+> db.testUser.find()
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce82"), "testField" : 5 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce84"), "testField" : 7 }
+```
 
+### limit
+
+### skip
+
+### sort
+```bash
+> db.testUser.find()
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce7d"), "testField" : 0 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce7e"), "testField" : 1 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce7f"), "testField" : 2 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce80"), "testField" : 3 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce81"), "testField" : 4 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce82"), "testField" : 5 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce84"), "testField" : 7 }
+> db.testUser.find().limit(5).skip(2).sort({testField: -1})
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce81"), "testField" : 4 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce80"), "testField" : 3 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce7f"), "testField" : 2 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce7e"), "testField" : 1 }
+{ "_id" : ObjectId("5a7e6c5562e8c226bbf9ce7d"), "testField" : 0 }
+>
+```
+
+## 索引
+### 创建
+- [createIndex](http://www.mongoing.com/docs/reference/method/db.collection.createIndex.html#db.collection.createIndex)
+建立唯一索引
+```bash
+> db.user2.createIndex({random: 1}, {unique: true})
+{
+	"ok" : 0,
+	"errmsg" : "Index with name: random_1 already exists with different options",
+	"code" : 85,
+	"codeName" : "IndexOptionsConflict"
+}
+```
+
+## 聚合查询
+![](http://img.blog.csdn.net/20160609100534149?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)  
+
+SQL: `select by_user as _id, count(*) as num_tutorial from mycol group by by_user` 转换为 `Mongo Shell`
+```bash
+> db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+```
 
 
 
