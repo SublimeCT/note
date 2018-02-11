@@ -75,13 +75,14 @@ Article.methods.methodName = () => {}
 Article.statices.methodName = () => {}
 ```
 
-#### find
+#### 创建
 model/Article.js
 ```javascript
 const ArticleSchema = require('./schema/Article.js')
 module.exports = mongoose.model('Article', ArticleSchema)
 ```
 
+#### 扩展
 demo.js
 ```javascript
 Model.find(condition[, fields, options, callback])
