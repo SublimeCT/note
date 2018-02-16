@@ -41,9 +41,13 @@ const ArticleSchema = new mongoose.Schema({
     createTime: {
         type: Date,
         default: Date.now
+    },
+    field_1: {
+        type: Array,
+        index: true // 索引
     }
 }, {
-    connect: 'Article' // 模型名称
+    connect: 'Article' // 集合名称
 })
 ```
 
