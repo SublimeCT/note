@@ -1,5 +1,9 @@
 # 原生 Nodejs
 
+## links
+- posts
+    - [教程 - alsotang](https://github.com/alsotang/node-lessons)
+
 ## [events](http://nodejs.cn/api/events.html)
 - 大多数 `Nodejs` 核心 `API` 都采用异步事件驱动架构
 - `events` 模块只提供了一个 `EventEmmiter` 类(对象)
@@ -243,3 +247,69 @@ stat('.').then((stats) => {
     // Handle the error.
 });
 ```
+
+## [process](http://nodejs.cn/api/process.html#process_process)
+
+### 事件
+[文档](http://nodejs.cn/api/process.html#process_process_events)
+
+### `argv`
+启动 NodeJS 进程时的命令行参数
+
+### `env`
+包含用户环境信息的对象, [文档](http://nodejs.cn/api/process.html#process_process_env)
+
+```bash
+> process.env.test_env = null
+null
+> process.env.test_env
+'null'
+> delete process.env.test_env
+true
+> process.env.test_env
+undefined
+```
+
+### `pid`
+
+### `platorm`
+
+### `version`
+
+### `execPath`
+返回启动 `NodeJS` 进程的可执行文件所在的绝对路径
+
+### `execArgv`
+返回 `NodeJS` 进程启动时的特定命令行选项(node 与脚本文件之间的命令行参数)
+
+```bash
+$ node --harmony script.js --version
+# process.execArgv
+['--harmony']
+# process.argv
+[ '/usr/local/Cellar/node/9.4.0/bin/node', 'script.js', '--version' ]
+```
+
+### `cwd()`
+返回 NodeJS 进程当前工作目录
+
+### `chdir()`
+修改当前工作目录, 修改失败时抛出异常
+
+### `uptime()`
+运行时长
+
+## [child_process](http://nodejs.cn/api/child_process.html#child_process_child_process)
+衍生子进程
+
+> 在 Node.js 的父进程与衍生的子进程之间会建立 stdin、stdout 和 stderr 的管道
+
+### `spawn`
+异步衍生子进程
+
+### `spawnSync`
+同步衍生子进程
+
+
+
+

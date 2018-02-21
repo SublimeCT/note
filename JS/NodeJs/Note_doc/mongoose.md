@@ -8,6 +8,7 @@
     - [文档](http://mongoosejs.com/docs/guide.html)
 - posts
     - [简要 API](https://segmentfault.com/a/1190000008366129)
+    - [教程](https://github.com/alsotang/node-lessons/tree/master/lesson15)
 
 ## 操作
 ### Connect
