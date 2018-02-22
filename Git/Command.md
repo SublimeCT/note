@@ -106,7 +106,7 @@ git add file_A
 ```bash
 git log -p -2
 ```
-显示最后一次提交记录的简略信息
+显示最后一次提交记录的简略信息(文件修改记录)
 ```bash
 git log --stat -1
 ```
