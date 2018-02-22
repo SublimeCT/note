@@ -7,6 +7,7 @@
 - marks
     - [文档](http://mongoosejs.com/docs/guide.html)
 - posts
+    - [API 详解](https://segmentfault.com/a/1190000010688972)
     - [简要 API](https://segmentfault.com/a/1190000008366129)
 
 ## 操作
