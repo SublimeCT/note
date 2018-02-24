@@ -135,6 +135,7 @@ module.exports = {
 ## Request / Response
 框架将 `app/extends/request.js` 中的对象和 `Koa.Request.prototype` 合并后的对象作为 `ctx.request`
 
+> 通过 `ctx.request.body` 映射 `POST` 请求
 
 ## Controller
 负责解析 & 处理请求参数, (通过 Service)返回相应结果
