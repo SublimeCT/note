@@ -3,6 +3,7 @@
 ## links
 - posts
     - [教程 - alsotang](https://github.com/alsotang/node-lessons)
+    - [NodeJS stream 笔记](https://github.com/zoubin/streamify-your-node-program)
 
 ## [events](http://nodejs.cn/api/events.html)
 - 大多数 `Nodejs` 核心 `API` 都采用异步事件驱动架构

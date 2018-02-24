@@ -6,6 +6,7 @@
     - [NodeJS Driver](http://mongodb.github.io/node-mongodb-native/2.2/)
     - [mongoose](https://github.com/Automattic/mongoose)
 - posts
+    - [note ???](https://github.com/i5ting/nodejs-fullstack/blob/master/mongoose.md)
     - [mongo学习笔记0](https://github.com/qianjiahao/MongoDB)
     - [mongo学习笔记1](https://segmentfault.com/a/1190000011063248)
     - [mongo学习笔记2](http://blog.csdn.net/xqzhang8/article/details/72588278)

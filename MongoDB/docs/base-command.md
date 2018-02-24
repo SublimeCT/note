@@ -143,41 +143,49 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 `db.dbName.udpate(query, update, options)`
     - update 参数 [📃](https://docs.mongodb.com/manual/reference/operator/update/)
         - $set
-```bash
-> db.user.update({sliceTest: '???'}, {$set: {abc: 'def'}})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-> db.user.find()
-{ "_id" : ObjectId("5a7d5e9c1601de4921bc55a2"), "sliceTest" : "???", "abc" : "def" }
-> db.user.update({_id: ObjectId("5a7d4c8e62e8c226bbf9ce74")}, {$set: {'sliceTest.0': 10086}})
-WriteResult({
-	"nMatched" : 0,
-	"nUpserted" : 0,
-	"nModified" : 0,
-	"writeError" : {
-		"code" : 52,
-		"errmsg" : "The dollar ($) prefixed field '$set' in 'sliceTest.$set' is not valid for storage."
-	}
-})
-> db.user.find({_id: ObjectId("5a7d4c8e62e8c226bbf9ce74")})
-{ "_id" : ObjectId("5a7d4c8e62e8c226bbf9ce74"), "sliceTest" : [ 10086, 3, 4, 1 ] }
-```
-        - $inc
-```bash
-> db.user.update({userId: 2}, {$inc: {userId: 4}})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-> db.user.find()
-{ "_id" : ObjectId("5a7d488f62e8c226bbf9ce70"), "userId" : 6 }
-```
-        - $addToSet  
-            表示要插入的值如果存在则不插入
-        - ...
-    - options 参数
-        - upsert
-        - multi
-        - ...
-- updateOne
-- updateMany
-- replaceOne
+			```bash
+			> db.user.update({sliceTest: '???'}, {$set: {abc: 'def'}})
+			WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+			> db.user.find()
+			{ "_id" : ObjectId("5a7d5e9c1601de4921bc55a2"), "sliceTest" : "???", "abc" : "def" }
+			> db.user.update({_id: ObjectId("5a7d4c8e62e8c226bbf9ce74")}, {$set: {'sliceTest.0': 10086}})
+			WriteResult({
+				"nMatched" : 0,
+				"nUpserted" : 0,
+				"nModified" : 0,
+				"writeError" : {
+					"code" : 52,
+					"errmsg" : "The dollar ($) prefixed field '$set' in 'sliceTest.$set' is not valid for storage."
+				}
+			})
+			> db.user.find({_id: ObjectId("5a7d4c8e62e8c226bbf9ce74")})
+			{ "_id" : ObjectId("5a7d4c8e62e8c226bbf9ce74"), "sliceTest" : [ 10086, 3, 4, 1 ] }
+			```
+					- $inc
+			```bash
+			> db.user.update({userId: 2}, {$inc: {userId: 4}})
+			WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+			> db.user.find()
+			{ "_id" : ObjectId("5a7d488f62e8c226bbf9ce70"), "userId" : 6 }
+			```
+		- $addToSet  
+			表示要插入的值如果存在则不插入
+		- ...
+	- options 参数
+		- upsert  
+			如果没有匹配到文档, 则插入
+		- multi
+		- ...
+	- updateOne
+	- updateMany
+	- replaceOne  
+		将匹配到的第一个文档替换  
+		```bash
+		> db.users.replaceOne(
+			{ name: "abc" },
+			{ name: "amy", age: 34, type: 2, status: "P", favorites: { "artist": "Dali", food: "donuts" } }
+		)
+		```
 
 ### delete [📚](http://www.mongoing.com/docs/tutorial/remove-documents.html)
 > 官方推荐使用更具语义化的 `removeOne` / `removeMany` 方法
