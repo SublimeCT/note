@@ -750,4 +750,21 @@ let b = new B
 ---
 
 
+## ArrayType
 
+### 数据单位
+- 1 `byte` 字节 => 8 `bit` 位
+- 1 `kb` 千字节 => 1000 `byte` 字节
+- ...
+
+### 背景
+> 这个接口的设计目的与 `WebGL` 项目有关, 为了实现 `JS` 与 `显卡` 通过 **二进制** 形式的数据交换
+
+### 二进制数组
+- `ArrayBuffer` *对象* 表示内存中的一段二进制数据, 只能通过 `TypedArray` / `DataView` 的数组 API 操作内存
+- `TypedArray` *视图* 包含 `9` 中类型  
+如 `Uint8Array` 表示无符号 8 位整数, 即通过 *1个字节* (8 bit) 表示一个整数  
+`int32Array` 表示有符号 32 位整数, 即通过 *4个字节* (23 bit) 表示一个整数  
+![TypedArray.png](https://i.loli.net/2018/03/01/5a97f683a396c.png)  
+- `DataView` *视图*  
+> 可以自定义复合格式的视图, 比如第一个字节是 Uint8, 第二、三个字节是 Int16, 第四个字节开始是 Float32 ... 此外还可以自定义字节序
