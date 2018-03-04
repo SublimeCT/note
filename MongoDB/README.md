@@ -11,6 +11,11 @@
     - [mongo学习笔记1](https://segmentfault.com/a/1190000011063248)
     - [mongo学习笔记2](http://blog.csdn.net/xqzhang8/article/details/72588278)
 
+## 安装
+使用阿里源[安装](https://www.cnblogs.com/LongJiangXie/p/6080859.html) ?
+- [Ubuntu](https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-ubuntu/)
+- [Mac](https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-os-x/)
+
 ## 启动
 ```bash
 mongod -f /usr/local/etc/mongod.conf

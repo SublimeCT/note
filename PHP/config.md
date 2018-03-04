@@ -104,7 +104,7 @@ http {
     fastcgi_read_timeout 300;
 
     # 引入所有虚拟主机配置
-    include /usr/local/nginx/cong/conf.d/*.conf;
+    include /usr/local/nginx/conf/conf.d/*.conf;
 }
 
 ```
