@@ -1,59 +1,12 @@
 # Linux 系统笔记
+☀ ***笔记参照博客园骏马金龙文章***
 
-## Links
+## 0. Links
 - [Linux基础系列-骏马金龙](http://www.cnblogs.com/f-ck-need-u/p/7048359.html)
 
-## 文件类基础命令
-### 路径
-`-` 表示上次使用的目录
-### 查看目录内容
-- ls 
-    - i inode
-    - r 翻转排序
-    - S 按文件大小排序
-### 复制
-- cp  
-    - p 复制文件属性(权限/属组/时间戳), 默认复制后的文件属主是操作者  
-    - d 复制的文件如果是链接文件, 则复制链接文件本身, 默认复制链接文件指向的文件  
-    - **a `a=pdr`**  
-- scp
-    - r 递归
-    - P port
-    - p 同 `cp`
+## 1. 文件类基础命令 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/1.md) [link](http://www.cnblogs.com/f-ck-need-u/p/6995195.html)
 
-#### *复制隐藏文件*  
-使用 `cp dir/* /tmp` 时无法复制隐藏文件  
-```bash
-$ cp -a dir/. /tmp/dir
-```
+## 2. Linux 系统用户
+### 2.1 系统用户/组管理 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/2.1.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011460.html)
 
-#### *删除隐藏文件*
-```bash
-$ rm -rf dir/.*
-```
-
-#### *复制文件到远程*
-`scp` 是基于 `ssh` 的安全拷贝命令(security copy)  
-如果远程存在同名文件时 `scp` 会将内容替换为源文件内容, 如果不存在则新建空文件, 填充源文件内容  
-
-将本地文件复制到远程  
-```bash
-$ scp dir/file.tar.gz root@192.168.0.200:/tmp
-```
-
-将远程文件复制到本地
-```bash
-$ scp root@192.168.0.200:/tmp/test.tar.gz /tmp
-```
-
-
-
-
-
-
-
-
-
-
-
-
+## 4. EXT 文件系统机制 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/4.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7016077.html)
