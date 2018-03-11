@@ -2,7 +2,6 @@
 /ajax.html
 /test.html
 /test.xml
-/books
 .idea/
 node_modules
 package-lock.json
