@@ -8,5 +8,6 @@
 
 ## 2. Linux 系统用户
 ### 2.1 系统用户/组管理 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/2.1.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011460.html)
+### 2.1 su & sudo [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/2.2.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011669.html)
 
 ## 4. EXT 文件系统机制 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/4.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7016077.html)
