@@ -1,6 +1,6 @@
 # The C Programming Language 学习笔记
 
-# Hello World
+## 一 导言
 ```c
 // 包含标准库信息(输入输出库)
 #include <stdio.h>
@@ -29,11 +29,11 @@ int main()
 }
 ```
 
-## printf()
+### printf()
 `printf` 是标准库中的一个函数
 `%6.1f` 按浮点数打印, 至少占 `6` 个字节宽, 小数点显示两位
 
-## 符号常量
+### 符号常量
 ```c
 #include <stdio.h>
 
@@ -45,3 +45,24 @@ int main ()
     return 1;
 }
 ```
+
+### 1.5 字符输入输出
+#### 打印输入字符
+`EOF` 在头文件 `<stdio.h>` 中定义, 是一个 `int` 值, 表示文件结束标志(end of file)  
+`getchar()` 每调用一次从文本流中读入一个字符, 每次调用 `putchar` 时打印一个字符
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    int c;
+    while ((c = getchar()) != EOF) {
+        putchar(c);
+    }
+    return 1;
+}
+```
+
+
+
