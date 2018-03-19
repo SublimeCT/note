@@ -6,6 +6,7 @@
 ## links
 - marks
     - [文档](http://mongoosejs.com/docs/guide.html)
+    - [中文文档 4.5](https://mongoose.shujuwajue.com/schemas/typesmd.html)
 - posts
     - [API 详解](https://segmentfault.com/a/1190000010688972)
     - [简要 API](https://segmentfault.com/a/1190000008366129)
