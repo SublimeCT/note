@@ -10,6 +10,8 @@
 `<canvas>` 默认宽度为 `300 * 150`, 必须通过 `width` / `height` 设置宽高, 否则会根据默认尺寸放大 / 缩小
 
 ## 获取上下文
+[文档](/Users/test/test/canvas.html)
+
 ```javascript
 const testCanvas = document.getElementById('test')
 // 检测浏览器是否支持 canvas
