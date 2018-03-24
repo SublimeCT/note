@@ -19,3 +19,88 @@ const support = typeof testCanvas.getContent === 'function'
 const testContext = testCanvas.getContext('2d')
 ```
 所有的绘制功能都在 `context` 中
+
+## 栅格
+canvas 的画布以左上角为原点, 横向为 x 轴, 纵向为 y 轴
+
+## CanvasRenderingContext2D API
+### fillStyle
+设置填充颜色或渐变 [doc](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillStyle)
+```javascript
+ctx.fillStyle('blue')
+ctx.fillStyle('rgba(23, 45, 67, 0.2)')
+// ...
+```
+
+### 绘制矩形
+```javascript
+ctx.fillRect(10, 10, 100, 100); // 绘制填充矩形
+ctx.strokeRect(10, 10, 100, 100); // 绘制矩形边框
+ctx.clearRect(10, 10, 100, 100); // 清除矩形区域
+```
+
+### 绘制圆形
+`beginPath()` 系统默认将 `beginPath` 作为绘制的第一个开始点, 如果没有指定 `beginPath`, 则将上一次的 `beginPath` 作为开始点
+
+*圆形*
+
+`ctx(x, y, radius, startAngle, endAngle[, anticlockwise])`  
+从起始点到终点绘制圆弧, 起始点单位为 **弧度** 默认为顺时针  
+radius 半径 / anticlockwise `true: 逆时针` `false: 顺时针`  
+```javascript
+ctx.beginPath()
+ctx.arc(300, 300, 250, 0, Math.PI * 2)
+ctx.stroke() // 绘制边框
+ctx.fill() // 填充
+```
+
+绘制笑脸
+```javascript
+// this.radius = 300
+ctx.beginPath()
+// 脸
+ctx.arc(this.radius, this.radius, this.radius / 2, 0, Math.PI * 2)
+ctx.stroke()
+// 眼睛
+const leftEyePosition = this.radius - (this.radius * 0.18)
+const rightEyePosition = this.radius + (this.radius * 0.18)
+ctx.beginPath()
+ctx.arc(leftEyePosition, leftEyePosition, 20, 0, Math.PI * 2)
+ctx.stroke()
+ctx.beginPath()
+ctx.arc(rightEyePosition, leftEyePosition, 20, 0, Math.PI * 2)
+ctx.stroke()
+// 嘴
+ctx.beginPath()
+ctx.arc(this.radius, this.radius * 1.05, this.radius / 4, 0, Math.PI)
+ctx.stroke()
+```
+
+*直线*
+
+`lineTo(x, y)`
+
+绘制三角形
+```javascript
+ctx.beginPath()
+ctx.moveTo(300, 300)
+ctx.lineTo(250, 350)
+ctx.lineTo(350, 350)
+ctx.fill()
+```
+
+*心形*
+
+使用 `贝赛尔曲线` 绘制心形, [三次贝塞尔曲线](https://www.cnblogs.com/joyho/articles/5817170.html)
+
+![贝赛尔曲线](https://mdn.mozillademos.org/files/223/Canvas_curves.png)
+![三次贝赛尔曲线](https://images2015.cnblogs.com/blog/385229/201608/385229-20160829104858933-1753348065.gif)
+
+
+
+
+
+
+
+
+
