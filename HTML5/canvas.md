@@ -96,10 +96,36 @@ ctx.fill()
 ![贝赛尔曲线](https://mdn.mozillademos.org/files/223/Canvas_curves.png)
 ![三次贝赛尔曲线](https://images2015.cnblogs.com/blog/385229/201608/385229-20160829104858933-1753348065.gif)
 
+...
 
+*矩形*
 
+```javascript
+ctx.rect(200, 200, 300, 300)
+ctx.fill()
+```
 
+### 绘制颜色
+- fillStyle = `color 值`
+- strokeStyle = `color 值`
+- globalAppha = `0.0 - 1.0 {number} 透明度`, 通过 `rgba()` 同样可以实现透明效果
+- lineWeight = `{number} 线宽`
 
+## Path2D 对象
+可以使用 `Path2D` 对象缓存或记录路径
+
+使用路径绘制图形
+```javascript
+// 创建矩形路径
+const rectPath = new Path2D()
+rectPath.rect(100, 250, 200, 100)
+// 创建圆形路径
+const arcPath = new Path2D()
+arcPath.arc(400, 300, 100, 0, Math.PI * 2)
+// 填充路径
+ctx.fill(rectPath)
+ctx.stroke(arcPath)
+```
 
 
 
