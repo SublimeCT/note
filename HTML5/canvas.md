@@ -111,6 +111,17 @@ ctx.fill()
 - globalAppha = `0.0 - 1.0 {number} 透明度`, 通过 `rgba()` 同样可以实现透明效果
 - lineWeight = `{number} 线宽`
 
+### 绘制文本
+[doc](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Drawing_text)
+- fillText(text, x, y, maxWitdh)
+- strokeText(text, x, y, maxWitdh)
+- measureText(text) [预测量文本宽度](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Drawing_text#预测量文本宽度)
+
+### 绘制图片
+- drawImage(image, x, y[, width, height]) 指定尺寸
+- drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) [裁剪图片](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing)
+
+
 ## Path2D 对象
 可以使用 `Path2D` 对象缓存或记录路径
 
