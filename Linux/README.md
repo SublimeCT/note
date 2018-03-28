@@ -13,3 +13,14 @@
 ## 3. 文件的权限管理 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/3.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011971.html)
 
 ## 4. EXT 文件系统机制 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/4.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7016077.html)
+
+## 5. 文件管理系统 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/5.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7048971.html)
+
+## 6. LVM [link](http://www.cnblogs.com/f-ck-need-u/p/7049233.html)
+
+## 7. RAID [link](http://www.cnblogs.com/f-ck-need-u/p/7049501.html)
+
+## 8. 包管理 [link](http://www.cnblogs.com/f-ck-need-u/p/7048359.html)
+
+
+
