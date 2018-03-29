@@ -121,6 +121,18 @@ ctx.fill()
 - drawImage(image, x, y[, width, height]) 指定尺寸
 - drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) [裁剪图片](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing)
 
+### 变形
+状态的保存与恢复:  
+- save() 保存当前配置 (入栈)  
+- restore() 恢复配置 (出栈)  
+
+可保存的配置:  
+- 当前应用的变形, 即移动, 旋转和缩放
+- strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, globalCompositeOperation 的值
+- 当前的裁切路径 clipping path, 会在下一节介绍
+
+#### 移动
+
 
 ## Path2D 对象
 可以使用 `Path2D` 对象缓存或记录路径
