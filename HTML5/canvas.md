@@ -132,7 +132,21 @@ ctx.fill()
 - 当前的裁切路径 clipping path, 会在下一节介绍
 
 #### 移动
+- translate(x, y) 将画布的原定移动到指定位置
 
+#### 旋转
+- rotate(angle) 以原点为圆心旋转画布, 单位是用弧度表示的角度
+
+#### 缩放
+- scale(x, y) 缩放画布, x y 是倍数, 都必须大于 0
+
+### 组合
+- globalCompositeOperation 绘制图像时的覆盖策略
+
+![深度截图_选择区域_20180401123352.png](https://i.loli.net/2018/04/01/5ac06149dfc26.png)
+
+#### 裁切路径
+- clip() clip 的作用类似遮罩, 用来隐藏不需要的部分
 
 ## Path2D 对象
 可以使用 `Path2D` 对象缓存或记录路径
