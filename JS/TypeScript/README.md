@@ -76,3 +76,7 @@ let arr: any[] = [1, false, 'test']
 ### never
 `never` 类型是其他类型的子类型, 表示不会出现的值, 如抛出异常或死循环
 
+## 变量声明
+[doc](https://www.tslang.cn/docs/handbook/variable-declarations.html)
+
+
