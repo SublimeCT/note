@@ -51,18 +51,42 @@ int main ()
 `EOF` 在头文件 `<stdio.h>` 中定义, 是一个 `int` 值, 表示文件结束标志(end of file)  
 `getchar()` 每调用一次从文本流中读入一个字符, 每次调用 `putchar` 时打印一个字符
 
+打印输入的内容
+
 ```c
 #include <stdio.h>
 
 int main()
 {
     int c;
-    while ((c = getchar()) != EOF) {
+    while ((c = getchar()) != EOF)
+    {
         putchar(c);
     }
     return 1;
 }
 ```
 
+统计输入的行数
 
+```c
+#include <stdio.h>
+
+int main()
+{
+    int c, nl;
+    nl = 0;
+    while ((c = getchar()) != EOF)
+    {
+        if (c == '\n')
+        {
+            ++nl;
+        }
+        if (c == '\t') {
+            break;
+        }
+    }
+    printf("### %d\n", nl);
+}
+```
 
