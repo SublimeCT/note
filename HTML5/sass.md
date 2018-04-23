@@ -121,11 +121,15 @@ p {
 ```
 
 ### 插值语句
-```css
-$name: box;
-$attr: border;
-p.#{$name} {
-    #{$attr}-color: blue;
+```scss
+$properties: (margin, padding);
+@mixin set-value($side, $value) {
+    @each $prop in $properties {
+        #{$prop}-#{$side}: $value;
+    }
+}
+.login-box {
+    @include set-value(top, 14px);
 }
 ```
 
@@ -303,9 +307,27 @@ $width: 1024px;
 }
 ```
 
+### %placeholder 占位符
 
+使用 `%` 占位符声明的代码没有被 `@extend` 调用时不产生任何代码
+```scss
+%base-wrap {
+    width: 100%;
+    height: 100%;
+}
+```
 
+使用 `@extend` 实现样式
+```scss
+.test-warp {
+    @extend %base-wrap;
+}
+```
 
+## mixin / extend / % 的使用场景
+- `mixin` 不会合并形同的样式代码, 会造成代码冗余; 但他可以传递参数, 这是 `extend` 和 `%` 无法实现的
+- `extend` 会将基类与子类样式合并, 但不可传参
+- `%` 不会产生基类代码, 相比 `@extend .base`, 它不需要声明基类, 即使继承也不会产生基类的代码
 
 
 
