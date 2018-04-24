@@ -2,6 +2,11 @@
 > Sass 是一款强化 CSS 的辅助工具，它在 CSS 语法的基础上增加了变量 (variables) 嵌套 (nested rules) 混合 (mixins) 导入 (inline imports) 等高级功能  
 这些拓展令 CSS 更加强大与优雅 使用 Sass 以及 Sass 的样式库（如 Compass）有助于更好地组织管理样式文件，以及更高效地开发项目
 
+## 资源
+- [官方文档](http://sass-lang.com/documentation/file.SASS_REFERENCE.html)
+- [官方文档 - 函数](http://sass-lang.com/documentation/Sass/Script/Functions.html#list-functions)
+- [中文文档](https://www.sass.hk/docs)
+
 ## [安装](https://www.sass.hk/install/)
 - ruby
     - [使用 gem install 安装报错问题](http://blog.csdn.net/qq_35160701/article/details/52728965)
@@ -85,7 +90,16 @@ sass --watch app/abc:app/def
 - null
 - 数组
 > 数组本身没有太多功能, 但 [Sass list functions](http://sass-lang.com/documentation/Sass/Script/Functions.html#list-functions) 赋予了数组更多新功能 
-- map
+- map  
+```scss
+// Map 是 `key: value` 格式的结构
+$map: (
+    $key1: $value1,
+    $key2: (
+        $item1: $itemValue1
+    )
+);
+```
 
 ### 运算
 ```scss
@@ -324,11 +338,51 @@ $width: 1024px;
 }
 ```
 
+### 函数
+[官方文档](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#list-functions)
+
+字符串函数  
+- unquote($string) 删除字符串中的引号, **只能删除文本收尾的引号, 无法删除中间的引号**
+- quote($string) 为字符串添加引号 `"contents"`
+- to-upper-case
+- to-lower-case
+
+数字函数  
+...
+
+列表函数
+- length($list) 返回列表长度
+- nth($list, $nth) 返回列表中的第 `$nth` 个值
+- join($firstList, $lastList[, $separator]) 将两个列表合并为一个列表, 并使用 `$separator` 连接  
+    - `$separator` 默认优先使用 `$firstList` 中的分隔符, 可选项 `comma: ,` `space: <空格>`
+- append($firstList, $lastList[, $separator])
+- zip($firstList, $lastList) 将多个列表值转换为一个多维列表
+
+Introspection 函数
+- type-of($value) 判断值类型
+
+Map 函数
+- map-get($map, $key)  
+- map-has-key($map, $key)
+- map-keys
+- map-values
+- map-merge
+
+```scss
+$colors: (
+    white: #FAFAFA,
+    dark: #333
+);
+.test {
+    color: map-get($colors, dark);
+}
+```
+
+
 ## mixin / extend / % 的使用场景
 - `mixin` 不会合并形同的样式代码, 会造成代码冗余; 但他可以传递参数, 这是 `extend` 和 `%` 无法实现的
 - `extend` 会将基类与子类样式合并, 但不可传参
 - `%` 不会产生基类代码, 相比 `@extend .base`, 它不需要声明基类, 即使继承也不会产生基类的代码
-
 
 
 
