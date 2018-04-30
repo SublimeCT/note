@@ -94,9 +94,9 @@ sass --watch app/abc:app/def
 ```scss
 // Map 是 `key: value` 格式的结构
 $map: (
-    $key1: $value1,
-    $key2: (
-        $item1: $itemValue1
+    key1: value1,
+    key2: (
+        item1: itemValue1
     )
 );
 ```
