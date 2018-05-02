@@ -1,10 +1,3 @@
-# Webpack 笔记
-
-## links
-- [慕课网 webpack深入与实战](http://www.imooc.com/learn/802)  
-- [webpack 中文文档](https://doc.webpack-china.org/concepts/)
-- [入门](https://www.jianshu.com/p/42e11515c10f)
-
 ## 安装
 
 ```bash
@@ -185,6 +178,3 @@ module.exports = {
 
 * plugins
 > 一般用于在 compilation / chunk 的生命周期执行操作和自定义功能
-
-
-
