@@ -31,3 +31,33 @@ module.exports = {
 ### 多入口
 参见 [文档](https://doc.webpack-china.org/concepts/entry-points/#常见场景)
 
+## 输出
+
+### 单入口
+```javascript
+module.exports = {
+    output: {
+        filename: 'bundle.js',
+        path: '/usr/local/project' // 绝对路径
+    }
+}
+```
+
+### 多入口
+应该使用 `占位符` 确保每个文件具有唯一的名称
+
+```javascript
+module.exports = {
+    entry: {
+        app: './src/app.js',
+        vender: './src/vender.js'
+    },
+    output: {
+        filename: '[name].js', // 占位符
+        path: __dirname + '/dist' // 绝对路径
+    }
+}
+```
+
+### 资源文件引用的目录 [🔗](https://blog.csdn.net/kcetry/article/details/53300331)
+
