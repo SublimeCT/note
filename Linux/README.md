@@ -4,25 +4,19 @@
 ## 0. Links
 - [Linux基础系列-骏马金龙](http://www.cnblogs.com/f-ck-need-u/p/7048359.html)
 
-## 1. 文件类基础命令 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/1.md) [link](http://www.cnblogs.com/f-ck-need-u/p/6995195.html)
+## 1. 基础知识
 
-## 2. Linux 系统用户
-### 2.1 系统用户/组管理 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/2.1.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011460.html)
-### 2.1 su & sudo [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/2.2.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011669.html)
-
-## 3. 文件的权限管理 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/3.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7011971.html)
-
-## 4. EXT 文件系统机制 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/4.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7016077.html)
-
-## 5. 文件管理系统 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/5.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7048971.html)
-
-## 6. LVM [link](http://www.cnblogs.com/f-ck-need-u/p/7049233.html)
-
-## 7. RAID [link](http://www.cnblogs.com/f-ck-need-u/p/7049501.html)
-
-## 8. 包管理 [link](http://www.cnblogs.com/f-ck-need-u/p/7048359.html)
-
-## 9. 进程 [doc](https://github.com/SublimeCT/note/tree/master/Linux/docs/9.md) [link](http://www.cnblogs.com/f-ck-need-u/p/7058920.html)
+1. [文件类基础命令](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/1.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/6995195.html)
+2. Linux 系统用户
+    - 2.1 [系统用户/组管理](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/2.1.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7011460.html)
+    - 2.1 [su & sudo](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/2.2.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7011669.html)
+3. [文件的权限管理](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/3.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7011971.html)
+4. [EXT 文件系统机制](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/4.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7016077.html)
+5. [文件管理系统](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/5.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7048971.html)
+6. LVM [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7049233.html)
+7. RAID [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7049501.html)
+8. 包管理 [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7048359.html)
+9. [进程](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/9.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7058920.html)
 
 
 
