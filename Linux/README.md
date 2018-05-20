@@ -19,4 +19,5 @@
 9. [进程](https://github.com/SublimeCT/note/tree/master/Linux/docs/basic/9.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7058920.html)
 
 
-
+## 2. shell
+1. [简介](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/1.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/5915048.html)
