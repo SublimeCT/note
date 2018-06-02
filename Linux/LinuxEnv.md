@@ -1,6 +1,6 @@
 # Linux 开发环境搭建
 
-## Lish
+## list
 - fish
 - NodeJS
 - Nginx
@@ -10,7 +10,7 @@
 将 `fish` 作为默认 shell
 ```bash
 $ sudo apt-get install fish
-$ chsh  -s /usr/bin/fish
+$ chsh -s /usr/bin/fish
 ```
 
 通过图形化界面设置 `fish`
