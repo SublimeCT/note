@@ -20,4 +20,5 @@
 
 
 ## 2. shell
-1. [简介](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/1.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/5915048.html)
+1. [hello world](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/1.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/5915048.html)
+2. [bash 环境配置](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/2.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7417651.html)
