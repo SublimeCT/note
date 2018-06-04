@@ -20,5 +20,8 @@
 
 
 ## 2. shell
-1. [hello world](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/1.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/5915048.html)
-2. [bash 环境配置](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/2.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7417651.html)
+1. [hello world](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/introduce.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/5915048.html)
+2. [bash 环境配置](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/bash_env.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7417651.html)
+3. [算术运算](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/number.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7231870.html)
+
+
