@@ -24,5 +24,6 @@
 2. [bash 环境配置](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/bash_env.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7417651.html)
 3. [算术运算](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/number.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7231870.html)
 4. [expr 命令](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/expr.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7231832.html)
+5. [管道和重定向基础](https://github.com/SublimeCT/note/tree/master/Linux/docs/shell/pipe.md) [:point_right: link](http://www.cnblogs.com/f-ck-need-u/p/7325378.html)
 
 
