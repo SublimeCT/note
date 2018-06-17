@@ -1,8 +1,12 @@
 # Linux 系统笔记
 ☀ ***笔记参照博客园骏马金龙文章***
 
-## 0. Links
+## resource
 - [Linux基础系列-骏马金龙](http://www.cnblogs.com/f-ck-need-u/p/7048359.html)
+
+## posts
+- [常用快捷键](https://github.com/SublimeCT/note/tree/master/Linux/hotkey.md)
+- [通配符](https://github.com/SublimeCT/note/tree/master/Linux/wildcards.md)
 
 ## 1. 基础知识
 
