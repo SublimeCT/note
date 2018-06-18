@@ -7,3 +7,4 @@
 ## catalog
 - [简介](https://github.com/SublimeCT/note/tree/master/Linux/docs/abs/introduction.md)
 - [清理 log 脚本](https://github.com/SublimeCT/note/tree/master/Linux/docs/abs/clean_log.md)
+- [特殊字符](https://github.com/SublimeCT/note/tree/master/Linux/docs/abs/chars.md)chars
