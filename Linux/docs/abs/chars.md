@@ -1,4 +1,7 @@
-# [特殊字符](https://github.com/SublimeCT/note/tree/master/Linux/docs/abs/chars.md)chars
+# [特殊字符 & 快捷键](https://github.com/SublimeCT/note/tree/master/Linux/docs/abs/chars.md)chars
+
+## 快捷键
+- 
 
 ## `#`
 注释
@@ -124,6 +127,4 @@ cp file.{png,bak} # cp file.png file.bak
 
 ```bash
 echo 'hello' | cat - # 此时的 - 表示 stdin
-
 ```
-
