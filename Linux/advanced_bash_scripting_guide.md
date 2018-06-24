@@ -10,3 +10,4 @@
 - [特殊字符 & 快捷键](https://github.com/SublimeCT/note/tree/master/Linux/docs/abs/chars.md)chars
 
 ## parameter
+- [变量]
