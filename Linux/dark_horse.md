@@ -55,3 +55,13 @@ chmod g-r file # 为同组用户删除读权限
 chmod o=wr file # 为其他用户设置为　rw-
 chmod +x file # 为所有用户增加可执行权限
 ```
+
+## 修改文件所有者和用户组
+```bash
+sudo chown user:group file
+```
+
+## 按文件内容查找文件
+```bash
+grep -r 'test' test_dir
+```
