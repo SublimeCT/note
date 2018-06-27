@@ -65,3 +65,24 @@ sudo chown user:group file
 ```bash
 grep -r 'test' test_dir
 ```
+
+## 软件安装与卸载
+### 在线安装 `apt-get`
+```bash
+sudo apt-get clean # 清理软件包列表, 实际清理的是 /var/cache/apt/archives 的 .deb 文件
+```
+
+### dpkg
+```bash
+dpkg -i xxx
+dpkg -r xxx
+```
+
+### 源码安装
+1. 解压源代码包
+2. 进入软件包目录
+3. `./configure` 并加入配置参数
+4. `make`
+5. `sudo make install`
+6. `sudo make distclean` 卸载软件
+
