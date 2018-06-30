@@ -86,3 +86,144 @@ dpkg -r xxx
 5. `sudo make install`
 6. `sudo make distclean` 卸载软件
 
+## U盘的挂载
+
+### 基础
+- 所有的设备文件都抽象为文件, 通过 `/dev` 目录访问
+- `Linux` 系统磁盘种类
+    - sd: SCSI Device
+    - hd: Hard Disk
+    - fd: Floppy Disk 软盘
+- 硬盘列表
+    - sda 第一块硬盘
+        - 主分区[最多有 `4` 个]
+            - `sda1`
+            - `sda2`
+            - `sda3`
+            - `sda4`
+        - 逻辑分区[从 `5` 开始]
+            - `sda5`
+    - sdb 第二块硬盘
+    - sdc 第三块硬盘
+
+插入 U盘  
+
+```bash
+➜  ~ tree /media
+/media
+├── apt [error opening dir]
+├── cdrom
+└── xxx
+    └── 0010-CC6A
+        └── user4
+            ├── 安雯 月满西楼.mkv
+            └── 泽尔丹 扎西措 今生相爱.mkv
+```
+
+### 卸载
+
+```bash
+➜  ~ umount /media/sven/0010-CC6A 
+```
+
+### 挂载
+
+```bash
+# 查看设备名称
+➜  ~ sudo fdisk -l
+Disk /dev/sda: 119.2 GiB, 128035676160 bytes, 250069680 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x8b7774bc
+
+Device     Boot Start       End   Sectors   Size Id Type
+/dev/sda1  *     2048 250068991 250066944 119.2G 83 Linux
+
+
+Disk /dev/sdb: 7.5 GiB, 8053063680 bytes, 15728640 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x0010cc6a
+
+Device     Boot Start      End  Sectors  Size Id Type
+/dev/sdb1  *       64 15728639 15728576  7.5G  b W95 FAT32
+
+# 执行挂载
+➜  ~ sudo mount /dev/sdb1 /mnt
+```
+
+## 压缩
+### tar
+- z 使用 `gzip` 方式压缩
+- c 压缩
+- v 显示提示信息
+- x 解压缩
+- f 指定压缩文件的名字
+- C 解压时指定解压目录
+
+```bash
+# 解压到指定目录
+tar -zxvf test.tar.gz -C test_dir
+```
+
+### zip
+- r 目录
+- d 指定解压目录
+
+```bash
+tar -r test.zip test_dir # 压缩
+tar test.zip -C tset_dir # 解压
+```
+
+## 进程管理
+
+### tty 终端
+- `tty1` ~ `tty6` 虚拟终端
+- `tty7` 图形界面终端
+
+### ps 查看所有进程
+- a 所有用户的进程
+- u 查看进程所有者等信息
+- x 查看没有 `tty` 终端的进程
+
+### kill 传递指定信号给进程
+- l 查看所有信号名称
+
+## 网络
+### nsloolup
+```bash
+➜  ~ nslookup www.test.com
+Server:		192.168.1.1
+Address:	192.168.1.1#53
+
+Non-authoritative answer:
+Name:	www.test.com
+Address: 69.172.200.235
+```
+
+## 用户管理
+### useradd
+- s 指定 `shell` 类型
+- g 用户组
+- d 家目录
+
+### userdel
+- r 将家目录一起删除
+
+### groupadd 创建用户组
+
+## 服务器搭建
+- ftp
+- nfs 设置共享目录后, 可直接通过 mount 挂载
+- ssh (微软)
+
+
+
+
+
+
+
