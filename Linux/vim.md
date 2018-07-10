@@ -72,5 +72,6 @@
 - `sp` 水平分屏
 - `vsp a.md` 垂直分屏并打开文件
 
-
-
+## 配置文件
+- `~/.vim/vimrc`
+- `/etc/vim/vimrc`
