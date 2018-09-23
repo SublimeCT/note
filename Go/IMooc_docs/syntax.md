@@ -142,7 +142,7 @@ func printFile (fileName string) {
 ```
 
 ## 7. func
-> `golang` 是一个函数式语言
+> `golang` 是一个函数式语言, 参数传递为**值传递**
 
 ```go
 // num1 与 num2 同类型
