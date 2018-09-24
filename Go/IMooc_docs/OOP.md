@@ -2,6 +2,10 @@
 > Go 语言的面向对象只有封装(struct), 没有继承和多态; 面向接口编程
 
 ## 1. 结构体
+结构体中的属性的封装约定
+-  `public` 为 `CamelCase`
+- `private` 为 `camelCase`
+
 ```go
 // 创建 TreeNode 结构
 type TreeNode struct {
@@ -52,4 +56,3 @@ func (node *TreeNode) traverse () {
 	node.right.traverse()
 }
 ```
-
