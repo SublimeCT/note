@@ -7,3 +7,4 @@
 1. [安装与环境](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/env.md)
 2. [基础语法](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/syntax.md)
 3. [数组/切片/容器](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/container.md)
+4. [OOP](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/OOP.md)
