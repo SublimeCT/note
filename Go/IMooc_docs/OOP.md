@@ -56,3 +56,44 @@ func (node *TreeNode) traverse () {
 	node.right.traverse()
 }
 ```
+
+## 2. 扩展 type
+> 可以通过 ***定义别名*** 和 ***使用组合*** 扩展类型
+
+在 `nodes` 包中创建入口文件 `entry/entry.go` 作为 main
+```go
+package main
+
+import (
+	"yunss.com/sven/impression/node"
+)
+
+type MyTreeNode struct {
+	node *nodes.TreeNode
+}
+
+func (myNode *MyTreeNode) postOrder () {
+	if myNode == nil || myNode.node == nil { return }
+	left := MyTreeNode{myNode.node.Left}
+	right := MyTreeNode{myNode.node.Right}
+	left.postOrder()
+	right.postOrder()
+	myNode.node.Print()
+}
+
+func main () {
+	/*
+	 *			2
+	 *		3		0
+	 *		  6   4
+	 */
+	root := nodes.TreeNode{Value: 2}
+	root.Left = &nodes.TreeNode{Value: 3}
+	root.Left.Right = &nodes.TreeNode{Value: 6}
+	root.Right = &nodes.TreeNode{}
+	root.Right.Left = &nodes.TreeNode{Value: 4}
+	node := MyTreeNode{&root}
+	node.postOrder()
+}
+```
+
