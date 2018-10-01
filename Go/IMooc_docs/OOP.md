@@ -97,3 +97,18 @@ func main () {
 }
 ```
 
+## 3. [gopm](https://github.com/gpmgo/gopm) & goimports
+
+```bash
+➜  go get -u github.com/gpmgo/gopm
+➜  gopm get -v -g golang.org/x/tools/cmd/goimports
+[GOPM] 09-29 20:43:26 [ INFO] App Version: 0.8.8.0307 Beta
+[GOPM] 09-29 20:43:26 [ INFO] Local repository path: /home/xxx/.gopm/repos
+[GOPM] 09-29 20:43:26 [ INFO] Indicated GOPATH: /home/xxx/project/go_demo
+[GOPM] 09-29 20:43:26 [ INFO] Downloading package: golang.org/x/tools/cmd/goimports@branch:<UTD>
+[GOPM] 09-29 20:43:33 [DEBUG] Linking golang.org/x/tools...
+[GOPM] 09-29 20:43:33 [ INFO] Got golang.org/x/tools/cmd/goimports@branch:<UTD>
+[GOPM] 09-29 20:43:33 [ INFO] Package copied to GOPATH: golang.org/x/tools
+[GOPM] 09-29 20:43:33 [ INFO] 1 package(s) downloaded, 0 failed
+➜  go_demo go install golang.org/x/tools/cmd/goimports
+```
