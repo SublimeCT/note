@@ -9,3 +9,4 @@
 3. [数组/切片/容器](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/container.md)
 4. [OOP](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/OOP.md)
 5. [函数与闭包](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/func.md)
+6. [资源管理与错误处理](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/c.md)

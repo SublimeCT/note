@@ -15,8 +15,8 @@
 > 初始化完 git 仓库后第一件事就是设置用户信息, 这些信息会写到每一次的提交中
 
 ```bash
-git config [--global] user.name "sven"
-git config [--global] user.email "helllosc@qq.com"
+git config [--global] user.name "xxx"
+git config [--global] user.email "xxx@xx.com"
 ```
 
 ### 检查配置信息

@@ -46,7 +46,7 @@ package main
 
 import (
 	"fmt"
-	real2 "yunss.com/sven/impression/retriever/real"
+	real2 "yunss.com/xxx/impression/retriever/real"
 )
 
 // 定义 Retriever 接口

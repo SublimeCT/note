@@ -81,7 +81,8 @@ func printFileContents (reader io.Reader) {
 }
 
 func main() {
-	fil := fibonacci()
+	var fil intGen
+	fil = fibonacci()
 	printFileContents(fil)
 }
 ```

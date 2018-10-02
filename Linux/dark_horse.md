@@ -123,7 +123,7 @@ dpkg -r xxx
 ### 卸载
 
 ```bash
-➜  ~ umount /media/sven/0010-CC6A 
+➜  ~ umount /media/xxx/0010-CC6A 
 ```
 
 ### 挂载

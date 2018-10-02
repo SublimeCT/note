@@ -65,7 +65,7 @@ func (node *TreeNode) traverse () {
 package main
 
 import (
-	"yunss.com/sven/impression/node"
+	"yunss.com/xxx/impression/node"
 )
 
 type MyTreeNode struct {

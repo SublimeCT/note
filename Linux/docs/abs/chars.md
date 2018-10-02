@@ -50,7 +50,7 @@ esac
 ### 分隔符
 ```bash
 $ echo $PATH
-/home/sven/.yarn/bin:/usr/local/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/sbin:/usr/sbin
+/home/xxx/.yarn/bin:/usr/local/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/sbin:/usr/sbin
 ```
 
 ## `*` `?`
