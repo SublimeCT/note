@@ -10,3 +10,4 @@
 4. [OOP](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/OOP.md)
 5. [函数与闭包](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/func.md)
 6. [资源管理与错误处理](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/c.md)
+7. [测试与性能调优](https://github.com/SublimeCT/note/blob/master/Go/IMooc_docs/test.md)

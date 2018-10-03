@@ -84,4 +84,80 @@ func main() {
 ### demo-1 统一错误处理
 启动 http 服务器, 统一处理错误
 
+```go
+package main
 
+import (
+	"net/http"
+	"os"
+
+	"github.com/gpmgo/gopm/modules/log"
+	"yunss.com/sven/impression/defer/file_server/listener"
+)
+
+type handleFun func(writer http.ResponseWriter, request *http.Request, conf *listener.WebConfig) error
+
+func beforeListen() *listener.WebConfig {
+	return &listener.WebConfig{"/files/", ":10000"}
+}
+
+// 函数式编程
+// handleFun 中只需要返回 err
+// 包装 handleFun 统一并处理错误
+func errorWraper(handle handleFun, conf *listener.WebConfig) func(http.ResponseWriter, *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		err := listener.HandleFun(writer, request, conf)
+		if err != nil {
+			log.Warn("Error handling request ... %s", err.Error())
+			code := http.StatusOK
+			switch {
+			case os.IsNotExist(err):
+				code = http.StatusNotFound
+			case os.IsPermission(err):
+				code = http.StatusForbidden
+			default:
+				code = http.StatusInternalServerError
+			}
+			http.Error(writer, http.StatusText(code), code)
+		}
+	}
+}
+
+func main() {
+	conf := beforeListen()
+	http.HandleFunc(conf.BasePath, errorWraper(listener.HandleFun, conf))
+	err := http.ListenAndServe(conf.Addr, nil)
+	if err != nil {
+		panic(err)
+	}
+}
+```
+
+## 2. panic / recover
+
+`panic` 会停止当前函数执行, 并向上返回, 执行每一层的 `defer`, 如果没有 `recover` 则退出
+
+`recover` 是一个函数, 返回 `panic` 返回值, 只能在 `defer` 中使用, 无法处理错误可以重新 `panic`
+
+```go
+func tryRecover() {
+	// 这是一个自执行函数
+	defer func() {
+		// 获取 panic 值
+		if rErr := recover(); rErr != nil {
+			fmt.Println("recover value", rErr)
+			if err, ok := rErr.(error); ok {
+				fmt.Println("Error occurred: ", err)
+			} else {
+				panic(rErr)
+			}
+		}
+	}()
+
+	panic(errors.New("TODO"))
+}
+
+func main() {
+	tryRecover()
+}
+```
