@@ -3,7 +3,7 @@
 
 ## computer
 - :books:《计算机组成与设计》
-- :books:《计算机系统概论（第2版）》 [NOTE](https://github.com/SublimeCT/note/blob/master/Computer/Introduction_to_Computing_Systems.md)
+- :books:《计算机系统概论（第2版）》 **[:pencil2:NOTE](https://github.com/SublimeCT/note/blob/master/Computer/Introduction_to_Computing_Systems.md)**
 - :school:[计算机操作系统(南京大学软件学院)](http://www.xuetangx.com/courses/course-v1:NJU+C1026+2016_T2/courseware/3d91688693394170b793217762fcd4eb/)
 
 ## Linux

@@ -8,7 +8,7 @@
 ### 2.3 补码
 以 `5-bit` 为例, 能够表示的范围为 `-16~15`, 共 `32` 个数值
 
-![](./2s_complement.png)
+![](./images/2s_complement.png)
 
 在三种编码方式中正整数的计算结果相同, 但是只有补码在进行包含负数的运算时返回正确的结果
 
@@ -86,8 +86,24 @@
 ### 2.7.2 浮点数
 `32-bit float` 类型各位定义如下
 
+![float_type](./images/float_type.png)
+
 - 符号 `1bit`
 - 数值范围(指数) `8bit`
 - 数值精度 `18bit`
 
+***example-1***  
+用 IEEE 浮点数表示 ![](https://latex.codecogs.com/gif.latex?-6\frac{5}{8})
+
+1. 先转为二进制数
+
+![](https://latex.codecogs.com/gif.latex?-6\frac{5}{8}) = -(1x2^2 + 1x2^1 + 0x2^0 + 1x2-1 + 0x2^2 + 1x2-3) => `-110/101`
+
+2. 正则化处理
+
+=> `-1.01101x2^2`
+
+3. 转换为 `float`
+
+![](./images/float_example1.png)
 
