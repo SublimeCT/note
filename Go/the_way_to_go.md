@@ -4,4 +4,6 @@
 
 ## list
 - [第二部分: 语言的核心结构与技术](https://github.com/SublimeCT/note/blob/master/Go/the_way_to_go_docs/002_core)
-    - [基本结构和基本数据类型](https://github.com/SublimeCT/note/blob/master/Go/the_way_to_go_docs/002_core/type.md)
+    4. [基本结构和基本数据类型](https://github.com/SublimeCT/note/blob/master/Go/the_way_to_go_docs/002_core/type.md)
+    7. [数组和切片](https://github.com/SublimeCT/note/blob/master/Go/the_way_to_go_docs/002_core/slice.md)
+    10. [type & func](https://github.com/SublimeCT/note/blob/master/Go/the_way_to_go_docs/002_core/type_func.md)
