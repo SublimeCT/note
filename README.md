@@ -13,3 +13,5 @@
 > git add -A
 > git cz
 ```
+
+## [resource](https://github.com/SublimeCT/note/blob/master/other/resource.md)

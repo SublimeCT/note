@@ -72,3 +72,22 @@ $ sudo /usr/local/nginx/sbin/nginx -t
 ```
 
 具体配置 -> [note](https://github.com/SublimeCT/note/blob/master/PHP/config.md)
+
+## golang
+
+```bash
+# Set path for NodeJS
+set -x NODE_HOME /usr/local/node
+set -x PATH $NODE_HOME/bin $PATH
+
+# Set path for Yarn
+set -x YARN_HOME /home/xxx/.yarn
+set -x PATH $YARN_HOME/bin $PATH
+
+# Set path for Go
+set -x GOPATH /home/xxx/project/go_demo
+set -x GOROOT /usr/local/go
+set -x GOARCH amd64
+set -x GOOS linux
+set -x PATH $GOROOT/bin $GOPATH/bin $PATH
+```

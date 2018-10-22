@@ -115,7 +115,7 @@ server {
     listen       80; # 端口,一般http的是80
     server_name  test-php.com; # 一般是域名,本机就是localhost
     index index.php index.html;  # 默认可以访问的页面,按照写入的先后顺序去寻找
-    root  /home/sven/projects/php/test; # 项目根目录
+    root  /home/xxx/projects/php/test; # 项目根目录
 
     # 防止访问版本控制内容
     location ~ .*.(svn|git|cvs) {
@@ -161,11 +161,11 @@ server {
 server {
 	listen 		80;
 	server_name 	test-node.com;
-	root		/home/sven/projects/koa-demo/static;
+	root		/home/xxx/projects/koa-demo/static;
 	index		index.html index.htm;
 
 	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico|html|htm)$ { 
-		root    /home/sven/projects/koa-demo/static;
+		root    /home/xxx/projects/koa-demo/static;
 		# expires 3d;
 	}
 

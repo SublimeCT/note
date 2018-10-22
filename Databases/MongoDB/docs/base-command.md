@@ -15,7 +15,7 @@ help
 通过 `use [database name]` 指定后并向这个数据库中的 `collection` 插入数据即可创建改数据库
 ```bash
 use noteTest
-db.user.insert({userId: '0000001', name: 'sven', age: 99, email: 'tester@test.com'})
+db.user.insert({userId: '0000001', name: 'xxx', age: 99, email: 'tester@test.com'})
 ```
 ### 删除
 删除当前数据库
