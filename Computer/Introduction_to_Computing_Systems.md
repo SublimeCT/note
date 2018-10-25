@@ -179,6 +179,12 @@
 2. 译码: 确定指令的类型 `IR[15:12]`; 基于 `16` 中不同的指令, 剩余 `12 bit` 的含义也有所不同
 3. 地址计算: 如果存在则执行此节拍
 4. 取操作数
+5. 执行
+6. 存放结果
+
+## 5. LC-3 结构 [note](https://blog.csdn.net/qianxuecheng27/article/details/53368147)
+> `ISA` 
+
 
 ## 附1 相关名词
 1. `ALU` 算数逻辑运算单元
@@ -187,3 +193,7 @@
 4. `MAR` 内存地址寄存器 `Memory Address Register(MAR)`
 5. `MDR` 内存数据寄存器 `Memory Data Register(MDR)`
 6. `IR` 指令寄存器
+7. `ISA` 指令集架构 Instruction Set Architecture ISA
+
+## 附2 links
+- [csdn note](https://me.csdn.net/qianxuecheng27)
