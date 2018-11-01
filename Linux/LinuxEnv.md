@@ -7,6 +7,8 @@
 - MongoDB
 
 ## fish
+> [配置](http://www.cnblogs.com/welhzh/p/5899875.html)
+
 将 `fish` 作为默认 shell
 ```bash
 $ sudo apt-get install fish
