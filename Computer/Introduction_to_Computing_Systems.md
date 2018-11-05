@@ -183,7 +183,28 @@
 6. 存放结果
 
 ## 5. LC-3 结构 [note](https://blog.csdn.net/qianxuecheng27/article/details/53368147)
-> `ISA` 
+> `ISA` 定义了软件编程所需要的必要而完整的描述  
+
+`ISA` 包含三个部分:  
+    - 操作码的集合
+    - 数据类型
+    - 寻址模式
+
+指令分为三类:
+    - 运算, 只支持 `ADD/AND/NOT`
+    - 数据搬迁
+    - 控制
+
+### 5.1.5 数据类型
+`ISA` 只支持 `补码整数` 数据类型
+
+### 5.1.7 条件码
+`LC-3` 具有三个位寄存器, 分别为 `N 负数 Z 零 P 正数` 当 `8` 个通用寄存器中任意一个被修改或写入时就会发生变化
+
+### 5.3 数据迁移指令
+- 数据从内存移入寄存器为 `load`
+- 数据从寄存器移入内存为 `store`
+
 
 
 ## 附1 相关名词
@@ -193,7 +214,9 @@
 4. `MAR` 内存地址寄存器 `Memory Address Register(MAR)`
 5. `MDR` 内存数据寄存器 `Memory Data Register(MDR)`
 6. `IR` 指令寄存器
-7. `ISA` 指令集架构 Instruction Set Architecture ISA
+7. `ISA` 指令集架构 Instruction Set Architecture
+8. `LC-3` Little Computer 3
+9. `GPR` 通用寄存器
 
 ## 附2 links
 - [csdn note](https://me.csdn.net/qianxuecheng27)
