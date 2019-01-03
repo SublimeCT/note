@@ -174,4 +174,34 @@ void main() {
 }
 ```
 
+## 操作符
+
+- `is` 类型判断
+```dart
+if (user is Person) {
+    user.firstName = 'Bob
+}
+```
+
+- `as` 类型转换
+```dart
+(user as Person).firstName = 'Bob'
+```
+
+- `??=` 赋值操作符
+```dart
+const DEFAULT_VAL = 0;
+val ??= DEFAULT_VAL; // val == null 时将其赋值为 DEFAULT_VAL
+```
+
+- `??` null 合并运算符
+```dart
+String toString() => msg ?? super.toString(); // msg == null 则返回 super.toString()
+```
+
+- `?.` 条件成员访问
+```dart
+foo.bar(); // foo == null 时抛出异常
+foo?.bar(); // foo == null 时返回 null
+```
 
