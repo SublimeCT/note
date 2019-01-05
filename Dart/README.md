@@ -296,3 +296,67 @@ class ImmutablePoint {
 - [工厂函数](http://dart.goodev.org/guides/language/language-tour#factory-constructors%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)
 - [复写操作符](http://dart.goodev.org/guides/language/language-tour#overridable-operators%E5%8F%AF%E8%A6%86%E5%86%99%E7%9A%84%E6%93%8D%E4%BD%9C%E7%AC%A6)
 
+## 枚举
+
+```dart
+enum Colors {
+    Red,
+    Green,
+    Blue
+}
+void main () {
+    const List<Colors> colors = Colors.values;
+    print(colors); // [Colors.Red, Colors.Green, Colors.Blue]
+}
+```
+
+## 泛型
+```dart
+T first<T>(List<T> ts) {
+    T tmp;
+    tmp ??= ts[0];
+    return tmp;
+}
+void main() {
+    print(first([1, 2]));
+}
+```
+
+## 延迟载入库
+> 使用库标识符的 `loadLibrary()` 来加载库
+
+```dart
+import 'package:deferred/hello.dart' deferred ad hello;
+
+greet() async {
+    await hello.loadLibrary();
+}
+```
+
+## 可当做函数调用的类
+```dart
+class Point {
+    call(int x, int y) => '$x, $y';
+}
+void main () {
+    Point p = new Point();
+    print(p(1, 2));
+}
+```
+
+## typedef 方法类型别名
+
+```dart
+typedef int Calc(int x, int y);
+
+int add (int x, int y) => x + y;
+
+void main () {
+    print(add is Calc);
+}
+```
+
+## [元数据](http://dart.goodev.org/guides/language/language-tour#metadata%E5%85%83%E6%95%B0%E6%8D%AE)
+
+
+
