@@ -205,3 +205,158 @@ foo.bar(); // foo == null 时抛出异常
 foo?.bar(); // foo == null 时返回 null
 ```
 
+## 异常
+> `Dart` 提供了 `Exception` 和 `Error` 两种异常类型, 可以抛出非 `null` 的所有类型的异常
+
+```dart
+throw 'error messages ...';
+```
+
+- `catch`
+
+```dart
+try {
+    // ...
+} on OutOfLlamasException {
+    // 只捕获 OutOfLlamasException 类型异常
+} on Exception catch (e) {
+    // 捕获 Exception 类型异常
+    print('Unknow Expection: $e');
+} catch (e, s) {
+    // 捕获所有异常: e 为异常对象, s 为堆栈信息 StackTrace 对象
+    rethrow; // 将捕获的异常重新抛出
+}
+```
+
+## Classes
+> `Dart` 是一个基于 `Mixins` 的面向对象的编程语言
+
+### 构造函数
+- 如果未定义构造函数, 会调用超类的没有参数的构造函数
+- 子类不会继承超类的构造函数
+- 执行顺序
+    1. 初始化参数列表
+    2. 超类的无名构造函数
+    3. 主类的无名构造函数
+
+```dart
+class Point {
+    num x; // initially null
+    num y = 7;
+    num get total => x + y;
+    num set total(num val) => print(val);
+    Point (this.x, this.y); // 通过语法糖设置成员变量
+    // 命名构造函数
+    Point.fromJson(Map<String, int> json) {
+        x = json['x'];
+        y = json['y'];
+    }
+    // 初始化列表, 表达式无法访问 this
+    Point.formJson2(Map<String, num> json) : x = json['x'], y = json['y'] {
+        print('In Point.formJson2(): ($x, $y)');
+    }
+    // 重定向构造函数
+    Point.alongXAxis(num x) : this(x, 0);
+}
+
+// 超类中没有无名构造函数时需要手动调用超类构造函数
+class Foo extends Point {
+    Foo (num x, num y) : super (x, y) {
+        print('in Foo');
+    }
+}
+```
+
+使用初始化列表初始化 `final` 实例属性
+
+```dart
+class Point {
+    final num x; // initially null
+    final num y;
+    Point (x, y) : x = x, y = y;
+}
+
+void main() {
+    var point = new Point(123, 345);
+    print(point);
+}
+```
+
+通过常量构造函数创建一个状态不变的对象, 需要定义一个 `const` 构造函数并声明所有成员变量为 `final`
+
+```dart
+class ImmutablePoint {
+    final num x;
+    final num y;
+    const ImmutablePoint(this.x, this.y);
+}
+```
+
+- [隐式接口](http://dart.goodev.org/guides/language/language-tour#implicit-interfaces%E9%9A%90%E5%BC%8F%E6%8E%A5%E5%8F%A3), 如果要创建类 `A` 实现类 `B` 的接口而不继承 `B` 的实现, 可以使用 `implements` 实现一个或多个接口
+- [工厂函数](http://dart.goodev.org/guides/language/language-tour#factory-constructors%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)
+- [复写操作符](http://dart.goodev.org/guides/language/language-tour#overridable-operators%E5%8F%AF%E8%A6%86%E5%86%99%E7%9A%84%E6%93%8D%E4%BD%9C%E7%AC%A6)
+
+## 枚举
+
+```dart
+enum Colors {
+    Red,
+    Green,
+    Blue
+}
+void main () {
+    const List<Colors> colors = Colors.values;
+    print(colors); // [Colors.Red, Colors.Green, Colors.Blue]
+}
+```
+
+## 泛型
+```dart
+T first<T>(List<T> ts) {
+    T tmp;
+    tmp ??= ts[0];
+    return tmp;
+}
+void main() {
+    print(first([1, 2]));
+}
+```
+
+## 延迟载入库
+> 使用库标识符的 `loadLibrary()` 来加载库
+
+```dart
+import 'package:deferred/hello.dart' deferred ad hello;
+
+greet() async {
+    await hello.loadLibrary();
+}
+```
+
+## 可当做函数调用的类
+```dart
+class Point {
+    call(int x, int y) => '$x, $y';
+}
+void main () {
+    Point p = new Point();
+    print(p(1, 2));
+}
+```
+
+## typedef 方法类型别名
+
+```dart
+typedef int Calc(int x, int y);
+
+int add (int x, int y) => x + y;
+
+void main () {
+    print(add is Calc);
+}
+```
+
+## [元数据](http://dart.goodev.org/guides/language/language-tour#metadata%E5%85%83%E6%95%B0%E6%8D%AE)
+
+
+
