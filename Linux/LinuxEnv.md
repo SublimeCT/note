@@ -15,7 +15,13 @@ $ sudo apt-get install fish
 $ chsh -s /usr/bin/fish
 ```
 
-通过图形化界面设置 `fish`
+使用 [`omf`](https://github.com/oh-my-fish/oh-my-fish) 设置主题和插件
+```bash
+$ curl -L https://get.oh-my.fish | fish
+$ omf doctor # 需要先检测本地 fish 环境
+```
+
+~~通过图形化界面设置 `fish`~~
 ```bash
 $ fish_config
 ```

@@ -99,4 +99,10 @@ set -x FLUTTER_HOME /usr/local/flutter
 set -x PATH $FLUTTER_HOME/bin $PATH
 ```
 
+## 常用命令 [articel](https://www.jianshu.com/p/2c9867e737a1)
+
+- `packages`
+  - `geta`
+
+## 布局
 
