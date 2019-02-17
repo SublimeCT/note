@@ -7,7 +7,7 @@
 - MongoDB
 
 ## fish
-> [配置](http://www.cnblogs.com/welhzh/p/5899875.html)
+> [配置](http://www.cnblogs.com/welhzh/p/5899875.html) / [教程](http://www.ruanyifeng.com/blog/2017/05/fish_shell.html)
 
 将 `fish` 作为默认 shell
 ```bash
