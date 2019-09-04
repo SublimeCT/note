@@ -1,13 +1,10 @@
 # Dart
 
 ## links
-- [dart articles](http://www.cndartlang.com/dart)
-- [dart syntax](http://dart.goodev.org/guides/language/language-tour)
-- [Dart China](https://www.dart-china.org/t/topic/541)
-- [flutter china](https://flutterchina.club/get-started/install/)
+- [dart 语法](http://dart.goodev.org/guides/language/language-tour)
+- [dart 语法文章](http://www.cndartlang.com/dart)
+- [dart 官方推荐的语法风格](http://dart.goodev.org/guides/language/effective-dart)
 - [flutter-io.cn](https://flutter-io.cn/#section-keynotes)
-- [codelabs](https://codelabs.flutter-io.cn/codelabs/first-flutter-app-pt1-cn/index.html#0)
-- [IMooc video](http://www.imooc.com/learn/1035)
 - [post-1 环境配置](https://blog.csdn.net/Calvin_zhou/article/details/80499462)
 
 ## install [doc](https://www.dartlang.org/tools/sdk#install-a-debian-package)
