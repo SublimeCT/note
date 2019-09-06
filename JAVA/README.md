@@ -1,23 +1,16 @@
 # JAVA 笔记
 
 ## links
-- [JDK & JRE 下载](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- [JDK 华为镜像](https://blog.csdn.net/qq_29753285/article/details/93992594)
+- [JDK 官网下载](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- [随便找个 Oracle 账号?](https://blog.csdn.net/weixin_42369687/article/details/90340691)
+- [Maven](http://maven.apache.org/download.cgi)
 
 ## Linux 开发环境搭建
-> `jdk9.x` 环境变量配置与低版本不同, `jdk` 中已不再包含 `jre` [相关文章](http://blog.csdn.net/hanjiang08/article/details/78107961?locationNum=5&fps=1)
-- 从官网下载最新版 `jdk & jre`(9.0.4)
+- 下载最新版 `jdk`
 - 解压到 `/usr/local`(可自定义)
-- 配置环境变量  
+- 配置环境变量
 
-*bash* `/etc/profile`
-```bash
-# Edit for Java at 2018年03月11日13:22:36
-export JAVA_HOME=/usr/local/java
-export JRE_HOME=/usr/local/jre
-export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
-export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
-export JAVA_HOME JRE_HOME PATH CLASSPATH
-```
 *fish* `~/.config/fish/config.fish`  
 **需要特别注意 `.` 需要放到引号里面, 具体请参考相关[文章](https://github.com/fish-shell/fish-shell/issues/3148) / [文档](http://fishshell.com/docs/current/index.html)**
 ```bash
@@ -25,9 +18,12 @@ export JAVA_HOME JRE_HOME PATH CLASSPATH
 set -x JAVA_HOME /usr/local/java
 set -x JRE_HOME $JAVA_HOME/jre
 set -x CLASSPATH $JAVA_HOME/lib $JRE_HOME/lib
-set -x CLASSPATH ".:$LASSPATH"
+set -x CLASSPATH ".:$CLASSPATH"
 set -x PATH $JAVA_HOME/bin $JRE_HOME/bin $PATH
 ```
+
+## maven
+
 
 ## Hello World
 `HelloWorld.java`

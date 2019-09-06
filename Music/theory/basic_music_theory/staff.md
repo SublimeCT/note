@@ -26,3 +26,13 @@
 ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566128472858&di=f36dc52dbaed4e53a3005b04eadb3ec5&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F713c98003bded9351c9583d5.jpg)
 
 ## 5. 谱号
+常用谱号:
+- `G 谱号`, 谱号所在的线上的音就是 g<sup>1</sup>
+- `F 谱号`, 谱号所在的线上的音就是 f
+- `C 谱号`, 谱号所在的线上的音就是 c<sup>1</sup>
+
+![](http://gss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D450%2C600/sign=e19d020a2b7f9e2f7060150c2a00c512/d788d43f8794a4c23d0857c702f41bd5ad6e3936.jpg)
+
+## 6. 变音记号
+
+
