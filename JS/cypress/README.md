@@ -103,3 +103,22 @@ it('...', () => {
 })
 ```
 
+## 网络请求
+`cypress` 通过重写 `XHR` 实现了请求的拦截 / 监听 / 修改, 这种拦截方式称为 `打桩`
+
+```javascript
+cy.server()             // 使响应打桩
+cy.route({
+    method: 'GET',      // 路由所有GET请求
+    url: '/users/*',    // url匹配'/users/*'
+    response: []        // 强制响应为：[]
+}).as('users')
+// 执行获取数据操作 ...
+cy.wait('@users', xhr => {
+    // 断言 response ...
+    expect(xhr.response.body.data).to.exists
+})
+// 断言 response ...
+```
+
+## [stub / Spies / clock](https://docs.cypress.io/zh-cn/guides/guides/stubs-spies-and-clocks.html#)
