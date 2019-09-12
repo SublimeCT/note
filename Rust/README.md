@@ -7,6 +7,12 @@
 ## 基本概念
 - `rustup` 是管理 `rust` 版本的工具
 - [cargo](https://crates.io/) 是 `rust` 的包管理工具
+- `package` 表示 `cargo new package_name` 创建的项目, 一个 `package` 中至少有一个 `crate` / `lib`
+    - `crate` 是一个模块的树形结构
+    - `crate root` crate 根: `src/main.rs` / `src/lib.rs`
+- `trait`
+
+## 开发规范
 - `rust` 中的变量和函数名都使用小写字母加下划线命名
 
 ## Install
@@ -117,6 +123,44 @@ fn main() { // fn 声明函数; main 为入口函数
     for number in (1..4).rev() {
         println!("{}!", number);
     }
+
+    /// slice 类型
+    /// 字面量字符串就是 slice 类型
+    let foo = "Hello World";
+    // baz(str: &str) -> &str
+    baz(&foo[..]); // 与 baz(&foo) 一样
+    baz(&foo[0..5]); // Hello
+    baz(&foo[6..]); // World
+
+    /// 枚举类型
+    enum IpAddrKind {
+        V4(u8, u8, u8, u8),
+        V6(String) // 包含关联数据的成员
+    }
+    let ip4 = IpAddrKind::V4(192, 169, 123, 321)
+    enum Message {
+        Quit,
+        Move { x: i32, y: i32 }, // 匿名结构体
+        Write(String),
+        ChangeColor(i8, i8, i8)
+    }
+    impl {
+        fn call(&self) {
+            // ...
+        }
+    }
+
+    /// 空值
+    let some_number = Some(5);
+    let absent_number: Option<i32> = None;
+
+    /// 通配符
+    let num = 3
+    match num {
+        1 => println!("val: 1"),
+        2 => println!("val: 2"),
+        _ => () // _ 会匹配所有值
+    }
 }
 
 /// 函数
@@ -192,10 +236,65 @@ println!("x: {}, y: {}", x, y);
 let a: [i32; 5] = [1, 2, 3, 4, 5];
 ```
 
-## [所有权](https://rustlang-cn.org/office/rust/book/understanding-ownership/ch04-01-what-is-ownership.html)
+## [所有权](https://rustlang-cn.org/office/rust/book/understanding-ownership/ch04-01-what-is-ownership.html#%E6%89%80%E6%9C%89%E6%9D%83%E4%B8%8E%E5%87%BD%E6%95%B0)
 `所有权` 机制使 `rust` 无需垃圾回收即可保障内存安全 
 
-- 复制
-    - 分配在堆上的数据类型值只能通过 `clone` 复制, 因为 `rust` 中堆中的数据
-    - 分配在栈上的数据类型值可以直接复制
+`所有权` 规则:
+1. 每一个值都有一个被称为 `所有者` 的变量
+2. 值有且只有一个 `所有者`
+3. `所有者` 离开作用域后这个值将被丢弃
+
+### 变量与数据的交互方式
+- `移动`: *对于在堆上的数据, 数据的 `所有权` 在将值赋给另一个变量时被移动(给新的变量)*
+- `克隆`: *对于在堆上的数据, 可以通过 `.clone()` 克隆一份数据*
+- `拷贝`: *对于在栈上的数据, 在将值赋给另一个变量时数据将被拷贝*
+
+### 引用
+使用 `&foo` 表示 `foo` 的引用
+
+- `可变引用`: `&mut foo`, 在一个作用域中只能有一个可变引用, 以此解决 **数据竞争** 问题
+- `不可变引用`: `&foo`, 不可变引用可以存在多个, 但不能与 `可变引用` 同时存在
+
+## structure
+```rust
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+impl User {
+    // 定义成员方法
+    fn say(&self) {
+        println!("Hello I'm {}", self.username);
+    }
+    // 定义静态方法
+    // @emample User::outline_user(username, email)
+    fn outline_user(username: &String, email: &String) -> User {
+        User {
+            username,
+            email,
+            sign_in_count: 0,
+            active: false
+        }
+    }
+}
+
+let user1 = User {
+    email: String::from("someone@example.com"),
+    username: String::from("someusername123"),
+    active: true,
+    sign_in_count: 1,
+}
+
+let user2 = User {
+    email: String::from("another@example.com"),
+    username: String::from("anotherusername567"),
+    ..user1 // 此处只复用了 user1 中 user2 没有声明的属性
+}
+
+/// tuple structure 
+struct Color (u8, u8, u8);
+```
 
