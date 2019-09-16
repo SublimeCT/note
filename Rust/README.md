@@ -3,13 +3,16 @@
 ## links
 - [中文官网](https://rustlang-cn.org/office/rust/book/getting-started/ch01-01-installation.html)
 - [使用中科大镜像](https://www.jianshu.com/p/cf1b534dbb16)
+- [Cargo 仓库](https://docs.rs/)
 
 ## 基本概念
 - `rustup` 是管理 `rust` 版本的工具
 - [cargo](https://crates.io/) 是 `rust` 的包管理工具
 - `package` 表示 `cargo new package_name` 创建的项目, 一个 `package` 中至少有一个 `crate` / `lib`
-    - `crate` 是一个模块的树形结构
-    - `crate root` crate 根: `src/main.rs` / `src/lib.rs`
+    - ``
+    - `cargo`
+        - `crate` 是一个模块的树形结构
+        - `crate root` crate 根: `src/main.rs` / `src/lib.rs`
 - `trait`
 
 ## 开发规范
