@@ -1,6 +1,7 @@
 # Rust
 
 ## links
+- [API document](https://doc.rust-lang.org/std/)
 - [中文官网](https://rustlang-cn.org/office/rust/book/getting-started/ch01-01-installation.html)
 - [使用中科大镜像](https://www.jianshu.com/p/cf1b534dbb16)
 - [Cargo 仓库](https://docs.rs/)
@@ -164,6 +165,11 @@ fn main() { // fn 声明函数; main 为入口函数
         2 => println!("val: 2"),
         _ => () // _ 会匹配所有值
     }
+
+    /// Vector
+    let v = Vec::new();
+    let mut v2 = vec![1, 2, 3]; // 使用 vec! 宏
+    v.push(4, 5, 6);
 }
 
 /// 函数
@@ -218,7 +224,7 @@ const name: char = 'sven'; // char 类型使用单引号
 ```
 
 ### 复合类型
-复合类型可以将多个值组合成一个新类型
+复合类型可以将多个值组合成一个新类型, 复合类型的数据存储在栈上
 
 - `tuple` 元组
 
@@ -300,4 +306,11 @@ let user2 = User {
 /// tuple structure 
 struct Color (u8, u8, u8);
 ```
+
+## 集合类型
+集合类型表示多个值, 且值是存到堆上的, 所以长度没有限制
+
+### `vector`
+### `String`
+### `hash map`
 
