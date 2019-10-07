@@ -129,7 +129,7 @@ fn main() { // fn 声明函数; main 为入口函数
     }
 
     /// slice 类型
-    /// 字面量字符串就是 slice 类型
+    /// 字面量字符串就是 slice 类型, slice 类型不获取所有权
     let foo = "Hello World";
     // baz(str: &str) -> &str
     baz(&foo[..]); // 与 baz(&foo) 一样
@@ -169,7 +169,32 @@ fn main() { // fn 声明函数; main 为入口函数
     /// Vector
     let v = Vec::new();
     let mut v2 = vec![1, 2, 3]; // 使用 vec! 宏
-    v.push(4, 5, 6);
+    v.push(4); // 增加 item
+    // 获取 item
+    let _first: &i32 = &v[0]; // 1. 通过 & [] 方式获取
+    // 2. 通过 `get()` 获取
+    match v.get(0) {}
+        Some(_first) => println!("first is 1"),
+        None => println!("first not found")
+    }
+    /// 遍历元素
+    for i in &mut v {
+        *i += 10;
+    }
+    /// 使用枚举存储多种类型
+    enum People {
+        Point(i32, i32),
+        Name(String)
+    }
+    let p = vec![People::Point(1, 2)];
+
+    /// String 类型: 可增长 / 可变 / 有所有权 / UTF-8 编码的字符串类型
+    let s = String::new();
+    let mut ss = String::from("Hello");
+    let s1 = "test"; // 声明 str 类型
+    s = s1.to_string(); // str 转为 String
+    ss.push_str(" World"); // 附加字符串 slice
+    ss.push("."); // 附加单个字符
 }
 
 /// 函数
