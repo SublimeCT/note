@@ -2,7 +2,10 @@
 
 ## links
 - [API document](https://doc.rust-lang.org/std/)
-- [中文官网](https://rustlang-cn.org/office/rust/book/getting-started/ch01-01-installation.html)
+- [rust 程序设计语言](https://github.com/KaiserY/trpl-zh-cn)
+- [rust 程序设计语言(国内站点)](http://120.78.128.153/rustbook/foreword.html)
+- [rust 程序设计语言(github page)](https://kaisery.github.io/trpl-zh-cn/ch04-01-what-is-ownership.html)
+- ~~[中文官网](https://rustlang-cn.org/office/rust/book/getting-started/ch01-01-installation.html)~~, 已失效
 - [使用中科大镜像](https://www.jianshu.com/p/cf1b534dbb16)
 - [Cargo 仓库](https://docs.rs/)
 
@@ -19,7 +22,7 @@
 ## 开发规范
 - `rust` 中的变量和函数名都使用小写字母加下划线命名
 
-## Install
+## Install and configure
 0. 配置环境变量
 ```bash
 # Set path for Rust
@@ -37,7 +40,9 @@ curl -o rust-init.sh https://sh.rustup.rs
 2. 替换其中的 `RUSTUP_UPDATE_ROOT`
 3. `sh ./rust-init.sh`
 4. 将 `$HOME/.cargo/bin` 添加到环境变量中
-5. 配置 `cargo` 镜像
+5. **配置 `cargo` 镜像**
+
+`$HOME/.cargo/config`
 
 ```toml
 [source.crates-io]
@@ -277,6 +282,23 @@ let a: [i32; 5] = [1, 2, 3, 4, 5];
 1. 每一个值都有一个被称为 `所有者` 的变量
 2. 值有且只有一个 `所有者`
 3. `所有者` 离开作用域后这个值将被丢弃
+
+
+### 变量与数据的交互方式
+
+1. 数据移动
+```rust
+let x = 5;
+let y = x;
+```
+
+```rust
+let x = String::from("Rust"); // String 类型
+let y = x;
+// println!("x is {}", x); // error[E0382]: use of moved value: `x`
+```
+
+![](https://kaisery.github.io/trpl-zh-cn/img/trpl04-04.svg)
 
 ### 变量与数据的交互方式
 - `移动`: *对于在堆上的数据, 数据的 `所有权` 在将值赋给另一个变量时被移动(给新的变量)*

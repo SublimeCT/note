@@ -2,6 +2,8 @@
 
 ## links
 - [flutter 中文网](https://flutterchina.club)
+- [cocoapods 镜像](https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/)
+- [Ruby gem 镜像](https://gems.ruby-china.com/)
 
 ## Install
 > 参考自 [flutter 中文网](https://flutterchina.club/setup-linux/) & [csdn 文章](https://www.cnblogs.com/zxsh/archive/2018/04/16/8859048.html)
@@ -63,6 +65,44 @@ Doctor summary (to see all details, run flutter doctor -v):
     ! No devices available
 $ flutter doctor --android-licenses
 ```
+
+### Xcode 配置
+- [cocoapods 镜像](https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/)
+- [Ruby gem 镜像](https://gems.ruby-china.com/)
+
+**先设置好上述镜像**, 再执行以下命令
+
+```bash
+sudo gem install cocoapods
+pod setup
+```
+
+### 关于 flutter doctor Xcode 的报错
+关于报错:
+
+```
+[!] Xcode - develop for iOS and macOS (Xcode 11.2)
+    • Xcode at /Applications/Xcode.app/Contents/Developer
+    • Xcode 11.2, Build version 11B52
+    ✗ CocoaPods installed but not initialized.
+        CocoaPods is used to retrieve the iOS and macOS platform side's plugin code that responds to your plugin usage
+        on the Dart side.
+        Without CocoaPods, plugins will not work on iOS or macOS.
+        For more info, see https://flutter.dev/platform-plugins
+      To initialize CocoaPods, run:
+        pod setup
+      once to finalize CocoaPods' installation.
+```
+
+报错时笔者还为设置镜像, 报错提示中的 `pod setup` 也不会创建 `~/.cocoapods/repo` 目录, *但这个目录存在时就没问题了*; 猜测可能与本地没有 `~/.cocoapods/repo` 目录有关, ~~或许手动创建该目录就可以~~
+
+执行如下命令就会创建 `~/.cocoapods/repo` 目录:
+
+```bash
+cd ios && pod install
+```
+
+### 环境变量参考(Linux)
 
 ```fish
 # Set path for NodeJS
