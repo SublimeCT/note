@@ -10,20 +10,44 @@
 - [Cargo 仓库](https://docs.rs/)
 
 ## 基本概念
-- `rustup` 是管理 `rust` 版本的工具
-- [cargo](https://crates.io/) 是 `rust` 的包管理工具
-- `package` 表示 `cargo new package_name` 创建的项目, 一个 `package` 中至少有一个 `crate` / `lib`
-    - ``
-    - `cargo`
-        - `crate` 是一个模块的树形结构
-        - `crate root` crate 根: `src/main.rs` / `src/lib.rs`
-- `trait`
+- 工具链
+    - `rustup` 是管理 `rust` 版本的工具
+    - [cargo](https://crates.io/) 是 `rust` 的包管理工具
+- 模块化
+    - `crate` 是 `rustc` 编译器的编译起点
+    - `package`
+- 特性
+    - `trait`
+
+## 模块化
+每个项目中至少包含一个 `cargo`, 编译器将以 `crate` 为起点编译
+
+类型 | 路径 | 数量
+--- |--- |---
+`library crate` | `src/lib.rs` | 最多包含一个
+`binary crate` | `src/main.rs` | 可以包含任意多个
+
+src/lib.rs
+```rust
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist () {}
+    }
+}
+// 使用 `use` 将模块引入作用域
+use crate::front_of_house::hosting;
+// 也可以使用相对路径
+// use front_of_house::hosting;
+fn main () {
+    hosting::add_to_waitlist();
+}
+```
 
 ## 开发规范
 - `rust` 中的变量和函数名都使用小写字母加下划线命名
 
 ## Install and configure
-0. 配置环境变量
+1. 配置环境变量
 ```bash
 # Set path for Rust
 set -x RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static
@@ -239,6 +263,14 @@ count = 0; // Error
 ## 数据类型
 `标量类型` 中所有的类型都是 `Copy trait`; 在复合类型中, `tuple` 的子项中如果包含非标量类型, 则不是 `Copy trait`
 
+### 所有的字符数据类型
+- `字符编码`: 在计算机中存储数据 `0100_0001` 来标识字符 `'A'`, 这种映射关系就是 `字符编码`
+
+类型 | 存储位置 | 长度 | 是否固定长度 | 写法 | 
+--- |--- |--- |--- |---
+`char` | `stack `| 4 `byte` | y | `let s = 'R'`
+
+
 ### 标量类型
 
 - 整型
@@ -309,7 +341,15 @@ let y = x;
 使用 `&foo` 表示 `foo` 的引用
 
 - `可变引用`: `&mut foo`, 在一个作用域中只能有一个可变引用, 以此解决 **数据竞争** 问题
-- `不可变引用`: `&foo`, 不可变引用可以存在多个, 但不能与 `可变引用` 同时存在
+- `不可变引用`: `&foo`, 不可变引用可以存在多个, 但不能与 `可变引用` (在特定的作用于中)同时存在
+
+### 借用
+使用 `引用` 作为函数参数称为 **借用**
+
+## Slice 切片类型
+`slice` 是对集合中片段的引用
+
+![](http://120.78.128.153/rustbook/img/trpl04-06.svg)
 
 ## structure
 ```rust
@@ -326,6 +366,7 @@ impl User {
         println!("Hello I'm {}", self.username);
     }
     // 定义静态方法
+    // @description 关联函数(静态方法) 是不以 `&self` 作为参数的函数, 例如 `String::from()`
     // @emample User::outline_user(username, email)
     fn outline_user(username: &String, email: &String) -> User {
         User {
@@ -358,6 +399,27 @@ struct Color (u8, u8, u8);
 集合类型表示多个值, 且值是存到堆上的, 所以长度没有限制
 
 ### `vector`
+可以存储多个相同类型的值, **可以使用 `枚举` 来实现存储多类型值**
+
+```rust
+let mut v = vec![1, 2, 3];
+v.push(4);
+v.get(2); // 3
+v.get(100); // None, rust 认为这是正常情况, 返回 None
+&v[100]; // panic, rust 认为这是严重错误
+
+for item in &mut v { // 遍历 Vector
+    *item += 10; // 在修改 Vector 中的可变引用指向的值时需要先解引用
+}
+```
+
+```rust
+let mut v = vec![]
+```
+
 ### `String`
+`String` 实际上是字节的集合, 并提供了一些实用的方法
+
+
 ### `hash map`
 
