@@ -436,5 +436,62 @@ for b in "नमस्ते".bytes() {
 }
 ```
 
-### `hash map`
+### `HashMap`
+`HashMap` 是键和值类型相同的结构
+
+统计单次数量
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    let text = "Hello world wonderful world";
+    let mut word_stat = HashMap::new();
+    for word in text.split_ascii_whitespace() {
+        let count = word_stat.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("word stat: {:?}", word_stat);
+}
+```
+
+## 错误处理
+- `panic!`
+- `Result`
+
+通过 `Result` 处理文件打开错误
+```rust
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let file_name = "hello.log";
+    let f = File::open(file_name);
+    let f = match f {
+        Ok(file) => file,
+        Err(err) => match err.kind() {
+            ErrorKind::NotFound => match File::create(file_name) {
+                Ok(file) => file,
+                Err(err) => panic!("Problem create the file {:?}", err),
+            },
+            _ => panic!("Problem opening the file {:?}", err),
+        }
+    };
+}
+```
+
+直接调用 `panic` 并提供 `message`
+```rust
+let f = File::open("hello.log").expect("Problem opening hello.log");
+let f = File::open("hello.log").unwrap(); // 不提供 message
+```
+
+传播错误
+```rust
+fn foo () -> Result<String, io::Error> {
+    // ...
+    let mut s = String::new();
+    File::open("hello.log")?.read_to_string(&mut s)?;
+    // ...
+}
+```
 
