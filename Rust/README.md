@@ -265,11 +265,16 @@ count = 0; // Error
 
 ### 所有的字符数据类型
 - `字符编码`: 在计算机中存储数据 `0100_0001` 来标识字符 `'A'`, 这种映射关系就是 `字符编码`
+- [UTF-8](https://blog.csdn.net/qq_43043859/article/details/89510121) 编码使用最广泛
+    - 因支持绝大多数字符
+    - 通过特定的编码规则实现可变长度来节省空间
+    - 基于特定编码规则实现了避免传输时误判问题
 
 类型 | 存储位置 | 长度 | 是否固定长度 | 写法 | 
 --- |--- |--- |--- |---
 `char` | `stack `| 4 `byte` | y | `let s = 'R'`
-
+`&str` | `Stack` | _ | y | `let s = "Rust"`
+`String` | `Heap` | _ | n | `let s = String::from("Rust")`
 
 ### 标量类型
 
@@ -420,6 +425,16 @@ let mut v = vec![]
 ### `String`
 `String` 实际上是字节的集合, 并提供了一些实用的方法
 
+```rust
+// 遍历每个字
+for c in "नमस्ते".chars() {
+    println!("{}", c);
+}
+// 遍历每个字节
+for b in "नमस्ते".bytes() {
+    println!("{}", b);
+}
+```
 
 ### `hash map`
 
