@@ -495,3 +495,73 @@ fn foo () -> Result<String, io::Error> {
 }
 ```
 
+## trait
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String {
+        // 作为默认实现, 只有函数签名时必须实现
+        return String::from("read more ...");
+    }
+}
+
+pub struct NewsArticle {
+    pub author: String,
+    pub title: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        return format!("{} - {}", self.title, self.author);
+    }
+}
+
+// 普通实现方式 - impl
+// fn notify(article: &impl Summary) {
+//     println!("Breaking news => {}", article.summarize());
+// }
+
+// trait bounds 实现方式(即范型格式) - <T: Summar>
+fn notify<T: Summary>(article: &T) {
+    println!("Breaking news => {}", article.summarize());
+}
+// // trait bounds 使用 where 从句 - <T: Summar>
+// fn notify<T>(article: &T) where T: Summary {
+//     println!("Breaking news => {}", article.summarize());
+// }
+
+fn main() {
+    let news = NewsArticle {
+        author: String::from("Jinping Xi"),
+        title: String::from("The Chinese Dream"),
+        content: String::from("zzzzzzzzzzzzzzzzzzz"),
+    };
+    println!("news: {}", news.summarize());
+}
+```
+
+标准库为任何实现了 `Display` `trait` 的类型实现了 `ToString` `trait`
+```rust
+impl<T: Display> ToStiring for T {
+    // ...
+}
+```
+
+## lifetime 生命周期
+`rust` 中每个引用都有其生命周期(即引用保持有效的作用域), **借用的生命周期不能长于出借方的生命周期**, 通过生命周期确保了不会出现悬垂引用
+
+- `输入生命周期`: 函数参数的生命周期
+- `输出生命周期`: 函数返回值的生命周期
+
+```rust
+// 泛型生命周期
+fn longest<'a>(first: &'a str, second: &'a str) -> &'a str {
+    // Error: 若返回值与输入参数没有关联, 生命周期标注将毫无意义
+    // return String::from("abc");
+    if first.len() > second.len() { first } else { second }
+}
+```
+
+
+
+
