@@ -1,6 +1,7 @@
 # Rust 编程之道
 
-## 1. 新时代的语言
+## 1-新时代的语言
+
 设计哲学:
 
 - 内存安全
@@ -9,7 +10,7 @@
 - 零成本抽象
 - 实用性
 
-## [2. 语言精要](https://github.com/SublimeCT/note/blob/master/Rust/the_tao_of_rust/2.md)
+## [2-语言精要](/Rust/the_tao_of_rust/2.md)
 
 - 语言规范
     - Rust 语言参考
