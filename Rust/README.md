@@ -542,7 +542,7 @@ fn main() {
 
 标准库为任何实现了 `Display` `trait` 的类型实现了 `ToString` `trait`
 ```rust
-impl<T: Display> ToStiring for T {
+impl<T: Display> ToString for T {
     // ...
 }
 ```
@@ -560,7 +560,12 @@ fn longest<'a>(first: &'a str, second: &'a str) -> &'a str {
     // return String::from("abc");
     if first.len() > second.len() { first } else { second }
 }
+
+// 静态生命周期, 在整个程序执行期间都有效
+let s: &'static str = "hello";
 ```
+
+
 
 
 
