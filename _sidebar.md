@@ -2,6 +2,7 @@
 - [Linux](/Linux/boy/README.md)
     - [📚 Learn Linux Operation with Old Boy Shell Programming](/Linux/boy/README.md)
         - [1-初步入门](/Linux/boy/getting_started.md)
+        - [2-变量](/Linux/boy/variable.md)
 - [Rust](/Rust/README.md)
     - [📚 The tao of rust](/Rust/the_tao_of_rust/README.md)
 - [Music](/Music/theory/README.md)
