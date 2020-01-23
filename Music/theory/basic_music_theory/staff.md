@@ -26,6 +26,8 @@
 ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566128472858&di=f36dc52dbaed4e53a3005b04eadb3ec5&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F713c98003bded9351c9583d5.jpg)
 
 ## 5. 谱号
+![](https://www.musicbody.net/sns/Uploads/Picture/qiniu/Uploads_Editor_Picture_2018-10-07_5bb9b77330fa6.jpg)
+
 常用谱号:
 - `G 谱号`, 谱号所在的线上的音就是 g<sup>1</sup>
 - `F 谱号`, 谱号所在的线上的音就是 f
@@ -35,4 +37,24 @@
 
 ## 6. 变音记号
 
+名称 | 符号 | 描述
+--- |--- |---
+升记号 | `#` | 升高半音
+降记号 | `b` | 降低半音
+重升记号 | `×` | 升高全音
+重降记号 | `bb` | 降低全音
+还原号 | *由于实体字符在文档中显示为 $, 所以以上图中的符号为准* | 升高半音
 
+### 6.1 变音记号类型
+变音记号记在 **线上** 或 **间上**
+
+类型 | 位置 | 有效范围 | 描述
+--- |--- |--- |---
+调号 | 记在谱号后面 | 所有同名音, 在未改变调号之前一直有效 | 
+临时变音记号 | 符头前面 | 当前小节内变音记号之后的所有相同的音 | 用延音线连接的下一小节的同音也有效
+
+## 7. 省略记号
+
+[视频详解](https://www.bilibili.com/video/av10449617?p=20) - 红色激情:
+
+<iframe src="//player.bilibili.com/player.html?aid=10449617&cid=17266211&page=20" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width: 100%;min-height: 500px"></iframe>

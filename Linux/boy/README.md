@@ -19,3 +19,4 @@ FILE_NAME=$(date +%F.log)
 
 ## 参考
 - [命令手册](http://man.linuxde.net/)
+- [awk 命令详解](http://www.zsythink.net/archives/tag/awk/)

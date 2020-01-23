@@ -19,14 +19,37 @@ declare
 ```
 
 ## 设置变量
+
+环境变量:
+
+<!-- tabs:start -->
+
+#### ** bash **
+
 ```bash
 # 定义
 export NAME=Sven
 # 添加全局变量
 echo 'export NAME=Sven' >> ~/.bashrc
+
 ```
 
-局部变量
+#### ** fish **
+
+```bash
+# 定义
+set -x NAME Sven
+# 添加全局变量
+echo 'export NAME=Sven' >> ~/.config/fish/config.fish
+# 设置变量并使其在所有 fish shell 中可访问
+set -Ux NAME Sven
+```
+
+<!-- tabs:end -->
+
+局部变量:
+
+?> 定义变量并使用双引号是最常用的使用场景
 
 <!-- tabs:start -->
 
@@ -43,11 +66,11 @@ d=${NAME}_book      # 当变量后需要连接其他字符时应该使用 `${}` 
 #### ** fish **
 
 ```bash
-set -x a hello $SHELL      # hello /usr/local/bin/fish
-set -x b 'hello $SHELL'    # hello $SHELL
-set -x c "hello $SHELL"    # hello /usr/local/bin/fish
+set a hello $SHELL      # hello /usr/local/bin/fish
+set b 'hello $SHELL'    # hello $SHELL
+set c "hello $SHELL"    # hello /usr/local/bin/fish
 
-set -x d {$NAME}_book      # 当变量后需要连接其他字符时应该使用 `{}` 语法
+set d {$NAME}_book      # 当变量后需要连接其他字符时应该使用 `{}` 语法
 ```
 
 <!-- tabs:end -->
@@ -70,5 +93,25 @@ set -e NAME
 
 <!-- tabs:end -->
 
+## 将命令执行结果作为值插入到脚本中
+
+<!-- tabs:start -->
+
+#### ** bash **
+
+```bash
+timestamp=$(date +%s)
+timestamp=`date +%s`
+```
+
+#### ** fish **
+
+```bash
+set timestamp (date +%s)
+```
+
+<!-- tabs:end -->
+
 ## 环境变量初始化文件
 ![](../../../assets/images/bash_load.png)
+
