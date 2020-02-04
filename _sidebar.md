@@ -6,6 +6,7 @@
         - [3-变量实践](/Linux/boy/variable_more.md)
         - [4-算数运算](/Linux/boy/calculate.md)
         - [5-条件测试与比较](/Linux/boy/condition.md)
+        - [6-条件语句实践](/Linux/boy/condition_more.md)
 - [Rust](/Rust/README.md)
     - [📚 The tao of rust](/Rust/the_tao_of_rust/README.md)
 - [Music](/Music/theory/README.md)

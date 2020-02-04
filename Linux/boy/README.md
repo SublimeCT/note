@@ -1,4 +1,5 @@
 # 《跟老男孩学 Linux 运维》 学习笔记
+> 由于笔者开发环境使用 [`fish shell`](https://fishshell.com/docs/current/index.html), `fish` 与 `bash` 不兼容, 所以本系列笔记将对大部分代码都有 `fish shell` 的兼容版本
 
 ## 速查
 ### 变量
