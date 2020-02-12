@@ -4,6 +4,7 @@
         - [1-算法](/DataStructure/explain_data_structure/arithmetic.md)
         - [2-线性表](/DataStructure/explain_data_structure/list.md)
         - [3-栈和队列](/DataStructure/explain_data_structure/stack_and_queue.md)
+        - [4-串](/DataStructure/explain_data_structure/string.md)
 - [Linux](/Linux/boy/README.md)
     - [📚 Learn Linux Operation with Old Boy Shell Programming](/Linux/boy/README.md)
         - [1-初步入门](/Linux/boy/getting_started.md)
