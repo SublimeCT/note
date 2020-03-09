@@ -43,6 +43,9 @@ fn main () {
 }
 ```
 
+## 编辑器配置
+安装 [rust-analyzer](https://github.com/rust-analyzer/rust-analyzer) 插件, [配置教程](https://zhuanlan.zhihu.com/p/76599587) 
+
 ## 开发规范
 - `rust` 中的变量和函数名都使用小写字母加下划线命名
 
