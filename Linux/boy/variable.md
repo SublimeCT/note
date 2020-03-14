@@ -40,7 +40,7 @@ echo 'export NAME=Sven' >> ~/.bashrc
 # 定义
 set -x NAME Sven
 # 添加全局变量
-echo 'export NAME=Sven' >> ~/.config/fish/config.fish
+echo 'set -x NAME Sven' >> ~/.config/fish/config.fish
 # 设置变量并使其在所有 fish shell 中可访问
 set -Ux NAME Sven
 ```

@@ -2,10 +2,11 @@
     代码重用性发挥到极致,惰性加载框架
 
 # 安装运行
-    /basic 即应用根目录
-    首次运行需要设置 /config/web.php 中的 cookieValidationKey 的值
+    `/basic` 即应用根目录
+    首次运行需要设置 `/config/web.php` 中的 `cookieValidationKey` 的值
 
 # 目录结构
+
     basic/                  应用根目录
         composer.json       Composer 配置文件, 描述包信息
         config/             包含应用配置及其它配置

@@ -38,3 +38,45 @@ sudo systemctl enable mysql
 # nginx: [emerg] bind() to 0.0.0.0:10001 failed (98: Address already in use)
 sudo systemctl enable nginx
 ```
+
+**MacOS 开机自启请参考[这篇文章](/Linux/launchctl.md)**
+
+## 错误处理
+- 错误信息: `The server requested authentication method unknown to the client`
+- 环境: _
+- 原因: `mysql 8.0` 默认使用新的密码验证库, `PHP` 的 `mysqli` 扩展不支持, 所以要修改 `root` 验证方式, **[参考链接](https://blog.csdn.net/maoxinwen1/article/details/88629313)**
+
+```bash
+mysql> select Host,User,plugin from user;
++-----------+------------------+-----------------------+
+| Host      | User             | plugin                |
++-----------+------------------+-----------------------+
+| localhost | mysql.infoschema | caching_sha2_password |
+| localhost | mysql.session    | caching_sha2_password |
+| localhost | mysql.sys        | caching_sha2_password |
+| localhost | root             | caching_sha2_password |
++-----------+------------------+-----------------------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER USER root@localhost IDENTIFIED WITH mysql_native_password BY '123123';
+ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+mysql> ALTER USER root@localhost IDENTIFIED WITH mysql_native_password BY 'Hello973892674@twitter.com';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select Host,User,plugin from user;
++-----------+------------------+-----------------------+
+| Host      | User             | plugin                |
++-----------+------------------+-----------------------+
+| localhost | mysql.infoschema | caching_sha2_password |
+| localhost | mysql.session    | caching_sha2_password |
+| localhost | mysql.sys        | caching_sha2_password |
+| localhost | root             | mysql_native_password |
++-----------+------------------+-----------------------+
+4 rows in set (0.00 sec)
+```
+
+## refer
+- [mysql_secure_installation 安装](http://blog.itpub.net/30936525/viewspace-2016528/)
