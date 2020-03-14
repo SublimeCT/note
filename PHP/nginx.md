@@ -192,6 +192,7 @@ server {
     error_log           /var/log/nginx/videos-error.log;
     index index.html    index.htm;
     error_page 404      /404.html;
+    charset             utf-8;
 
     location / {
         autoindex       on;
@@ -207,9 +208,10 @@ server {
 ```nginx
 server {
 	listen 		80;
-	server_name 	test-node.com;
+	server_name test-node.com;
 	root		/home/xxx/projects/koa-demo/static;
 	index		index.html index.htm;
+    charset     utf-8;
 
 	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico|html|htm)$ { 
 		root    /home/xxx/projects/koa-demo/static;
