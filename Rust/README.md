@@ -44,7 +44,78 @@ fn main () {
 ```
 
 ## 编辑器配置
-安装 [rust-analyzer](https://github.com/rust-analyzer/rust-analyzer) 插件, [配置教程](https://zhuanlan.zhihu.com/p/76599587) 
+1. 安装 [rust-analyzer](https://github.com/rust-analyzer/rust-analyzer) 插件(其中包含了 `rls`), [配置教程](https://zhuanlan.zhihu.com/p/76599587)
+2. 安装 `Native debug` 插件以支持 `LLDB`
+3. 创建 `launch.json` / `tasks.json`
+
+`launch.json`
+
+```json
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "run",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/target/debug/${workspaceFolderBasename}",
+            "preLaunchTask": "run",
+            "args": [],
+            "internalConsoleOptions": "neverOpen",
+            "console": "integratedTerminal",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        }
+    ]
+}
+```
+
+`tasks.json`
+```json
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "cargo run",
+            "problemMatcher": []
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "cargo build",
+            "problemMatcher": []
+        },
+        {
+            "label": "release",
+            "type": "shell",
+            "command": "cargo build --release",
+            "problemMatcher": []
+        },
+        {
+            "label": "check",
+            "type": "shell",
+            "command": "cargo check",
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "cargo test",
+            "problemMatcher": []
+        },
+    ]
+}
+```
 
 ## 开发规范
 - `rust` 中的变量和函数名都使用小写字母加下划线命名
@@ -442,7 +513,7 @@ for b in "नमस्ते".bytes() {
 ### `HashMap`
 `HashMap` 是键和值类型相同的结构
 
-统计单次数量
+统计单词数量
 ```rust
 use std::collections::HashMap;
 
@@ -501,6 +572,8 @@ fn foo () -> Result<String, io::Error> {
 ## trait
 ```rust
 pub trait Summary {
+    // [关联类型] 需要该 trait 的实现者定义 content 属性的类型
+    type content;
     fn summarize(&self) -> String {
         // 作为默认实现, 只有函数签名时必须实现
         return String::from("read more ...");
@@ -568,8 +641,54 @@ fn longest<'a>(first: &'a str, second: &'a str) -> &'a str {
 let s: &'static str = "hello";
 ```
 
+## 闭包
+[doc](http://120.78.128.153/rustbook/ch13-01-closures.html#%E4%BD%BF%E7%94%A8%E5%B8%A6%E6%9C%89%E6%B3%9B%E5%9E%8B%E5%92%8C-fn-trait-%E7%9A%84%E9%97%AD%E5%8C%85)
 
+## 迭代器
 
+API | 子项类型 | 描述
+--- |--- |---
+`iter()` | 不可变引用 | 
+`iter_mut()` | 可变引用 | 
+`into_iter()` | 获取所有权 | 
+
+```rust
+struct Shoe {
+    size: u32,
+    style: String,
+}
+
+impl Shoe {
+    fn shoe_in_my_size(shoes: Vec<Shoe>, size: u32) -> Vec<Shoe> {
+        // 使用 iter / into_iter 创建迭代器
+        shoes.into_iter().filter(|s| s.size == size).collect()
+    }
+}
+
+fn main() {
+    let shoes = vec![
+        Shoe {size: 10, style: String::from("sneaker") },
+        Shoe {size: 12, style: String::from("sandal") },
+        Shoe {size: 10, style: String::from("boot") },
+    ];
+
+    let in_my_size = Shoe::shoe_in_my_size(shoes, 10);
+
+    println!("shoe count: {}", in_my_size.len());
+}
+```
+
+### Iterator trait
+迭代器都实现了 `Iterator`
+
+```rust
+pub trait Iterator {
+    // 关联类型, 实现者必须定义这个类型
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+    // ...
+}
+```
 
 
 
