@@ -690,5 +690,92 @@ pub trait Iterator {
 }
 ```
 
+## 智能指针
+智能指针通过几个 `trait` 实现了对于数据引用的处理
 
+- ***指针*** 是一个包含内存地址的变量的通用概念
+- ***智能指针*** 是一类数据结构, 它们的表现类似于指针, 但拥有额外的原数据
 
+### 常用智能指针
+- `Box<T>` 用于在堆上分配值
+- `Rc<T>` 引用计数类型, 数据可以由多个拥有者
+
+### `Defer` trait
+通过实现 `Deref` 可以重载解引用运算符 `*`
+
+```rust
+use std::ops::Deref;
+
+struct MyBox<T>(T);
+
+impl<T> MyBox<T> {
+    fn new(x: T) -> MyBox<T> {
+        MyBox(x)
+    }
+}
+
+impl<T> Deref for MyBox<T>{
+    type Target = T;
+    fn deref(&self) -> &T {
+        &self.0
+    }
+}
+
+fn main() {
+    let x = 5;
+    let y = MyBox::new(5);
+
+    assert_eq!(5, x);
+    /// 这里的 `*y` 实际上在底层运行了 `*(y.deref())`
+    assert_eq!(5, *y);
+}
+```
+
+### 解引用强制多态
+**解引用强制多态** 是 `rust` 表现在函数或方法传参上的一种便利, 其将实现了 `Deref` 类型的引用转换为原始类型
+
+### `Drop` trait
+`Drop` 可以定义在值离开作用域时执行的一些代码; 同时, `Rust` 提供了 `Prelude trait` `std::mem::drop` 允许我们提早丢弃值
+
+```rust
+struct CustomSmartPointer<T> {
+    data: T,
+}
+impl<T> Drop for CustomSmartPointer<T> {
+    // 在 CustomSmartPointer 值离开作用域时执行
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer data");
+    }
+}
+fn main(){
+    let d = CustomSmartPointer { data: String::from("hello") };
+    // 也可以手动 drop 值
+    // drop(d);
+    println!("finished");
+}
+```
+
+## Rc 实现引用计数
+```rust
+enum List {
+    Cons(i32, Rc<List>),
+    Nil,
+}
+
+use std::rc::Rc;
+
+fn main() {
+    let a = Rc::new(List::Cons(5, Rc::new(
+        List::Cons(10, Rc::new(List::Nil))
+    )));
+    println!("count after creating a = {}", Rc::strong_count(&a)); // 1
+    // 使用 Rc::clone 会增加引用数, 这里的 clone 不是深拷贝
+    let _b = List::Cons(3, Rc::clone(&a));
+    println!("count after creating b = {}", Rc::strong_count(&a)); // 2
+    {
+        let _c = List::Cons(4, Rc::clone(&a));
+        println!("count after creating c = {}", Rc::strong_count(&a)); // 3
+    }
+    println!("count after c goes out of scope = {}", Rc::strong_count(&a)); // 2
+}
+```
