@@ -2,6 +2,8 @@
 - [OS](/Computer/README.md)
     - [🎬 计算机操作系统](/Computer/UESTC_OS/README.md)
         - [1-概述](/Computer/UESTC_OS/overview.md)
+        - 2-进程
+             - [2-1-进程描述与控制](/Computer/UESTC_OS/process_description.md)
 - [PHP](/PHP/README.md)
     - [nginx](/PHP/nginx.md)
     - [FastCGI](/PHP/FastCGI.md)
