@@ -779,3 +779,118 @@ fn main() {
     println!("count after c goes out of scope = {}", Rc::strong_count(&a)); // 2
 }
 ```
+
+## RefCell trait
+通过 `RefCell` 实现内部可变性实例:
+
+step1: *定义 `Messenger` 用于发送消息, 定义 `LimitTracker` 用于检查发送此时是否超额;*
+
+```rust
+pub trait Messenger {
+    fn send(&self, msg: &str);
+}
+pub struct LimitTracker<'a, T:Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+impl<'a, T> LimitTracker<'a, T> where T: Messenger {
+    fn new(messenger: &T, max: usize) -> LimitTracker<T> {
+        LimitTracker{
+            messenger,
+            value: 0,
+            max,
+        }
+    }
+    fn set_value(&mut self, value: usize) {
+        self.value = value;
+        let percentage: usize = self.value / self.max;
+        let mut tips = "正常";
+        if percentage > 1 {
+            tips = "超额 !";
+        } else if percentage >= 0.9 as usize {
+            tips = "即将超额 !";
+        }
+        self.messenger.send(tips);
+    }
+}
+```
+
+step2: *定义测试代码*
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+    struct MockMessenger {
+        sent_messages: Vec<String>,
+    }
+    impl MockMessenger {
+        fn new() -> MockMessenger {
+            MockMessenger { sent_messages: vec![], }
+        }
+    }
+    impl Messenger for MockMessenger {
+        fn send(&self, msg: &str) {
+            self.sent_messages.push(String::from(msg)); // Error: `self` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+        }
+    }
+    #[test]
+    fn it_sends_an_over_75_percent_warning_message() {
+        let mock_messenger = MockMessenger::new();
+        let mut limit_tracker = LimitTracker::new(&mock_messenger, 100);
+
+        limit_tracker.set_value(80);
+
+        assert_eq!(mock_messenger.sent_messages.len(), 1);
+    }
+}
+```
+
+由于 `Messenger` 的 `send` 函数签名中 `self` 为不可变引用, 所以此处无法向 `send_messages` 中加入消息;
+我们可以通过 `RefCell` 来存储 `send_messages`, 然后使用 `borrow_mut()` 来实现可变借用
+
+step3: *使用 `RefCell` 存储 `send_messages`*
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::cell::RefCell;
+    struct MockMessenger {
+        sent_messages: RefCell<Vec<String>>,
+    }
+    impl MockMessenger {
+        fn new() -> MockMessenger {
+            MockMessenger { sent_messages: RefCell::new(vec![]), }
+        }
+    }
+    impl Messenger for MockMessenger {
+        fn send(&self, msg: &str) {
+            self.sent_messages.borrow_mut().push(String::from(msg));
+        }
+    }
+    #[test]
+    fn it_sends_an_over_75_percent_warning_message() {
+        let mock_messenger = MockMessenger::new();
+        let mut limit_tracker = LimitTracker::new(&mock_messenger, 100);
+
+        limit_tracker.set_value(80);
+
+        assert_eq!(mock_messenger.sent_messages.borrow().len(), 1);
+    }
+}
+```
+
+result:
+
+```
+running 1 test
+test tests::it_sends_an_over_75_percent_warning_message ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+```
+
+通过 `RefCell` 可以在外部值被认为是不可变的情况下修改内部值(`borrow_mut()`), 该借用方式同样遵循编译规则, 即 **任何时候, 只允许有多个不可变借用或一个可变借用**
+
+
