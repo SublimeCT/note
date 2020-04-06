@@ -900,3 +900,50 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 - `Rc::clone()` 是深拷贝, 只会增加其内部的 `strong_count`, 直到 `strong_count == 0` 时才会释放该值
 - `Rc::downgrade()` 是浅拷贝, 只会增加其内部的 `weak_count`, 直到 `strong_count == 0` 时才会释放该值
 
+## 并发
+> 使用 `thread::spawn()` 创建线程, 在闭包中使用 `move` 关键字实现获取父线程环境中的值的所有权;  
+> 使用 `channel` 实现线程间通讯;
+
+```rust 
+use std::sync::mpsc;
+
+fn main() {
+    // mpsc: multiple producer, single consumer 即多发送者, 单消费者
+    // tx: transmitter 消息发送者
+    // rx: receiver 消息接收者
+    let (tx, rx) = mpsc::channel();
+    let message = "hello";
+    // 使用 move 关键字表示获取其使用的环境值的所有权
+    let handle = std::thread::spawn(move || {
+        println!("wait for 2s");
+        std::thread::sleep(std::time::Duration::from_secs(2));
+        tx.send(message).unwrap();
+    });
+    // 获取消息接受者
+    // `recv()` 会阻塞当前线程, 直到接收到消息
+    // `try_recv()` 非阻塞， 会立即获取是否存在消息, 可轮询
+    let received = rx.recv().unwrap();
+    println!("received: {}", received);
+    // 使用 `JoinHandle.join()` 表示等待线程执行完毕
+    // 否则在主线程退出时其子线程也将退出
+    handle.join().unwrap();
+}
+```
+
+也可以将 `rx` 视为迭代器
+
+```rust
+for received in rx {
+    println!("Got: {}", received);
+}
+```
+
+使用 `rx.clone()` 创建发送者
+
+```rust
+let rx1 = rx.clone();
+thread::swawn(|| {
+    rx1.send("hello").unwrap();
+})
+```
+
