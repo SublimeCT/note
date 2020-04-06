@@ -36,3 +36,24 @@
     - 模式的切换
     - 进程的中断
     - 进程的切换
+
+## 进程状态
+
+![](../../assets/images/UETSC_OS_process_state_graph.png)
+
+- `New`: 进程已创建, 但未被 `OS` 接纳为可执行进程
+- `Ready`: 准备执行
+- `Running`: 执行
+- `Block`: 等待某事件发生才会继续执行
+- `Exit`: 因停止或取消, 被 `OS` 从执行状态释放
+
+
+## Swaping
+
+将系统中暂时不用的进程(阻塞), `Swaping-out` 到外存, 以腾出足够的内存空间, 此时进程的状态为 **挂起状态**; 把已经具备运行条件的进程 `Swaping-in` 到内存
+
+### 挂起状态 Suspend
+- 使之挂起的进程: `OS` / 父进程 / 自身
+- 使之有挂起状态转换为其他状态: **使之挂起的进程**
+
+![](../../assets/images/UESTC_OS_process_state7_graph.png)
