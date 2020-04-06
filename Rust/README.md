@@ -5,6 +5,7 @@
 - [rust 程序设计语言](https://github.com/KaiserY/trpl-zh-cn)
 - [rust 程序设计语言(国内站点)](http://120.78.128.153/rustbook/foreword.html)
 - [rust 程序设计语言(github page)](https://kaisery.github.io/trpl-zh-cn/ch04-01-what-is-ownership.html)
+- [通过例子学习 Rust](https://rustwiki.org/zh-CN/rust-by-example/index.html)
 - ~~[中文官网](https://rustlang-cn.org/office/rust/book/getting-started/ch01-01-installation.html)~~, 已失效
 - [使用中科大镜像](https://www.jianshu.com/p/cf1b534dbb16)
 - [Cargo 仓库](https://docs.rs/)
@@ -893,4 +894,9 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
 通过 `RefCell` 可以在外部值被认为是不可变的情况下修改内部值(`borrow_mut()`), 该借用方式同样遵循编译规则, 即 **任何时候, 只允许有多个不可变借用或一个可变借用**
 
+## Weak 智能指针
+可以使用 `Weak` 来避免循环引用, [for example](http://120.78.128.153/rustbook/ch15-06-reference-cycles.html#%E9%81%BF%E5%85%8D%E5%BC%95%E7%94%A8%E5%BE%AA%E7%8E%AF%E5%B0%86-rct-%E5%8F%98%E4%B8%BA-weakt)
+
+- `Rc::clone()` 是深拷贝, 只会增加其内部的 `strong_count`, 直到 `strong_count == 0` 时才会释放该值
+- `Rc::downgrade()` 是浅拷贝, 只会增加其内部的 `weak_count`, 直到 `strong_count == 0` 时才会释放该值
 
