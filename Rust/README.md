@@ -947,3 +947,31 @@ thread::swawn(|| {
 })
 ```
 
+## 共享状态并发
+
+`mutex` *mutual exclusion* **互斥器** 在任意时刻, 只允许一个线程访问某些数据; `lock` 是互斥器的一部分, 在 `mutex` 中通过锁 `lock` 来记录谁有数据的访问权; `Arc` 是一种原子类型的引用计数类型智能指针, 可以实现在不同的线程间共享数据, `Rc` 不是线程安全的智能指针, 无法在不同线程间共享数据, *因为不同线程可能同时更新引用计数值*; 几乎所有的类型都实现了 `Send trait`, 其允许在不同线程间转移所有权
+
+```rust
+use std::{thread, sync::{Arc, Mutex}};
+
+fn main() {
+    // `Arc` 是一种原子类型的引用计数类型智能指针, 可以实现在不同的线程间共享数据 
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+    for _ in 0..10 {
+        let mut _counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut __counter = _counter.lock().unwrap();
+            *__counter += 1;
+        });
+        handles.push(handle);
+    }
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    println!("counter: {}", *counter.lock().unwrap());
+}
+```
+
+`Mutex` 没办法避免 [**死锁问题**](https://blog.csdn.net/hd12370/article/details/82814348)
+
