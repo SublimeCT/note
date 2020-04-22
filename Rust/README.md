@@ -624,6 +624,16 @@ impl<T: Display> ToString for T {
 }
 ```
 
+### 动态分派 vs 静态分派
+
+- `static dispatch`: 静态分派是指, 在编译阶段就生成针对具体类型的函数版本; *如泛型*
+- `dynamic dispatch`: 动态分派
+
+
+- [参考链接 A](https://segmentfault.com/a/1190000021874680)
+- [参考链接 B](https://zhuanlan.zhihu.com/p/23791817)
+
+
 ## lifetime 生命周期
 `rust` 中每个引用都有其生命周期(即引用保持有效的作用域), **借用的生命周期不能长于出借方的生命周期**, 通过生命周期确保了不会出现悬垂引用
 
