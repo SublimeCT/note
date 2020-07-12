@@ -624,6 +624,16 @@ impl<T: Display> ToString for T {
 }
 ```
 
+### 动态分派 vs 静态分派
+
+- `static dispatch`: 静态分派是指, 在编译阶段就生成针对具体类型的函数版本; *如泛型*
+- `dynamic dispatch`: 动态分派
+
+
+- [参考链接 A](https://segmentfault.com/a/1190000021874680)
+- [参考链接 B](https://zhuanlan.zhihu.com/p/23791817)
+
+
 ## lifetime 生命周期
 `rust` 中每个引用都有其生命周期(即引用保持有效的作用域), **借用的生命周期不能长于出借方的生命周期**, 通过生命周期确保了不会出现悬垂引用
 
@@ -946,4 +956,32 @@ thread::swawn(|| {
     rx1.send("hello").unwrap();
 })
 ```
+
+## 共享状态并发
+
+`mutex` *mutual exclusion* **互斥器** 在任意时刻, 只允许一个线程访问某些数据; `lock` 是互斥器的一部分, 在 `mutex` 中通过锁 `lock` 来记录谁有数据的访问权; `Arc` 是一种原子类型的引用计数类型智能指针, 可以实现在不同的线程间共享数据, `Rc` 不是线程安全的智能指针, 无法在不同线程间共享数据, *因为不同线程可能同时更新引用计数值*; 几乎所有的类型都实现了 `Send trait`, 其允许在不同线程间转移所有权
+
+```rust
+use std::{thread, sync::{Arc, Mutex}};
+
+fn main() {
+    // `Arc` 是一种原子类型的引用计数类型智能指针, 可以实现在不同的线程间共享数据 
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+    for _ in 0..10 {
+        let mut _counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut __counter = _counter.lock().unwrap();
+            *__counter += 1;
+        });
+        handles.push(handle);
+    }
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    println!("counter: {}", *counter.lock().unwrap());
+}
+```
+
+`Mutex` 没办法避免 [**死锁问题**](https://blog.csdn.net/hd12370/article/details/82814348)
 
