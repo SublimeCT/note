@@ -39,3 +39,8 @@
         - [3-五线谱](/Music/theory/basic_music_theory/staff.md)
 - [Dart](/Dart/README.md)
     - [Flutter](/Dart/Flutter/README.md)
+- stock
+    - [Basic Tutorial](/Stock/basic/README.md)
+        - [1-认识股票](/Stock/basic/know_stock.md)
+        - [2-分析概述](/Stock/basic/know_analyze_stock.md)
+        - [3-股票术语](/Stock/basic/terminology.md)
