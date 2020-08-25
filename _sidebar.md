@@ -44,3 +44,4 @@
         - [1-认识股票](/Stock/basic/know_stock.md)
         - [2-分析概述](/Stock/basic/know_analyze_stock.md)
         - [3-股票术语](/Stock/basic/terminology.md)
+        - [4-基本面分析](/Stock/basic/fundamentals.md)
