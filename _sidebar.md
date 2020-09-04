@@ -5,6 +5,9 @@
         - 2-进程&线程
              - [2-1-进程描述与控制](/Computer/UESTC_OS/process_description.md)
              - [2-1-线程](/Computer/UESTC_OS/thread.md)
+- JAVA
+    - [On Java8](/JAVA/on_java8/README.md)
+        - [1-对象](/JAVA/on_java8/OOP.md)
 - [PHP](/PHP/README.md)
     - [nginx](/PHP/nginx.md)
     - [FastCGI](/PHP/FastCGI.md)
@@ -45,3 +48,5 @@
         - [2-分析概述](/Stock/basic/know_analyze_stock.md)
         - [3-股票术语](/Stock/basic/terminology.md)
         - [4-基本面分析](/Stock/basic/fundamentals.md)
+        - [5-内外盘](/Stock/basic/inner_outer.md)
+        - [6-换手率](/Stock/basic/back_rate.md)
