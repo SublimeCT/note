@@ -26,15 +26,27 @@ String s = new String("asdf");
 
 基础数据类型不需要通过 `new` 创建, *`new` 创建的对象保存在堆中*, `Java` 使用了 `C/C++` 一样的策略, 将基础数据类型保存在栈中;
 
-| 基本类型  |    大小 |  最小值  | 最大值  | 包装类型 |
-| :------: | :------: | :------: | :------: | :------: |
-| boolean | —  | — | — | Boolean |
-| char | 16 bits | Unicode 0  | Unicode 2<sup>16</sup> -1  | Character |
-| byte | 8 bits | -128 | +127 | Byte |
-| short | 16 bits | - 2<sup>15</sup> | + 2<sup>15</sup> -1 | Short |
-| int | 32 bits | - 2<sup>31</sup> | + 2<sup>31</sup> -1 | Integer |
-| long | 64 bits | - 2<sup>63</sup> | + 2<sup>63</sup> -1 | Long |
-| float | 32 bits | IEEE754 | IEEE754 | Float |
-| double | 64 bits |IEEE754 | IEEE754 | Double |
-| void | — | — | — | Void |
+| 基本类型  |    初始值 |    大小 |  最小值  | 最大值  | 包装类型 |
+| :------: | :------: | :------: | :------: | :------: | :------: |
+| boolean | `false` | —  | — | — | Boolean |
+| char | `\u0000` (`null`) | 16 bits | Unicode 0  | Unicode 2<sup>16</sup> -1  | Character |
+| byte | (`byte`)0 | 8 bits | -128 | +127 | Byte |
+| short | (`short`)0 | 16 bits | - 2<sup>15</sup> | + 2<sup>15</sup> -1 | Short |
+| int | 0 | 32 bits | - 2<sup>31</sup> | + 2<sup>31</sup> -1 | Integer |
+| long | 0L | 64 bits | - 2<sup>63</sup> | + 2<sup>63</sup> -1 | Long |
+| float | 0.0f | 32 bits | IEEE754 | IEEE754 | Float |
+| double | 0.0d | 64 bits |IEEE754 | IEEE754 | Double |
+| void | _ | — | — | — | Void |
+
+通过包装类将基本类型的数据存到 `Heap` 中
+```java
+Character ch = new Character('x');
+Character ch1 = 'x';
+```
+
+将包装类型转换为基本类型
+
+```java
+Character c = ch;
+```
 

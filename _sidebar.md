@@ -50,3 +50,5 @@
         - [4-基本面分析](/Stock/basic/fundamentals.md)
         - [5-内外盘](/Stock/basic/inner_outer.md)
         - [6-换手率](/Stock/basic/back_rate.md)
+- [fund](Fund/README.md)
+    - [指数基金投资指南](Fund/index_fund/README.md)
