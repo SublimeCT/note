@@ -267,6 +267,11 @@ fn main() { // fn 声明函数; main 为入口函数
     match num {
         1 => println!("val: 1"),
         2 => println!("val: 2"),
+        3 | 4 => println!("val: 3 | 4"),
+        5 ..= 10 => println!("val: 5 .. 10"),
+        // 'a'..='j' => println!("early ASCII letter"),
+        // Point { x, .. } => println!("x is {}", x), // 使用 .. 忽略剩余的值
+        // Some(x) if x < 5 => println!("less than five: {}", x) // 匹配守卫(`match guard`) 是一个在 match 条件之后的 if 语句
         _ => () // _ 会匹配所有值
     }
 
@@ -985,3 +990,36 @@ fn main() {
 
 `Mutex` 没办法避免 [**死锁问题**](https://blog.csdn.net/hd12370/article/details/82814348)
 
+## @ 绑定模式
+
+```rust
+fn main() {
+    enum Message {
+        Hello { id: i32 }
+    };
+
+    let msg = Message::Hello { id: 5 };
+    match msg {
+        Message::Hello { id: id_variable @ 3..=7 } => println!("Found an id in range {}", id_variable),
+        Message::Hello { id: 8..=10 } => println!("Found an id in anoher range"),
+        Message::Hello { id } if id > 10 => println!("id > 10"),
+        _ => println!("Found some another id"),
+    }
+    // > Found an id in range 5
+}
+```
+
+## 类型别名
+代码中的 `+` 语法为需要实现多种 `trait`, [参考](http://120.78.128.153/rustbook/ch10-02-traits.html#%E9%80%9A%E8%BF%87--%E6%8C%87%E5%AE%9A%E5%A4%9A%E4%B8%AA-trait-bound)
+
+```rust
+type Thunk = Box<dyn Fn() + Send + 'static>
+```
+
+## 宏
+从本质上来说, 宏是为写其他代码而写代码的方式, 即元编程
+
+类型 | 参数 | 何时执行 | trait 扩展
+--- |--- |--- |---
+宏 | 接受的参数数量可变, <br>*如 `println!("")` / `println!("n: {}", n)`* | 在编译器翻译代码前展开 | 可以在给定类型上实现 `trait`
+函数 | 接受的参数数量固定 | 运行时调用被调用执行 | 
