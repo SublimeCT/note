@@ -78,5 +78,20 @@ mysql> select Host,User,plugin from user;
 4 rows in set (0.00 sec)
 ```
 
+## 修改密码
+> 适用于 `mysql8.x`
+
+```bash
+brew services stop mysql
+# 启动 mysql_safe 并进入
+mysqld_safe --skip-grant-tables &
+mysql
+
+mysql> use mysql;
+mysql> ALTER user 'root'@'localhost' IDENTIFIED BY 'your password'
+# 若出现 ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables 错误
+# 需要执行一下 flush privileges;
+```
+
 ## refer
 - [mysql_secure_installation 安装](http://blog.itpub.net/30936525/viewspace-2016528/)

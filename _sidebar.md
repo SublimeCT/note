@@ -2,8 +2,12 @@
 - [OS](/Computer/README.md)
     - [🎬 计算机操作系统](/Computer/UESTC_OS/README.md)
         - [1-概述](/Computer/UESTC_OS/overview.md)
-        - 2-进程
+        - 2-进程&线程
              - [2-1-进程描述与控制](/Computer/UESTC_OS/process_description.md)
+             - [2-1-线程](/Computer/UESTC_OS/thread.md)
+- JAVA
+    - [On Java8](/JAVA/on_java8/README.md)
+        - [1-对象](/JAVA/on_java8/OOP.md)
 - [PHP](/PHP/README.md)
     - [nginx](/PHP/nginx.md)
     - [FastCGI](/PHP/FastCGI.md)
@@ -38,3 +42,14 @@
         - [3-五线谱](/Music/theory/basic_music_theory/staff.md)
 - [Dart](/Dart/README.md)
     - [Flutter](/Dart/Flutter/README.md)
+- stock
+    - [Basic Tutorial](/Stock/basic/README.md)
+        - [1-认识股票](/Stock/basic/know_stock.md)
+        - [2-分析概述](/Stock/basic/know_analyze_stock.md)
+        - [3-股票术语](/Stock/basic/terminology.md)
+        - [4-基本面分析](/Stock/basic/fundamentals.md)
+        - [5-内外盘](/Stock/basic/inner_outer.md)
+        - [6-换手率](/Stock/basic/back_rate.md)
+- [fund](Fund/README.md)
+    - [指数基金投资指南](Fund/index_fund/README.md)
+    - [估值](Fund/index_fund/valuation.md)
