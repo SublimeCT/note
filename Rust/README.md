@@ -21,12 +21,19 @@
     - `trait`
 
 ## 模块化
-每个项目中至少包含一个 `cargo`, 编译器将以 `crate` 为起点编译
 
-类型 | 路径 | 数量
---- |--- |---
-`library crate` | `src/lib.rs` | 最多包含一个
-`binary crate` | `src/main.rs` | 可以包含任意多个
+- `package` 包含一个或多个 `crate`
+    - 每个 `package` 中包含一个 `Cargo.toml`, 描述如何构建这个 `package`
+    - `crate` 是一个 **二进制项目** 或 **库**
+        - `carte root`: 即 `src/main.rs` / `src/lib.rc`, 是项目的入口文件, 见下表
+            - 编译器将以 `crate root` 为起点编译
+        - `module`: 即模块, 使用 `mod` 定义, 作为 `crate` 下的树结构
+
+路径 | 类型 | 描述
+--- |--- |--- |
+`src/lib.rs` | `library crate root` | 作为库的入口文件
+`src/main.rs` | `binary crate root` | 作为二进制项目的入口文件
+`src/bin/*.rs` | `binary crate` | 每个 `src/bin` 下的文件都会被编译为一个独立的二进制 `crate`
 
 src/lib.rs
 ```rust
