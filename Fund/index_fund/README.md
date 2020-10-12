@@ -58,3 +58,7 @@
 - `...`
 - 个股
 
+## 估值查询
+- [雪球 - 银行螺丝钉 动态](https://xueqiu.com/u/3079173340)
+- [中证指数官网](http://www.csindex.com.cn/zh-CN/indices/index)
+- [申万历史数据](http://www.swsindex.com/idx0510.aspx)
