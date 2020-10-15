@@ -36,6 +36,7 @@
 - [Rust](/Rust/README.md)
     - [📚 The tao of rust](/Rust/the_tao_of_rust/README.md)
     - [📚 Rust 高级编程](/Rust/rust_high_level_code/README.md)
+    - [Rust 中的字符串](/Rust/String.md)
     - [WebAssembly](/Rust/WebAssembly.md)
 - [Music](/Music/theory/README.md)
     - [📚 基础乐理 - 李重光](/Music/theory/basic_music_theory/README.md)
