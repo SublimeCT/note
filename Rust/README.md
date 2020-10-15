@@ -1030,3 +1030,10 @@ type Thunk = Box<dyn Fn() + Send + 'static>
 --- |--- |--- |---
 宏 | 接受的参数数量可变, <br>*如 `println!("")` / `println!("n: {}", n)`* | 在编译器翻译代码前展开 | 可以在给定类型上实现 `trait`
 函数 | 接受的参数数量固定 | 运行时调用被调用执行 | 
+
+## Attribute 属性
+[参考自](https://blog.csdn.net/u012067469/article/details/104548681?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.edu_weight&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.edu_weight),
+属性是作用在 `Rust` 语言元素上的元数据
+
+- `inner attribute`: 一个属性声明在一个元素中, 对整个元素(`crate`) 生效, 使用 `#![]` 声明
+- `outer attribute`: 一个属性声明在一个元素之前, 对之后的元素生效, 使用 `#[]` 声明
