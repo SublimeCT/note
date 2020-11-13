@@ -52,5 +52,6 @@
         - [6-换手率](/Stock/basic/back_rate.md)
 - [fund](Fund/README.md)
     - [指数基金投资指南](Fund/index_fund/README.md)
-    - [估值](Fund/index_fund/valuation.md)
-    - [投资](Fund/index_fund/investment.md)
+        - [估值](Fund/index_fund/valuation.md)
+        - [投资](Fund/index_fund/investment.md)
+    - [共同基金常识](Fund/sense/README.md)
