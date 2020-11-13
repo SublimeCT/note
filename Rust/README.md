@@ -21,12 +21,19 @@
     - `trait`
 
 ## 模块化
-每个项目中至少包含一个 `cargo`, 编译器将以 `crate` 为起点编译
 
-类型 | 路径 | 数量
---- |--- |---
-`library crate` | `src/lib.rs` | 最多包含一个
-`binary crate` | `src/main.rs` | 可以包含任意多个
+- `package` 包含一个或多个 `crate`
+    - 每个 `package` 中包含一个 `Cargo.toml`, 描述如何构建这个 `package`
+    - `crate` 是一个 **二进制项目** 或 **库**
+        - `carte root`: 即 `src/main.rs` / `src/lib.rc`, 是项目的入口文件, 见下表
+            - 编译器将以 `crate root` 为起点编译
+        - `module`: 即模块, 使用 `mod` 定义, 作为 `crate` 下的树结构
+
+路径 | 类型 | 描述
+--- |--- |--- |
+`src/lib.rs` | `library crate root` | 作为库的入口文件
+`src/main.rs` | `binary crate root` | 作为二进制项目的入口文件
+`src/bin/*.rs` | `binary crate` | 每个 `src/bin` 下的文件都会被编译为一个独立的二进制 `crate`
 
 src/lib.rs
 ```rust
@@ -1023,3 +1030,10 @@ type Thunk = Box<dyn Fn() + Send + 'static>
 --- |--- |--- |---
 宏 | 接受的参数数量可变, <br>*如 `println!("")` / `println!("n: {}", n)`* | 在编译器翻译代码前展开 | 可以在给定类型上实现 `trait`
 函数 | 接受的参数数量固定 | 运行时调用被调用执行 | 
+
+## Attribute 属性
+[参考自](https://blog.csdn.net/u012067469/article/details/104548681?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.edu_weight&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.edu_weight),
+属性是作用在 `Rust` 语言元素上的元数据
+
+- `inner attribute`: 一个属性声明在一个元素中, 对整个元素(`crate`) 生效, 使用 `#![]` 声明
+- `outer attribute`: 一个属性声明在一个元素之前, 对之后的元素生效, 使用 `#[]` 声明
