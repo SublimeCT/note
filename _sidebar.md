@@ -1,6 +1,6 @@
 - [主页](/)
 - [OS](/Computer/README.md)
-    - [🎬 计算机操作系统](/Computer/UESTC_OS/README.md)
+    - [🎬 计算机操作系统(原课程已无法查看😦)](/Computer/UESTC_OS/README.md)
         - [1-概述](/Computer/UESTC_OS/overview.md)
         - 2-进程&线程
              - [2-1-进程描述与控制](/Computer/UESTC_OS/process_description.md)
@@ -58,3 +58,4 @@
         - [估值](Fund/index_fund/valuation.md)
         - [投资](Fund/index_fund/investment.md)
     - [共同基金常识](Fund/sense/README.md)
+- [计算机组成原理(脑图)](http://naotu.baidu.com/file/a655ee960a32f8331b974b9a7cdbd8ca?token=d20635c1e2ea9274)
