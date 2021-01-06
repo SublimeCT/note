@@ -1037,3 +1037,12 @@ type Thunk = Box<dyn Fn() + Send + 'static>
 
 - `inner attribute`: 一个属性声明在一个元素中, 对整个元素(`crate`) 生效, 使用 `#![]` 声明
 - `outer attribute`: 一个属性声明在一个元素之前, 对之后的元素生效, 使用 `#[]` 声明
+
+### active / insert
+一个 `attribute` 要么是 `active` 的, 要么是 `insert` 的
+
+- `active`: 在处理属性(预处理代码)的过程中, 会将 `attribute` 删除, 留下所作用的元素
+- `insert`: 在处理属性(预处理代码)的过程中, 会将元素删除删除, 保留自己
+
+### 种类
+- `Macro attributes` 宏属性, *宏属性, 也叫[属性宏](https://dengjianping.github.io/2019/02/28/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AA%E8%BF%87%E7%A8%8B%E5%AE%8F(proc-macro).html), *

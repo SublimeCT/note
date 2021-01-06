@@ -3,6 +3,7 @@
 ## refer
 - [Rust and WebAssembly](https://rustwasm.github.io/docs/book/game-of-life/setup.html)
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/book/)
+- [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen)
 
 ## tool chain
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/book/)
