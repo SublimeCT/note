@@ -1,6 +1,7 @@
 # Rust
 
 ## links
+- [Cargo.toml manifest](https://doc.rust-lang.org/cargo/reference/manifest.html)
 - [API document](https://doc.rust-lang.org/std/)
 - [rust 程序设计语言](https://github.com/KaiserY/trpl-zh-cn)
 - [rust 程序设计语言(国内站点)](http://120.78.128.153/rustbook/foreword.html)
@@ -21,6 +22,9 @@
     - `trait`
 
 ## 模块化
+> `Rust` 的模块化与 `node.js` 直接引用文件不同, **使用 `re-export` 方式组织 `module` 结构**, 参考:
+> - [Rust 引用外部文件方法为啥需要 mod.rs 或者和文件夹同名的 .rs 文件做跳板？是否多余？](https://www.zhihu.com/question/349090786/answer/845427822)
+> - [Rust的模块系统初探](https://zhuanlan.zhihu.com/p/46487796)
 
 - `package` 包含一个或多个 `crate`
     - 每个 `package` 中包含一个 `Cargo.toml`, 描述如何构建这个 `package`
@@ -33,6 +37,7 @@
 --- |--- |--- |
 `src/lib.rs` | `library crate root` | 作为库的入口文件
 `src/main.rs` | `binary crate root` | 作为二进制项目的入口文件
+`src/mod.rs` | `directory module root` | 作为当前(目录)模块的入口文件
 `src/bin/*.rs` | `binary crate` | 每个 `src/bin` 下的文件都会被编译为一个独立的二进制 `crate`
 
 src/lib.rs
@@ -223,6 +228,13 @@ fn main() { // fn 声明函数; main 为入口函数
         count++;
         if count == 10 {
             break count * 2;
+        }
+    }
+    'outer: loop {
+        'inner: loop {
+            // 跳出本循环
+            // break
+            break 'outer // 跳出外部循环
         }
     }
     /// 循环 2
@@ -720,7 +732,7 @@ pub trait Iterator {
 - ***智能指针*** 是一类数据结构, 它们的表现类似于指针, 但拥有额外的原数据
 
 ### 常用智能指针
-- `Box<T>` 用于在堆上分配值
+- `Box<T>` 用于在堆上分配值, [参考文章 1](https://www.dyike.com/2018/09/24/why-are-recursive-struct-types-illegal-in-rust/) / [参考文章 2](https://www.codercto.com/a/27950.html)
 - `Rc<T>` 引用计数类型, 数据可以由多个拥有者
 
 ### `Defer` trait
