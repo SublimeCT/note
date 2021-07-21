@@ -23,6 +23,8 @@
         - [4-串](/DataStructure/explain_data_structure/string.md)
         - [5-树](/DataStructure/explain_data_structure/tree.md)
         - [6-图](/DataStructure/explain_data_structure/graph.md)
+- 前端
+    - [uni-app](/JS/uni-app/README.md)
 - [Linux](/Linux/boy/README.md)
     - [📚 Learn Linux Operation with Old Boy Shell Programming](/Linux/boy/README.md)
         - [1-初步入门](/Linux/boy/getting_started.md)
@@ -33,6 +35,7 @@
         - [6-条件语句实践](/Linux/boy/condition_more.md)
         - [7-函数](/Linux/boy/function.md)
         - [8-分支语句](/Linux/boy/case.md)
+    - [⚙ vim 快捷键](/Linux/vim.md)
 - [Rust](/Rust/README.md)
     - [📚 The tao of rust](/Rust/the_tao_of_rust/README.md)
     - [📚 Rust 高级编程](/Rust/rust_high_level_code/README.md)
